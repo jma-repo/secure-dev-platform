@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ROOT, EXPECTED_NODE, toolStatus, scanScenario } from '../../packages/security-policy/index.mjs';
+import { buildSecurityReport } from '../../packages/security-policy/report.mjs';
 import { ragStatus, askQuestion, buildIndex } from '../../packages/local-rag/index.mjs';
 
 const publicDir = fileURLToPath(new URL('./public/', import.meta.url));
@@ -15,10 +16,10 @@ const assets = new Map([
 const defaultEvidence = {
   generatedAt: null,
   checks: [
-    { id: 'local', label: '本地验证', status: 'not_run', detail: '运行 node scripts/verify.mjs 生成真实证据。' },
-    { id: 'ci', label: 'GitHub Actions / CodeQL', status: 'not_run', detail: '配置已提供；未推送、未在 GitHub 运行。' },
-    { id: 'review', label: '分支保护 / CODEOWNERS', status: 'not_run', detail: '需仓库管理员替换负责人并启用保护。' },
-    { id: 'container', label: '容器构建与镜像扫描', status: 'not_run', detail: '需要可用的 Docker 引擎。' }
+    { id: 'local', label: '本地验证', status: 'not_run', detail: 'Run node scripts/verify.mjs to produce real evidence.' },
+    { id: 'ci', label: 'GitHub Actions / CodeQL', status: 'not_run', detail: 'Workflow files provided; not yet executed on GitHub.' },
+    { id: 'review', label: 'Branch protection / CODEOWNERS', status: 'not_run', detail: 'A repository administrator must set real owners and enable protection.' },
+    { id: 'container', label: '容器构建与镜像扫描', status: 'not_run', detail: 'Requires a reachable Docker engine.' }
   ]
 };
 
@@ -70,6 +71,7 @@ export function createApp({ scan = scanScenario } = {}) {
       if (req.method === 'GET' && path === '/favicon.ico') { res.writeHead(204); return res.end(); }
       if (req.method === 'GET' && path === '/healthz') return reply(res, 200, { status: 'ok', service: 'sentinel-poc' });
       if (req.method === 'GET' && path === '/api/evidence') return reply(res, 200, await loadEvidence());
+      if (req.method === 'GET' && path === '/api/security') return reply(res, 200, await buildSecurityReport());
       if (req.method === 'GET' && path === '/api/status') {
         const names = ['gitleaks', 'trivy', 'terraform'];
         const statuses = await Promise.all(names.map(toolStatus));

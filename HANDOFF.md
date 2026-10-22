@@ -25,7 +25,7 @@
 | 安全 | merge 前自动卡住密钥、漏洞、危险配置 | 🟢 密钥门禁真跑通；其余部分完成 | Gitleaks 真实拦截/放行、暂存区防绕过已实测；CodeQL / Trivy / Terraform 校验只有配置，未在远端跑过 |
 | 基础设施即代码 | 可评审、可校验，不手动点控制台 | 🟡 契约示例 | 仅 `terraform_data`，无云 provider、无 backend、不 apply；`fmt` 已过，`init/validate` 本机被环境阻断 |
 | 容器化运行 | 在哪儿跑都一样，且受限 | ✅ 已实跑 | 非 root、只读根文件系统、cap-drop ALL、256MB / 128 pids、健康检查通过；**镜像漏洞扫描被 Trivy 环境问题阻断** |
-| Copilot / 内部数据问答 | 接内部资料做检索，不是训练模型 | 🟢 本地替代方案已完成 | 本地 Qwen + nomic embedding，6 篇文档 / 38 片段，回答带来源，资料没有会说没有；**不是 Copilot Studio 替代品** |
+| Copilot / 内部数据问答 | 接内部资料做检索，不是训练模型 | 🟢 本地替代方案已完成 | 本地 Qwen + nomic embedding，7 篇文档 / 64 片段（混合检索），回答带来源，资料没有会说没有；**不是 Copilot Studio 替代品** |
 | 客户对 Copilot 的误解 | “从头 deploy 再 train model” | ✅ 已澄清 | Copilot Studio 是低代码 agent 平台，接数据源做检索/流程，不训练基础模型，需要微软许可 |
 
 **一句话对客户的说法：**
@@ -44,7 +44,7 @@
 - `terraform fmt -check` 通过（3 个文件，经 stdin）
 - `docker compose config` 通过
 - 运行镜像构建成功；容器只读、非 root、cap-drop ALL、资源受限、健康检查通过
-- 本地 RAG：语义检索 + 生成，4 条来源，约 12–25 秒；问知识库外的问题会明确说“现有资料没有写”
+- 本地 RAG：混合检索（向量 + 关键词）+ 生成，4 条来源，约 12–25 秒；问知识库外的问题会明确说“现有资料没有写”
 - 浏览器端到端：拦截、放行、证据页、复制、Local AI、移动端无横向溢出、无 JS 异常、无 CSP 违规
 
 ### 未验证（界面与文档均已标注，不要宣称完成）
@@ -104,11 +104,14 @@ node apps/sample-service/server.mjs
 
 ### 第 3 步：演示顺序（约 7 分钟）
 
+> **界面语言为英文**（客户主要语言是 English）。六个页签：Overview / Live demo / Security report / Local AI / Evidence / Handoff。
+
 1. **Overview**：讲 monorepo 与四段路径，强调“图是设计路径，通过什么看证据”。
-2. **Live demo**：点「演示泄露 → 拦截」→ 看 Blocked / exit 42；点「演示修复 → 放行」→ 看 Passed / exit 0。
-3. **Local AI**：徽标 Ready，点示例问题，看回答的 `[1]` 来源、Sources 列表、`Egress: Loopback only`。
-4. **Evidence**：逐条看真实记录，主动指出 blocked / not run 的项。
-5. **Handoff**：打开 `scripts/pre-commit.mjs`、`ci.yml`、`terraform/main.tf`，讲“本地 hook 可绕过，所以需要远端 required checks”。
+2. **Live demo**：点「Demo leak → blocked」→ 看 Blocked / exit 42；点「Demo repair → passed」→ 看 Passed / exit 0。
+3. **Security report**：这是 Snyk / SonarQube 那一类页面。顶部是 **quality gate**（当前 `Incomplete`），下面是每个扫描器一行、以及“什么会挡住合并”的阈值表。重点讲那句 `Not provable yet` —— 不是失败，是“这台机器上没能验证”。
+4. **Local AI**：徽标 Ready，点示例问题，看回答的 `[1]` 来源、Sources 列表、`Egress: Loopback only`。
+5. **Evidence**：逐条看真实记录，主动指出 blocked / not run 的项。
+6. **Handoff**：打开 `scripts/pre-commit.mjs`、`ci.yml`、`terraform/main.tf`，讲“本地 hook 可绕过，所以需要远端 required checks”。
 
 ### 第 4 步：可选加分演示
 
@@ -138,7 +141,7 @@ docker ps --filter name=sentinel-poc
 ### 第 5 步：一键验收
 
 ```powershell
-node --test                  # 23 项测试
+node --test                  # 26 项测试
 node scripts/rag-smoke.mjs   # RAG 四项检查
 node scripts/verify.mjs      # 生成本地证据 outputs/evidence.json
 ```
@@ -156,11 +159,12 @@ curl -X POST http://127.0.0.1:4173/api/rag/reindex
 
 3. 刷新 `#local-ai`，徽标应显示新的文档数 / 片段数。
 
-当前：**6 篇文档 / 38 个片段**（密钥规范、入职指南、AI 使用边界、平台边界、README、伊甸之东概要）。
+当前：**7 篇文档 / 64 个片段**（密钥规范、入职指南、AI 使用边界、平台边界、伊甸之东概要、Canlus 官网信息、README）。
 
 **注意：**
 - `docs/knowledge/east-of-eden.md` 是版权作品的**概要**，不是原文；不要上传受版权保护的全书。
 - 不要写“泛泛的要点总结”段落，会稀释检索排序（实测过：加了一段通用要点，安全问题的首条来源被挤到书的那一段）。
+- 中文提问里带品牌名（例如“Canlus 怎么收费”）会偏向反复出现品牌名的片段，这是 embedding 模型英文优先导致的。已用混合检索（向量 0.55 + BM25 关键词 0.45）修复；如果仍答偏，把问题写成关键词式（“固定月费”“vCISO 月费”）立刻命中。
 - 索引文件 `.rag/index.json` 不入 Git，换机器会自动重建。
 
 ---
@@ -202,10 +206,10 @@ curl -X POST http://127.0.0.1:4173/api/rag/reindex
 ## 9. 关键文件索引
 
 ```text
-apps/sample-service/          页面 + API + 测试（23 项）
+apps/sample-service/          页面 + API + 测试（26 项）
 packages/security-policy/     真实 Gitleaks 调用、暂存区检查
 packages/local-rag/           切块、本地 embedding、检索、生成
-docs/knowledge/               6 篇知识库文档
+docs/knowledge/               7 篇知识库文档
 scripts/pre-commit.mjs        读 Git index + 暂存策略
 scripts/verify.mjs            生成本地证据
 scripts/rag-smoke.mjs         RAG 一键验收

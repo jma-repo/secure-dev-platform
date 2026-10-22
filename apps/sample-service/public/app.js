@@ -6,27 +6,32 @@
     overview: {
       label: 'Overview',
       title: 'Security, made visible.',
-      description: '从代码到交付，让安全信号清晰可见。不隐藏风险，也不提前宣布成功。'
+      description: 'From commit to delivery, the security signal stays visible. Risks are not hidden, and nothing is declared successful early.'
     },
     'live-demo': {
       label: 'Live demo',
       title: 'A secret. A hard stop.',
-      description: '用合成输入触发真实 Gitleaks 扫描。拦截与放行，都由后端执行结果决定。'
+      description: 'Synthetic input triggers a real Gitleaks scan. Blocked or passed is decided by the backend result, not by the page.'
+    },
+    security: {
+      label: 'Security report',
+      title: 'One gate, stated thresholds.',
+      description: 'Every scanner, the threshold that blocks a merge, and whether it actually ran on this machine.'
     },
     'local-ai': {
       label: 'Local AI',
       title: 'Your documents. Your machine.',
-      description: '本地向量检索 + 本地生成模型。问题与资料不离开这台机器，回答必须带来源。'
+      description: 'Local vector retrieval plus a local model. Questions and documents never leave this machine, and every answer must cite sources.'
     },
     evidence: {
       label: 'Evidence',
       title: 'Proof over promises.',
-      description: '逐条核对真实检查记录。清楚区分已通过、失败、阻断与尚未运行。'
+      description: 'Check each real record one by one. Passed, failed, blocked and not run are kept clearly apart.'
     },
     handoff: {
       label: 'Handoff',
       title: 'Built to be reproduced.',
-      description: '把执行入口、环境状态与验证边界一起交付，而不只是一个看起来安全的界面。'
+      description: 'Hand over the entry points, the environment state and the verification boundary together, not just an interface that looks secure.'
     }
   };
   const statusStyles = {
@@ -46,20 +51,23 @@
   let ragLoaded = false;
   let ragReady = false;
   let asking = false;
+  let securityLoaded = false;
+  let securityLoading = false;
 
   const isRecord = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 
-  // 只显示结构化元数据，并对可能误入元数据的常见凭据形式脱敏。
+  // Only structured metadata is shown, and common credential shapes that could
+  // slip into metadata are redacted before rendering.
   function safeText(value, fallback = '—', limit = 300) {
     if (typeof value !== 'string' && typeof value !== 'number') return fallback;
     const text = String(value).trim();
     if (!text) return fallback;
     return text
-      .replace(/-----BEGIN [\s\S]*?PRIVATE KEY-----[\s\S]*?(?:-----END [\s\S]*?PRIVATE KEY-----|$)/g, '[已隐藏密钥]')
-      .replace(/\b(?:Bearer|Basic)\s+\S+/gi, '[已隐藏认证信息]')
-      .replace(/((?:api[_-]?key|[\w.-]*secret[\w.-]*|[\w.-]*token[\w.-]*|password|credential)\s*[=:]\s*)[^\s,;]+/gi, '$1[已隐藏]')
-      .replace(/\b(?:gh[pousr]_[A-Za-z0-9]+|github_pat_[A-Za-z0-9_]+|sk-[A-Za-z0-9_-]+|AKIA[A-Z0-9]{16})\b/g, '[已隐藏密钥]')
-      .replace(/\b(?=[A-Za-z0-9_+/=-]{24,}\b)(?=[A-Za-z0-9_+/=-]*[A-Za-z])(?=[A-Za-z0-9_+/=-]*[0-9])[A-Za-z0-9_+/=-]{24,}/g, '[已隐藏长标识]')
+      .replace(/-----BEGIN [\s\S]*?PRIVATE KEY-----[\s\S]*?(?:-----END [\s\S]*?PRIVATE KEY-----|$)/g, '[private key hidden]')
+      .replace(/\b(?:Bearer|Basic)\s+\S+/gi, '[credentials hidden]')
+      .replace(/((?:api[_-]?key|[\w.-]*secret[\w.-]*|[\w.-]*token[\w.-]*|password|credential)\s*[=:]\s*)[^\s,;]+/gi, '$1[hidden]')
+      .replace(/\b(?:gh[pousr]_[A-Za-z0-9]+|github_pat_[A-Za-z0-9_]+|sk-[A-Za-z0-9_-]+|AKIA[A-Z0-9]{16})\b/g, '[secret hidden]')
+      .replace(/\b(?=[A-Za-z0-9_+/=-]{24,}\b)(?=[A-Za-z0-9_+/=-]*[A-Za-z])(?=[A-Za-z0-9_+/=-]*[0-9])[A-Za-z0-9_+/=-]{24,}/g, '[long identifier hidden]')
       .slice(0, limit);
   }
 
@@ -71,7 +79,8 @@
     return text ? text.slice(0, limit) : fallback;
   }
 
-  function setText(id, value) {    byId(id).textContent = value;
+  function setText(id, value) {
+    byId(id).textContent = value;
   }
 
   function element(tag, className, text) {
@@ -102,10 +111,10 @@
   }
 
   function readableDate(value) {
-    if (typeof value !== 'string' || !value.trim()) return '未提供生成时间';
+    if (typeof value !== 'string' || !value.trim()) return 'no generation time provided';
     const date = new Date(value);
-    if (!Number.isFinite(date.getTime())) return '生成时间无效';
-    return new Intl.DateTimeFormat('zh-CN', {
+    if (!Number.isFinite(date.getTime())) return 'invalid generation time';
+    return new Intl.DateTimeFormat('en-CA', {
       year: 'numeric', month: '2-digit', day: '2-digit',
       hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
     }).format(date);
@@ -137,6 +146,7 @@
     byId('heading-demo-link').hidden = route === 'live-demo';
     document.title = `${page.label} — SENTINEL`;
     if (route === 'local-ai' && !ragLoaded) refreshRag();
+    if (route === 'security' && !securityLoaded) refreshSecurity();
     if (moveFocus) byId('main-content').focus({ preventScroll: false });
   }
 
@@ -145,19 +155,19 @@
     document.querySelectorAll('[data-refresh-status], #refresh-evidence').forEach((button) => {
       button.disabled = busy;
       const isStatus = button.hasAttribute('data-refresh-status');
-      button.querySelector('span').textContent = refreshing ? '刷新中…' : (isStatus ? '刷新状态' : '刷新证据');
+      button.querySelector('span').textContent = refreshing ? 'Refreshing…' : (isStatus ? 'Refresh status' : 'Refresh evidence');
       button.querySelector('.icon').classList.toggle('is-spinning', refreshing);
     });
     document.querySelectorAll('[data-scenario]').forEach((button) => {
       button.disabled = busy;
       button.querySelector('span').textContent = scanning
-        ? '扫描中，请等待…'
-        : (button.dataset.scenario === 'leak' ? '演示泄露 → 拦截' : '演示修复 → 放行');
+        ? 'Scanning, please wait…'
+        : (button.dataset.scenario === 'leak' ? 'Demo leak → blocked' : 'Demo repair → passed');
     });
     const submit = byId('rag-submit');
     if (submit) {
       submit.disabled = asking || !ragReady;
-      submit.querySelector('span').textContent = asking ? '本地生成中…' : '本地提问';
+      submit.querySelector('span').textContent = asking ? 'Generating locally…' : 'Ask locally';
       document.querySelectorAll('.rag-chip').forEach((chip) => { chip.disabled = asking || !ragReady; });
       byId('rag-question').disabled = asking || !ragReady;
     }
@@ -169,14 +179,14 @@
     const label = connected ? 'Connected' : (state === 'loading' ? 'Connecting…' : 'Not connected');
     document.querySelectorAll('[data-connection-label]').forEach((node) => {
       node.textContent = label;
-      node.title = connected ? '最近一次 API 请求成功；不代表所有检查通过，不进行轮询。' : message;
+      node.title = connected ? 'The last API request succeeded. This does not mean every check passed, and no polling is used.' : message;
     });
     document.querySelectorAll('[data-connection-dot]').forEach((node) => {
       node.className = `status-dot${connected ? ' dot-green' : state === 'offline' ? ' dot-red' : ''}`;
     });
     byId('connection-notice').hidden = connected && !message;
     byId('connection-notice').className = `notice ${state === 'offline' ? 'notice-error' : 'notice-neutral'}`;
-    setText('connection-notice-text', message || (connected ? '' : '正在连接本地服务；尚不能确认任何检查结论。'));
+    setText('connection-notice-text', message || (connected ? '' : 'Connecting to the local service. No check conclusion can be confirmed yet.'));
   }
 
   function requestError(kind, status) {
@@ -221,10 +231,10 @@
   }
 
   function explainError(error) {
-    if (error.kind === 'timeout') return '请求超时，未获得可确认的结果。';
-    if (error.kind === 'http') return `接口返回 HTTP ${error.httpStatus}，未获得有效结果。`;
-    if (error.kind === 'format') return '接口数据格式不符合约定，不能确认结果。';
-    return '无法连接本地服务。请确认服务器已启动，并通过默认 127.0.0.1:4173 访问控制台。';
+    if (error.kind === 'timeout') return 'The request timed out and no result could be confirmed.';
+    if (error.kind === 'http') return `The API returned HTTP ${error.httpStatus}, so there is no valid result.`;
+    if (error.kind === 'format') return 'The API response did not match the agreed shape, so the result cannot be confirmed.';
+    return 'Cannot reach the local service. Confirm the server is running and open the console at the default 127.0.0.1:4173.';
   }
 
   function validateEvidence(data) {
@@ -247,15 +257,15 @@
     setText('verified-total', `/ ${checks.length}`);
     setText('evidence-heading-count', String(passed));
     setText('evidence-heading-total', String(checks.length));
-    setText('evidence-metric-detail', checks.length ? `${passed} 项通过 · ${checks.length - passed} 项未通过或未运行` : '接口尚无检查记录');
+    setText('evidence-metric-detail', checks.length ? `${passed} passed · ${checks.length - passed} not passed or not run` : 'The API has no check records');
     byId('evidence-metric-dot').className = `status-dot${checks.length && passed === checks.length ? ' dot-green' : checks.length ? ' dot-amber' : ''}`;
     setText('evidence-summary-detail', checks.length
-      ? `${passed} passed · ${failed} failed · ${blocked} blocked · ${notRun} not run。只统计接口记录，不代表完整交付验证。`
-      : '接口返回空检查列表；没有可宣称通过的验证记录。');
+      ? `${passed} passed · ${failed} failed · ${blocked} blocked · ${notRun} not run. This counts API records only; it is not full delivery verification.`
+      : 'The API returned an empty check list, so there is no verification record to claim.');
     setText('evidence-source', source);
     const time = readableDate(data.generatedAt);
     setText('evidence-generated-at', time);
-    setText('preview-updated', `快照 · ${time}`);
+    setText('preview-updated', `Snapshot · ${time}`);
     updateBadge('evidence-snapshot-badge', checks.length ? 'Snapshot received' : 'No records');
     byId('evidence-load-notice').hidden = true;
 
@@ -265,11 +275,11 @@
     preview.replaceChildren();
     if (!checks.length) {
       const row = element('tr');
-      const cell = element('td', 'table-empty', '尚无检查记录。请先执行项目检查，再刷新证据。');
+      const cell = element('td', 'table-empty', 'No check records yet. Run the project checks, then refresh the evidence.');
       cell.colSpan = 3;
       row.append(cell);
       body.append(row);
-      preview.append(element('div', 'empty-inline', '尚无检查记录。空列表不等于全部通过。'));
+      preview.append(element('div', 'empty-inline', 'No check records yet. An empty list is not a pass.'));
       return;
     }
 
@@ -281,7 +291,7 @@
       name.append(element('span', 'check-label', safeText(check.label)), element('span', 'check-id', safeText(check.id)));
       const status = element('td');
       status.append(badge(style.label, style.tone));
-      row.append(name, status, element('td', '', safeText(check.detail, '接口未提供详细说明。', 1200)));
+      row.append(name, status, element('td', '', safeText(check.detail, 'The API provided no detail.', 1200)));
       tableFragment.append(row);
     });
     body.append(tableFragment);
@@ -292,7 +302,7 @@
       const mark = element('span', `preview-check-icon badge-${style.tone}`);
       mark.append(icon(style.icon));
       const text = element('div', 'preview-check-text');
-      text.append(element('strong', '', safeText(check.label)), element('small', '', safeText(check.detail, '接口未提供详细说明。')));
+      text.append(element('strong', '', safeText(check.label)), element('small', '', safeText(check.detail, 'The API provided no detail.')));
       row.append(mark, text, badge(style.label, style.tone));
       preview.append(row);
     });
@@ -304,12 +314,12 @@
     setText('verified-total', '/ —');
     setText('evidence-heading-count', '—');
     setText('evidence-heading-total', '—');
-    setText('evidence-metric-detail', '证据不可用，无法确认通过数量');
+    setText('evidence-metric-detail', 'Evidence unavailable; the passed count cannot be confirmed');
     byId('evidence-metric-dot').className = 'status-dot dot-amber';
     setText('evidence-summary-detail', message);
-    setText('evidence-source', '不可用');
-    setText('evidence-generated-at', '尚无有效快照');
-    setText('preview-updated', '无有效证据快照');
+    setText('evidence-source', 'unavailable');
+    setText('evidence-generated-at', 'no valid snapshot');
+    setText('preview-updated', 'no valid evidence snapshot');
     updateBadge('evidence-snapshot-badge', 'Unavailable', 'amber');
     byId('evidence-preview-list').replaceChildren(element('div', 'empty-inline', message));
     const row = element('tr');
@@ -333,17 +343,17 @@
       const row = element('li');
       const description = element('span', 'tool-description');
       description.append(element('strong', '', label));
-      description.append(element('small', '', tool ? safeText(tool.version, '未提供版本') : '版本未确认'));
+      description.append(element('small', '', tool ? safeText(tool.version, 'version not provided') : 'version not confirmed'));
       row.append(description, badge(status, tone));
       list.append(row);
       if (key === 'gitleaks') {
         updateBadge('gitleaks-badge', status, tone);
         setText('gitleaks-version', available
-          ? `${safeText(tool.version, '版本未提供')} · 可用不等于扫描通过`
-          : disconnected ? '服务未连接，无法确认工具状态' : known ? '工具不可用；演示不会伪造通过结果' : '接口未提供有效工具状态');
+          ? `${safeText(tool.version, 'version not provided')} · available is not the same as passed`
+          : disconnected ? 'Service not connected; tool status cannot be confirmed' : known ? 'Tool unavailable; the demo will not fake a pass' : 'The API provided no valid tool status');
         const node = byId('gate-node-state');
         const dot = element('span', `status-dot${available ? ' dot-green' : known ? ' dot-amber' : ''}`);
-        node.replaceChildren(dot, document.createTextNode(available ? ' 工具可用 · 需执行' : disconnected ? ' Not connected' : known ? ' Gitleaks 不可用' : ' 状态未确认'));
+        node.replaceChildren(dot, document.createTextNode(available ? ' Tool available · run required' : disconnected ? ' Not connected' : known ? ' Gitleaks unavailable' : ' Status not confirmed'));
       }
     });
   }
@@ -364,7 +374,7 @@
     try {
       renderEvidence(validateEvidence(data.evidence), 'GET /api/status → evidence');
     } catch {
-      clearEvidence('服务已连接，但 status 接口未提供有效证据。可通过“刷新证据”独立重试。');
+      clearEvidence('The service is connected but the status endpoint returned no valid evidence. Use Refresh evidence to retry separately.');
     }
   }
 
@@ -374,13 +384,13 @@
     setText('runtime-name', 'Not connected');
     ['runtime-version', 'runtime-node', 'runtime-expected-node', 'runtime-platform', 'runtime-mode'].forEach((id) => setText(id, '—'));
     renderTools(null, true);
-    clearEvidence('无法获取当前证据；未知状态不作为通过记录。');
+    clearEvidence('Current evidence is unavailable. Unknown state is never recorded as a pass.');
   }
 
   function markEvidenceRefreshing() {
     updateBadge('evidence-snapshot-badge', 'Loading');
     if (hasEvidence) {
-      setText('evidence-load-notice', '正在刷新；下方暂为上次读取的快照，不代表本次请求已经成功。');
+      setText('evidence-load-notice', 'Refreshing. The rows below are the previous snapshot and do not prove this request succeeded.');
       byId('evidence-load-notice').hidden = false;
     }
   }
@@ -390,7 +400,7 @@
     refreshing = true;
     updateControls();
     markEvidenceRefreshing();
-    setConnection('loading', hasWorkspace ? '正在刷新本地状态；刷新完成前，下方保留上次读取的信息。' : '正在连接本地服务。工具状态与验证证据尚未确认。');
+    setConnection('loading', hasWorkspace ? 'Refreshing local status. Until it completes, the values below are the previous read.' : 'Connecting to the local service. Tool status and verification evidence are not confirmed yet.');
     try {
       renderWorkspace(await requestJSON('/api/status'));
     } catch (error) {
@@ -409,10 +419,10 @@
     try {
       const data = validateEvidence(await requestJSON('/api/evidence'));
       renderEvidence(data, 'GET /api/evidence');
-      setConnection('connected', hasWorkspace ? '' : '证据接口已连接。工具与运行环境尚未确认，请点击“刷新状态”。');
+      setConnection('connected', hasWorkspace ? '' : 'The evidence endpoint is connected. Tools and runtime are not confirmed yet; use Refresh status.');
     } catch (error) {
       if (error.kind === 'network' || error.kind === 'timeout') clearWorkspace(explainError(error));
-      else clearEvidence(`证据读取失败。${explainError(error)}`);
+      else clearEvidence(`Reading evidence failed. ${explainError(error)}`);
     } finally {
       refreshing = false;
       updateControls();
@@ -434,7 +444,8 @@
       || !['passed', 'blocked', 'unavailable', 'error'].includes(data.status)
       || !Array.isArray(data.findings)
       || !data.findings.every(isRecord)) throw requestError('format');
-    // 返回值相互矛盾时宁可显示错误，也不将“预期通过”当成真实放行。
+    // If the fields contradict each other, show an error instead of treating an
+    // expected pass as a real pass.
     if (data.status === 'passed' && (data.exitCode !== 0 || data.findings.length !== 0)) throw requestError('format');
     if (data.status === 'blocked' && (!Number.isInteger(data.exitCode) || data.exitCode === 0)) throw requestError('format');
     if (['passed', 'blocked'].includes(data.status) && (typeof data.engine !== 'string' || !data.engine.trim())) throw requestError('format');
@@ -443,37 +454,38 @@
 
   function renderDemo(data) {
     const messages = {
-      passed: ['Input cleared.', '后端返回 Passed，本次输入通过当前规则检查。此结果不代表项目、远端 CI 或容器运行已全部安全。'],
-      blocked: ['Secret blocked.', '后端返回 Blocked，本次合成输入已被扫描引擎拦截。只展示规则与位置，不回显原始密钥。'],
-      unavailable: ['Scanner unavailable.', '后端报告扫描引擎不可用。本次没有通过结论；请准备 Gitleaks 工具并刷新状态后重试。'],
-      error: ['No verified verdict.', '后端报告执行错误。本次没有可确认的通过结论；请检查本地服务器与工具配置。']
+      passed: ['Input cleared.', 'The backend returned Passed, so this input cleared the current rules. This does not mean the project, remote CI or the container runtime is fully secure.'],
+      blocked: ['Secret blocked.', 'The backend returned Blocked, so the scan engine stopped this synthetic input. Only the rule and location are shown; the raw secret is never echoed.'],
+      unavailable: ['Scanner unavailable.', 'The backend reports the scan engine is unavailable. There is no pass for this run; prepare Gitleaks, refresh status and retry.'],
+      error: ['No verified verdict.', 'The backend reports an execution error. There is no confirmed pass; check the local server and tool configuration.']
     };
     const [title, message] = messages[data.status];
     setDemoState(data.status, title, message);
-    setText('demo-engine', safeText(data.engine, '未报告', 100));
-    setText('demo-duration', typeof data.elapsedMs === 'number' && Number.isFinite(data.elapsedMs) && data.elapsedMs >= 0 ? `${Math.round(data.elapsedMs)} ms` : '未报告');
-    setText('demo-exit-code', Number.isInteger(data.exitCode) ? String(data.exitCode) : '未报告');
-    setText('demo-scenario', data.scenario === 'leak' ? 'leak / 合成泄露' : 'clean / 干净输入');
+    setText('demo-engine', safeText(data.engine, 'not reported', 100));
+    setText('demo-duration', typeof data.elapsedMs === 'number' && Number.isFinite(data.elapsedMs) && data.elapsedMs >= 0 ? `${Math.round(data.elapsedMs)} ms` : 'not reported');
+    setText('demo-exit-code', Number.isInteger(data.exitCode) ? String(data.exitCode) : 'not reported');
+    setText('demo-scenario', data.scenario === 'leak' ? 'leak / synthetic credential' : 'clean / no credential');
     const finished = readableDate(new Date().toISOString());
-    setText('demo-finished-at', `收到响应 · ${finished}`);
+    setText('demo-finished-at', `Response received · ${finished}`);
     setText('last-verdict-detail', `${data.scenario} · ${finished}`);
-    setText('findings-count', `${data.findings.length} 条返回记录`);
+    setText('findings-count', `${data.findings.length} returned records`);
     const list = byId('findings-list');
     list.replaceChildren();
     if (!data.findings.length) {
       list.append(element('div', 'empty-inline', data.status === 'passed'
-        ? '本次扫描未返回命中记录，仅对当前输入与当前规则有效。'
-        : '接口未返回命中明细；没有记录不等于检查通过。'));
+        ? 'This scan returned no hits. That holds only for the current input and the current rules.'
+        : 'The API returned no hit detail. No record is not the same as a pass.'));
       return;
     }
     const fragment = document.createDocumentFragment();
     data.findings.forEach((finding) => {
       const row = element('div', 'finding-row');
-      row.append(element('div', 'finding-rule', safeText(finding.ruleId, '未提供规则 ID', 150)));
-      // 不回显自由文本 message / description，避免其中意外携带匹配到的凭据。
-      row.append(element('p', 'finding-description', '规则命中记录；原始匹配值与自由文本描述不予展示。'));
-      const line = Number.isInteger(finding.line) && finding.line > 0 ? String(finding.line) : '未提供行号';
-      row.append(element('div', 'finding-location mono', `${safeText(finding.file, '未提供文件', 250)} : ${line}`));
+      row.append(element('div', 'finding-rule', safeText(finding.ruleId, 'no rule id provided', 150)));
+      // Free-text message and description are not echoed, because they can
+      // accidentally carry the matched credential.
+      row.append(element('p', 'finding-description', 'Rule hit record. The raw match and free-text description are not displayed.'));
+      const line = Number.isInteger(finding.line) && finding.line > 0 ? String(finding.line) : 'no line number';
+      row.append(element('div', 'finding-location mono', `${safeText(finding.file, 'no file provided', 250)} : ${line}`));
       fragment.append(row);
     });
     list.append(fragment);
@@ -483,14 +495,14 @@
     if (scanning || refreshing || !['leak', 'clean'].includes(scenario)) return;
     scanning = true;
     updateControls();
-    setDemoState('scanning', 'Scanning in progress.', '正在提交合成场景并等待后端扫描结果。执行完成前，两个演示入口均已锁定。');
-    setText('last-verdict-detail', `${scenario} · 等待真实扫描结果`);
+    setDemoState('scanning', 'Scanning in progress.', 'Submitting the synthetic scenario and waiting for the backend result. Both demo entries stay locked until it finishes.');
+    setText('last-verdict-detail', `${scenario} · waiting for the real scan`);
     ['demo-engine', 'demo-duration', 'demo-exit-code'].forEach((id) => setText(id, '—'));
     setText('demo-scenario', scenario);
-    setText('findings-count', '扫描中');
-    setText('demo-finished-at', '等待后端响应');
+    setText('findings-count', 'Scanning');
+    setText('demo-finished-at', 'Waiting for the backend');
     const waiting = element('div', 'empty-inline');
-    waiting.append(element('span', 'loading-ring'), element('span', '', '扫描中，不预设拦截或放行结果…'));
+    waiting.append(element('span', 'loading-ring'), element('span', '', 'Scanning without assuming blocked or passed…'));
     byId('findings-list').replaceChildren(waiting);
     try {
       const data = await requestJSON('/api/demo/secret', {
@@ -500,16 +512,85 @@
       });
       renderDemo(validateDemo(data, scenario));
     } catch (error) {
-      const message = explainError(error) + (error.kind === 'timeout' ? ' 服务端扫描可能仍在执行，请先确认其状态再重试。' : ' 本次演示不会显示为通过。');
+      const message = explainError(error) + (error.kind === 'timeout' ? ' The server scan may still be running; confirm its state before retrying.' : ' This demo will not be shown as passed.');
       setDemoState('error', error.kind === 'network' ? 'Not connected.' : 'No verified verdict.', message);
-      setText('last-verdict-detail', '请求失败 · 无有效扫描结论');
-      setText('findings-count', '无有效结果');
-      setText('demo-finished-at', '请求未获得有效扫描结果');
-      byId('findings-list').replaceChildren(element('div', 'empty-inline', '未获得有效扫描明细，不能据此判断输入安全。'));
+      setText('last-verdict-detail', 'Request failed · no valid scan conclusion');
+      setText('findings-count', 'No valid result');
+      setText('demo-finished-at', 'The request produced no valid scan result');
+      byId('findings-list').replaceChildren(element('div', 'empty-inline', 'No valid scan detail was returned, so the input cannot be judged safe.'));
       if (error.kind === 'network' || error.kind === 'timeout') clearWorkspace(explainError(error));
     } finally {
       scanning = false;
       updateControls();
+    }
+  }
+
+  function renderSecurity(data) {
+    const gate = isRecord(data?.gate) ? data.gate : null;
+    if (!gate || !Array.isArray(data.scans) || !Array.isArray(data.policy)) throw requestError('format');
+    const tone = gate.status === 'pass' ? 'green' : gate.status === 'fail' ? 'red' : 'amber';
+    setText('gate-label', gate.label);
+    updateBadge('gate-badge', gate.status === 'pass' ? 'Ready to ship' : gate.status === 'fail' ? 'Blocked' : 'Not provable yet', tone);
+    byId('gate-card').className = `card gate-card gate-${gate.status}`;
+    setText('gate-detail', gate.detail);
+    const coverage = isRecord(data.coverage) ? data.coverage : { verified: 0, total: 0 };
+    setText('gate-coverage', `${coverage.verified} of ${coverage.total} checks verified`);
+    setText('gate-generated', data.generatedAt ? `Evidence generated ${readableDate(data.generatedAt)}` : 'No evidence snapshot yet');
+    const counts = isRecord(data.counts) ? data.counts : {};
+    setText('sec-tests', Number.isFinite(counts.tests) ? String(counts.tests) : '—');
+    setText('sec-files', Number.isFinite(counts.filesScanned) ? String(counts.filesScanned) : '—');
+    setText('sec-blocked', Number.isFinite(counts.blocked) ? String(counts.blocked) : '—');
+    setText('sec-notrun', Number.isFinite(counts.notRun) ? String(counts.notRun) : '—');
+    setText('scan-count', `${coverage.verified} of ${coverage.total} verified`);
+    if (typeof data.note === 'string' && data.note.trim()) setText('security-note', data.note);
+
+    const scanBody = byId('scan-table-body');
+    scanBody.replaceChildren();
+    const scanFragment = document.createDocumentFragment();
+    data.scans.forEach((scan) => {
+      const style = statusStyles[scan.status] ?? statusStyles.not_run;
+      const row = element('tr');
+      const nameCell = element('td');
+      nameCell.append(element('span', 'check-label', safeText(scan.name)), element('span', 'check-id', `${scan.verified} of ${scan.total} checks verified`));
+      row.append(nameCell, element('td', 'mono', safeText(scan.tool)), element('td', '', safeText(scan.policy)));
+      const statusCell = element('td');
+      statusCell.append(badge(style.label, style.tone));
+      row.append(statusCell);
+      scanFragment.append(row);
+    });
+    scanBody.append(scanFragment);
+
+    const policyBody = byId('policy-table-body');
+    policyBody.replaceChildren();
+    const policyFragment = document.createDocumentFragment();
+    data.policy.forEach((item) => {
+      const row = element('tr');
+      const ruleCell = element('td');
+      ruleCell.append(element('span', 'check-label', safeText(item.rule)), element('span', 'check-id', item.blocking ? 'blocks a merge' : 'advisory only'));
+      row.append(ruleCell, element('td', '', safeText(item.threshold)), element('td', '', safeText(item.what ?? item.why)));
+      policyFragment.append(row);
+    });
+    policyBody.append(policyFragment);
+  }
+
+  async function refreshSecurity() {
+    if (securityLoading) return;
+    securityLoading = true;
+    try {
+      renderSecurity(await requestJSON('/api/security'));
+      securityLoaded = true;
+    } catch (error) {
+      updateBadge('gate-badge', 'Unavailable', 'amber');
+      setText('gate-label', 'Report unavailable');
+      setText('gate-detail', explainError(error));
+      const body = byId('scan-table-body');
+      const row = element('tr');
+      const cell = element('td', 'table-empty', 'The security report could not be read, so no scan status is claimed.');
+      cell.colSpan = 4;
+      row.append(cell);
+      body.replaceChildren(row);
+    } finally {
+      securityLoading = false;
     }
   }
 
@@ -519,7 +600,7 @@
     if (!target) return;
     const text = target.textContent;
     button.disabled = true;
-    button.querySelector('span').textContent = '复制中';
+    button.querySelector('span').textContent = 'Copying';
     let copied = false;
     try {
       if (navigator.clipboard?.writeText) {
@@ -527,7 +608,8 @@
         copied = true;
       }
     } catch {
-      // 浏览器拒绝剪贴板权限时，仍可尝试用户点击触发的本地复制。
+      // If the browser denies clipboard access, fall back to a local copy
+      // triggered by the user's click.
     }
     if (!copied) {
       const textarea = element('textarea', 'clipboard-fallback');
@@ -546,12 +628,12 @@
     button.disabled = false;
     button.focus({ preventScroll: true });
     if (copied) {
-      button.querySelector('span').textContent = '已复制';
-      showToast('命令已复制；尚未执行。');
-      setTimeout(() => { button.querySelector('span').textContent = '复制'; }, 2000);
+      button.querySelector('span').textContent = 'Copied';
+      showToast('Command copied. Nothing was executed.');
+      setTimeout(() => { button.querySelector('span').textContent = 'Copy'; }, 2000);
     } else {
-      button.querySelector('span').textContent = '复制';
-      showToast('浏览器未允许复制。请选中命令文本手动复制。');
+      button.querySelector('span').textContent = 'Copy';
+      showToast('The browser blocked copying. Select the command text and copy it manually.');
     }
   }
 
@@ -562,42 +644,42 @@
 
   async function refreshRag() {
     updateBadge('rag-badge', 'Checking', 'neutral');
-    setRagNotice(false, '正在确认本地模型与知识库…');
+    setRagNotice(false, 'Confirming the local model and knowledge base…');
     try {
       const status = await requestJSON('/api/rag/status');
       ragLoaded = true;
       ragReady = status.ready === true;
       if (ragReady) {
         updateBadge('rag-badge', 'Ready', 'green');
-        setRagNotice(true, `${status.documents} 篇文档 · ${status.chunks} 个片段 · ${plainText(status.embedModel, '本地嵌入模型', 60)}`);
-        setText('rag-hint', `本地检索已就绪 · ${plainText(status.chatModel, '本地模型', 40)}`);
+        setRagNotice(true, `${status.documents} documents · ${status.chunks} chunks · ${plainText(status.embedModel, 'local embedding model', 60)}`);
+        setText('rag-hint', `Local retrieval ready · ${plainText(status.chatModel, 'local model', 40)}`);
       } else {
         updateBadge('rag-badge', 'Unavailable', 'amber');
-        setRagNotice(false, `本地模型未就绪：${safeText(status.reason, '未知原因', 160)}`);
-        setText('rag-hint', '模型未就绪时不会发送请求，也不会显示假答案。');
+        setRagNotice(false, `Local model not ready: ${safeText(status.reason, 'unknown reason', 160)}`);
+        setText('rag-hint', 'No request is sent while the model is not ready, and no fake answer is shown.');
       }
     } catch (error) {
       ragLoaded = true;
       ragReady = false;
       updateBadge('rag-badge', 'Not connected', 'amber');
       setRagNotice(false, explainError(error));
-      setText('rag-hint', '无法读取本地模型状态，暂不可提问。');
+      setText('rag-hint', 'Local model status cannot be read, so asking is unavailable.');
     } finally { updateControls(); }
   }
 
   function renderSources(sources) {
     const list = byId('rag-sources');
     list.replaceChildren();
-    setText('rag-source-count', `${sources.length} 条命中`);
+    setText('rag-source-count', `${sources.length} hits`);
     if (!sources.length) {
-      list.append(element('div', 'empty-inline', '本次没有返回来源片段，不能据此认为回答有依据。'));
+      list.append(element('div', 'empty-inline', 'No source passage was returned, so the answer cannot be treated as grounded.'));
       return;
     }
     const fragment = document.createDocumentFragment();
     sources.forEach((source, index) => {
       const row = element('div', 'rag-source');
       const body = element('div', 'rag-source-body');
-      body.append(element('strong', '', plainText(source.file, '未提供文件', 160)), element('small', '', plainText(source.heading, '未提供章节', 120)));
+      body.append(element('strong', '', plainText(source.file, 'no file provided', 160)), element('small', '', plainText(source.heading, 'no section provided', 120)));
       row.append(element('span', 'rag-source-index', String(index + 1)), body, element('span', 'rag-source-score', typeof source.score === 'number' ? source.score.toFixed(3) : '—'));
       fragment.append(row);
     });
@@ -608,19 +690,19 @@
     if (asking || !ragReady) return;
     const input = byId('rag-question');
     const question = input.value.trim();
-    if (!question) { showToast('请先输入一个问题。'); input.focus(); return; }
-    if (question.length > 400) { showToast('问题请控制在 400 字以内。'); return; }
+    if (!question) { showToast('Type a question first.'); input.focus(); return; }
+    if (question.length > 400) { showToast('Keep the question under 400 characters.'); return; }
     asking = true;
     updateControls();
     byId('rag-result').setAttribute('aria-busy', 'true');
     updateBadge('rag-answer-badge', 'Retrieving', 'neutral');
     const answerBox = byId('rag-answer');
     answerBox.className = 'rag-answer is-loading';
-    answerBox.textContent = '正在本地检索并生成。27B 模型通常需要十几秒，请稍候…';
-    byId('rag-sources').replaceChildren(element('div', 'empty-inline', '正在检索本地片段…'));
-    setText('rag-source-count', '检索中');
+    answerBox.textContent = 'Retrieving locally and generating. A 27B model usually needs ten to twenty seconds.';
+    byId('rag-sources').replaceChildren(element('div', 'empty-inline', 'Retrieving local passages…'));
+    setText('rag-source-count', 'Retrieving');
     ['rag-model', 'rag-duration', 'rag-egress', 'rag-retrieval'].forEach(id => setText(id, '—'));
-    setText('rag-finished-at', '等待本地模型响应');
+    setText('rag-finished-at', 'Waiting for the local model');
     try {
       const data = await requestJSON('/api/rag/ask', {
         method: 'POST',
@@ -632,19 +714,21 @@
       answerBox.className = 'rag-answer';
       answerBox.textContent = data.answer.trim();
       updateBadge('rag-answer-badge', 'Answered', 'green');
-      setText('rag-model', plainText(data.model, '本地模型', 60));
-      setText('rag-retrieval', data.retrieval === 'semantic' ? 'semantic · local vectors' : safeText(data.retrieval, '未报告', 40));
-      setText('rag-duration', typeof data.elapsedMs === 'number' ? `${Math.round(data.elapsedMs)} ms` : '未报告');
-      setText('rag-egress', data.localOnly === true ? 'Loopback only' : '未确认');
-      setText('rag-finished-at', `收到回答 · ${readableDate(new Date().toISOString())}`);
+      setText('rag-model', plainText(data.model, 'local model', 60));
+      setText('rag-retrieval', data.retrieval === 'hybrid'
+        ? 'hybrid · vectors + keywords'
+        : (data.retrieval === 'semantic' ? 'semantic · local vectors' : safeText(data.retrieval, 'not reported', 40)));
+      setText('rag-duration', typeof data.elapsedMs === 'number' ? `${Math.round(data.elapsedMs)} ms` : 'not reported');
+      setText('rag-egress', data.localOnly === true ? 'Loopback only' : 'not confirmed');
+      setText('rag-finished-at', `Answer received · ${readableDate(new Date().toISOString())}`);
       renderSources(data.sources);
     } catch (error) {
       answerBox.className = 'rag-answer';
-      answerBox.textContent = explainError(error) + ' 本次没有可确认的回答；不展示推测内容。';
+      answerBox.textContent = explainError(error) + ' There is no confirmed answer for this request, and no guess is shown.';
       updateBadge('rag-answer-badge', error.kind === 'network' || error.kind === 'timeout' ? 'Unavailable' : 'Error', 'amber');
-      setText('rag-finished-at', '请求未获得有效回答');
-      byId('rag-sources').replaceChildren(element('div', 'empty-inline', '没有可确认的来源片段。'));
-      setText('rag-source-count', '无有效来源');
+      setText('rag-finished-at', 'The request produced no valid answer');
+      byId('rag-sources').replaceChildren(element('div', 'empty-inline', 'No confirmed source passages.'));
+      setText('rag-source-count', 'No valid sources');
     } finally {
       asking = false;
       byId('rag-result').setAttribute('aria-busy', 'false');
