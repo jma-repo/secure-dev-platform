@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
-import { assertLoopback, chunkMarkdown, cosine, pickModels, ragStatus } from '../../../packages/local-rag/index.mjs';
+import { assertLoopback, chunkMarkdown, cosine, pickModels, ragStatus, loadIndex, buildIndex } from '../../../packages/local-rag/index.mjs';
 import { createApp } from '../server.mjs';
 
 async function withApp(fn) {
@@ -78,6 +78,17 @@ test('RAG status refuses a remote base URL instead of sending data', async () =>
     if (previous === undefined) delete process.env.LM_STUDIO_BASE;
     else process.env.LM_STUDIO_BASE = previous;
   }
+});
+
+test('reindex refreshes the in-process index cache', async context => {
+  const status = await ragStatus();
+  if (!status.ready) return context.skip('LM Studio is not running with a local embedding model');
+  const first = await loadIndex();
+  const rebuilt = await buildIndex();
+  const second = await loadIndex();
+  assert.equal(rebuilt.builtAt, second.builtAt);
+  assert.equal(second.chunks.length, rebuilt.chunks.length);
+  assert.ok(first.chunks.length > 0);
 });
 
 test('live local answer is grounded in retrieved sources', async context => {

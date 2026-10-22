@@ -133,6 +133,7 @@ export async function buildIndex() {
   };
   await mkdir(INDEX_DIR, { recursive: true });
   await writeFile(INDEX_FILE, JSON.stringify(payload));
+  cached = payload;
   return payload;
 }
 
