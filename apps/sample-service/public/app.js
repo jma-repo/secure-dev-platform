@@ -63,8 +63,15 @@
       .slice(0, limit);
   }
 
-  function setText(id, value) {
-    byId(id).textContent = value;
+  // Identifiers from our own API (model names, paths) are not secrets; only
+  // strip control characters so the redaction heuristic does not mangle them.
+  function plainText(value, fallback = '—', limit = 200) {
+    if (typeof value !== 'string' && typeof value !== 'number') return fallback;
+    const text = String(value).replace(/[\u0000-\u001f\u007f]/g, ' ').trim();
+    return text ? text.slice(0, limit) : fallback;
+  }
+
+  function setText(id, value) {    byId(id).textContent = value;
   }
 
   function element(tag, className, text) {
@@ -562,8 +569,8 @@
       ragReady = status.ready === true;
       if (ragReady) {
         updateBadge('rag-badge', 'Ready', 'green');
-        setRagNotice(true, `${status.documents} 篇文档 · ${status.chunks} 个片段 · ${safeText(status.embedModel, '本地嵌入模型', 60)}`);
-        setText('rag-hint', `本地检索已就绪 · ${safeText(status.chatModel, '本地模型', 40)}`);
+        setRagNotice(true, `${status.documents} 篇文档 · ${status.chunks} 个片段 · ${plainText(status.embedModel, '本地嵌入模型', 60)}`);
+        setText('rag-hint', `本地检索已就绪 · ${plainText(status.chatModel, '本地模型', 40)}`);
       } else {
         updateBadge('rag-badge', 'Unavailable', 'amber');
         setRagNotice(false, `本地模型未就绪：${safeText(status.reason, '未知原因', 160)}`);
@@ -590,7 +597,7 @@
     sources.forEach((source, index) => {
       const row = element('div', 'rag-source');
       const body = element('div', 'rag-source-body');
-      body.append(element('strong', '', safeText(source.file, '未提供文件', 160)), element('small', '', safeText(source.heading, '未提供章节', 120)));
+      body.append(element('strong', '', plainText(source.file, '未提供文件', 160)), element('small', '', plainText(source.heading, '未提供章节', 120)));
       row.append(element('span', 'rag-source-index', String(index + 1)), body, element('span', 'rag-source-score', typeof source.score === 'number' ? source.score.toFixed(3) : '—'));
       fragment.append(row);
     });
@@ -625,7 +632,7 @@
       answerBox.className = 'rag-answer';
       answerBox.textContent = data.answer.trim();
       updateBadge('rag-answer-badge', 'Answered', 'green');
-      setText('rag-model', safeText(data.model, '本地模型', 60));
+      setText('rag-model', plainText(data.model, '本地模型', 60));
       setText('rag-retrieval', data.retrieval === 'semantic' ? 'semantic · local vectors' : safeText(data.retrieval, '未报告', 40));
       setText('rag-duration', typeof data.elapsedMs === 'number' ? `${Math.round(data.elapsedMs)} ms` : '未报告');
       setText('rag-egress', data.localOnly === true ? 'Loopback only' : '未确认');

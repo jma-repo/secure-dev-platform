@@ -18,7 +18,7 @@ with zipfile.ZipFile(archive_path, "w", zipfile.ZIP_DEFLATED) as archive:
         if path.name.startswith(".env") or path.suffix in {".tfstate", ".tfplan", ".log"}:
             continue
         archive.write(path, Path("secure-dev-platform") / relative)
-    files = [OUT / "evidence.json", OUT / "browser-check.json", OUT / "overview.png", OUT / "live-demo.png", OUT / "mobile.png"]
+    files = [OUT / "evidence.json", OUT / "browser-check.json", OUT / "overview.png", OUT / "live-demo.png", OUT / "local-ai.png", OUT / "mobile.png"]
     run_directory = OUT / evidence["reportDirectory"]
     files.extend(path for path in run_directory.rglob("*") if path.is_file())
     for path in files:
