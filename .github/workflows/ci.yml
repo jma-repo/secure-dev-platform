@@ -195,6 +195,12 @@ jobs:
         run: |
           mkdir -p reports
           python3 scripts/bootstrap-tools.py trivy 2>&1 | tee reports/deps-bootstrap.log
+      - name: State what the dependency scan can actually read
+        # A scan that read nothing is not a pass. This step fails the job the
+        # moment a manifest declares packages without a lockfile, so a green
+        # result always means every declared dependency was read.
+        run: |
+          python3 scripts/dependency-inventory.py . | tee reports/dependency-inventory.txt
       - name: Scan dependencies
         # Zero third-party npm packages does not mean every system library is
         # covered; the runtime image is scanned separately in the image job.
@@ -209,7 +215,21 @@ jobs:
           {
             echo "## Dependency vulnerabilities"
             echo ""
-            if [ -f reports/dependencies.json ]; then
+            if [ -f reports/dependency-inventory.txt ]; then
+              grep -E '^\|' reports/dependency-inventory.txt || true
+              echo ""
+            else
+              echo "_The inventory step did not run, so nothing is claimed here._"
+              echo ""
+            fi
+
+            if grep -q '^RESULT: NOTHING_TO_SCAN' reports/dependency-inventory.txt 2>/dev/null; then
+              echo "**Nothing to scan.** No manifest declares a third-party package,"
+              echo "so there is no input for a dependency scan. The image job covers"
+              echo "the system libraries this service actually runs on."
+            elif [ -f reports/dependencies.json ]; then
+              echo "**Scan input:** every declared package, resolved from a lockfile."
+              echo ""
               echo "| Severity | Fixable | Total |"
               echo "| --- | --- | --- |"
               for s in CRITICAL HIGH MEDIUM LOW; do
@@ -231,6 +251,7 @@ jobs:
           path: |
             reports/dependencies.json
             reports/dependencies-gate.txt
+            reports/dependency-inventory.txt
             reports/deps-bootstrap.log
           retention-days: 3
           if-no-files-found: warn

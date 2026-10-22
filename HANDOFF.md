@@ -146,6 +146,9 @@ node scripts/rag-smoke.mjs   # RAG 四项检查
 node scripts/verify.mjs      # 生成本地证据 outputs/evidence.json
 ```
 
+> **可选**：`$env:GITHUB_TOKEN = "<PAT>"` 后再跑 `verify.mjs`，它会去 GitHub API 读 HEAD 上真实那次 CI run，把 job 清单和 run 链接写进证据里的 `ci` 一项。
+> 不设 token 就如实记 `not_run` 并说明原因——两种情况都不会凭空断言 CI 通过。
+
 ---
 
 ## 5. 知识库怎么加资料
@@ -214,7 +217,8 @@ scripts/pre-commit.mjs        读 Git index + 暂存策略
 scripts/verify.mjs            生成本地证据
 scripts/rag-smoke.mjs         RAG 一键验收
 scripts/browser-check.cjs     浏览器端到端 + 截图
-.github/workflows/            ci.yml / codeql.yml（未远端运行）
+scripts/dependency-inventory.py  先说清依赖扫描能读到什么，再扫
+.github/workflows/            ci.yml / codeql.yml（CodeQL 私有库需许可，跳过）
 infra/terraform/              零云资源契约（未 apply）
 outputs/                      证据、截图、zip（不入 Git）
 DEMO_GUIDE.md                 客户现场话术

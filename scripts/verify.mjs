@@ -129,7 +129,36 @@ if (trivyImage) {
 } else {
   record('trivy-image', 'Image HIGH/CRITICAL vulnerabilities', 'blocked', 'Trivy could not read its Docker config or vulnerability database in this execution environment; no clean result is claimed.');
 }
-record('ci', 'GitHub Actions / CodeQL', 'not_run', 'Workflow files provided; no remote repository created or workflow run. CodeQL on private repositories requires applicable licensing.');
+// Reading the real workflow result is opt-in: no token in the environment means
+// no claim about the remote run. This reads evidence, it does not depend on it.
+const CI_REPO = process.env.SENTINEL_CI_REPO ?? 'jma-repo/secure-dev-platform';
+async function remoteCiStatus() {
+  const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
+  if (!token) {
+    return { status: 'not_run', detail: 'No GitHub token in the environment, so no remote run was read. Workflow files are present and unchanged; set GITHUB_TOKEN to record the real result. CodeQL on a private repository needs applicable licensing.' };
+  }
+  const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'User-Agent': 'sentinel-verify' };
+  try {
+    const head = await (await fetch(`https://api.github.com/repos/${CI_REPO}/commits/main`, { headers })).json();
+    const sha = head?.sha;
+    if (!sha) return { status: 'not_run', detail: `Could not resolve the head of ${CI_REPO}; no CI claim is made.` };
+    const short = sha.slice(0, 7);
+    const runs = await (await fetch(`https://api.github.com/repos/${CI_REPO}/actions/runs?head_sha=${sha}&per_page=20`, { headers })).json();
+    const run = (runs?.workflow_runs ?? []).find(item => item.name === 'CI');
+    if (!run) return { status: 'not_run', detail: `No CI run exists for ${short} yet; nothing is claimed.` };
+    if (run.status !== 'completed') return { status: 'not_run', detail: `The CI run for ${short} is still ${run.status}; it is not counted as verified.` };
+    const jobs = (await (await fetch(`https://api.github.com/repos/${CI_REPO}/actions/runs/${run.id}/jobs`, { headers })).json())?.jobs ?? [];
+    const notGreen = jobs.filter(job => job.conclusion !== 'success').map(job => `${job.name} (${job.conclusion})`);
+    if (run.conclusion === 'success' && jobs.length > 0 && notGreen.length === 0) {
+      return { status: 'passed', detail: `${jobs.length} jobs passed on ${short}: ${jobs.map(job => job.name).join(', ')}. Read from ${run.html_url}. CodeQL is skipped on a private repository without Code Security licensing, and is not counted as passed.` };
+    }
+    return { status: 'failed', detail: `The CI run for ${short} concluded ${run.conclusion}. Not green: ${notGreen.join(', ') || 'no jobs recorded'}. Read from ${run.html_url}.` };
+  } catch (error) {
+    return { status: 'not_run', detail: `Remote lookup failed (${error.message}); no CI claim is made.` };
+  }
+}
+const remote = await remoteCiStatus();
+record('ci', 'GitHub Actions / CodeQL', remote.status, remote.detail);
 record('review', 'Branch protection / CODEOWNERS', 'not_run', 'Owner entries are commented examples. Repository administrator must configure real owners, required checks and review rules.');
 
 const evidence = { runId, generatedAt: new Date().toISOString(), scope: 'Local execution evidence; not a production certification', reportDirectory: `runs/${runId}`, tools, checks };
