@@ -1,0 +1,79 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
+    <Box style={{ flexDirection: 'column', gap: 6, height: 100 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.3 }}>离线架构：一条边界，两条产线</Text>
+        <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.5 }}>代码怎么进来、知识怎么用，都在同一道边界里完成</Text>
+    </Box>
+    <Box style={{ flexDirection: 'column', gap: 12, height: 520, justifyContent: 'space-between' }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 12, height: 44, padding: '0 18px', background: 'rgba(194,65,12,0.08)', borderRadius: 6 }}>
+            <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#C2410C' }}>唯一出口</Text>
+            <Text style={{ fontSize: 15, color: '#0F1E19' }}>补丁与镜像导入 · 时间同步 · 加密备份外送（全部白名单 + 留日志）</Text>
+        </Box>
+        <Box style={{ flexDirection: 'column', height: 262, border: '2px dashed #167762', borderRadius: 10, padding: '14px 16px', gap: 8, position: 'relative' }}>
+            <Text style={{ fontSize: 14, color: '#167762', letterSpacing: 2 }}>内网边界</Text>
+            <Text style={{ fontSize: 13, color: '#6B7A72' }}>代码产线</Text>
+            <Box style={{ flexDirection: 'row', gap: 24 }}>
+                <Box style={{ width: 204, height: 66, background: 'rgba(22,119,98,0.09)', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>开发工作区</Text>
+                    <Text style={{ fontSize: 13, color: '#44534C' }}>每人一个容器，同一镜像</Text>
+                </Box>
+                <Box style={{ width: 204, height: 66, background: 'rgba(22,119,98,0.09)', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>内网 Git</Text>
+                    <Text style={{ fontSize: 13, color: '#44534C' }}>自建 GitLab / Gitea</Text>
+                </Box>
+                <Box style={{ width: 204, height: 66, background: 'rgba(22,119,98,0.09)', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>CI Runner</Text>
+                    <Text style={{ fontSize: 13, color: '#44534C' }}>五道关卡在这里跑</Text>
+                </Box>
+                <Box style={{ width: 204, height: 66, background: 'rgba(22,119,98,0.09)', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>制品库</Text>
+                    <Text style={{ fontSize: 13, color: '#44534C' }}>镜像与依赖的内网源</Text>
+                </Box>
+                <Box style={{ width: 204, height: 66, background: '#167762', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>运行环境</Text>
+                    <Text style={{ fontSize: 13, color: 'rgba(255,255,255,0.82)' }}>非 root · 只读 · 限额</Text>
+                </Box>
+            </Box>
+            <Text style={{ fontSize: 13, color: '#6B7A72', marginTop: 6 }}>知识产线</Text>
+            <Box style={{ flexDirection: 'row', gap: 24 }}>
+                <Box style={{ width: 204, height: 66, background: 'rgba(22,119,98,0.09)', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>文档库</Text>
+                    <Text style={{ fontSize: 13, color: '#44534C' }}>按部门 / 项目 / 密级打标</Text>
+                </Box>
+                <Box style={{ width: 204, height: 66, background: 'rgba(22,119,98,0.09)', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>切块与向量化</Text>
+                    <Text style={{ fontSize: 13, color: '#44534C' }}>本地 embedding 模型</Text>
+                </Box>
+                <Box style={{ width: 204, height: 66, background: 'rgba(22,119,98,0.09)', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>向量索引</Text>
+                    <Text style={{ fontSize: 13, color: '#44534C' }}>pgvector / Qdrant</Text>
+                </Box>
+                <Box style={{ width: 204, height: 66, background: 'rgba(22,119,98,0.09)', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>本地大模型</Text>
+                    <Text style={{ fontSize: 13, color: '#44534C' }}>Qwen，只监听回环</Text>
+                </Box>
+                <Box style={{ width: 204, height: 66, background: 'rgba(22,119,98,0.09)', borderRadius: 6, padding: '8px 12px', flexDirection: 'column', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>问答服务</Text>
+                    <Text style={{ fontSize: 13, color: '#44534C' }}>带引用，可拒答</Text>
+                </Box>
+            </Box>
+        </Box>
+        <Box style={{ flexDirection: 'row', gap: 16 }}>
+            <Box style={{ flex: 1, padding: '12px 16px', background: 'rgba(15,30,25,0.04)', borderRadius: 6, flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>边界不是防火墙</Text>
+                <Text style={{ fontSize: 14, color: '#44534C', lineHeight: 1.55 }}>真正管住风险的是出站通道：默认拒绝、白名单放行、每条出站留日志。</Text>
+            </Box>
+            <Box style={{ flex: 1, padding: '12px 16px', background: 'rgba(15,30,25,0.04)', borderRadius: 6, flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>依赖要自建镜像源</Text>
+                <Text style={{ fontSize: 14, color: '#44534C', lineHeight: 1.55 }}>npm / pip / 容器镜像必须有内网源，否则一条 install 就卡死，开发直接停摆。</Text>
+            </Box>
+            <Box style={{ flex: 1, padding: '12px 16px', background: 'rgba(15,30,25,0.04)', borderRadius: 6, flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#0F1E19' }}>模型不出网</Text>
+                <Text style={{ fontSize: 14, color: '#44534C', lineHeight: 1.55 }}>推理走本机回环，代码里写死地址校验，配成外部地址直接拒绝。</Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · 安全开发环境方案</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>08 / 15</Text>
+    </Box>
+</Slide>

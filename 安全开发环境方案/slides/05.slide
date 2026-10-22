@@ -1,0 +1,53 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
+    <Box style={{ flexDirection: 'column', gap: 6, height: 108 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.3 }}>别把权限做成"略微不同"</Text>
+        <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.5 }}>按角色的最小权限 + 变更留痕，才是能过审计的做法</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', gap: 44, height: 522 }}>
+        <Box style={{ width: 300, height: 480, background: '#0F1E19', borderRadius: 10, padding: '36px 28px', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', letterSpacing: 3 }}>两条线</Text>
+                <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.3 }}>权限</Text>
+                <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.3 }}>环境</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 10 }}>
+                <Box style={{ width: 40, height: 2, background: '#167762' }} />
+                <Text style={{ fontSize: 16, color: 'rgba(255,255,255,0.72)', lineHeight: 1.65 }}>这两件事必须在写第一行代码之前定下来，事后补的代价是重做数据分层。</Text>
+            </Box>
+        </Box>
+        <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Box style={{ flexDirection: 'row', gap: 16, paddingBottom: 18, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
+                <Text style={{ width: 28, fontSize: 17, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas', lineHeight: 1.6 }}>01</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>身份只认企业目录</Text>
+                    <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.65 }}>接 Entra ID 或 AD，不新建一套账号。员工离职停号，知识库和代码库同时失去访问——不用逐个系统去删。</Text>
+                </Box>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 16, paddingBottom: 18, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
+                <Text style={{ width: 28, fontSize: 17, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas', lineHeight: 1.6 }}>02</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>文档入库就打标签</Text>
+                    <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.65 }}>部门、项目、密级三个维度。标签不是给人看的分类，是检索时的过滤条件——没标签的文档默认谁都看不到。</Text>
+                </Box>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 16, paddingBottom: 18, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
+                <Text style={{ width: 28, fontSize: 17, fontWeight: 'bold', color: '#C2410C', fontFamily: 'Consolas', lineHeight: 1.6 }}>03</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>先过滤，再检索</Text>
+                    <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.65 }}>权限在相似度计算之前生效。检索完再删结果是假安全：答案已经生成，引用也已经暴露了文件名。</Text>
+                </Box>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 16 }}>
+                <Text style={{ width: 28, fontSize: 17, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas', lineHeight: 1.6 }}>04</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>环境必须分开</Text>
+                    <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.65 }}>Test / UAT / PROD 三套独立索引、独立凭据、独立权限。索引不能跨环境复制，否则测试数据会把生产答案带出来。</Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · 安全开发环境方案</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>05 / 15</Text>
+    </Box>
+</Slide>

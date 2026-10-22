@@ -1,0 +1,47 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
+    <Box style={{ flexDirection: 'column', gap: 6, height: 104 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.3 }}>三条路线：数据边界决定选型</Text>
+        <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.5 }}>不是"哪个先进选哪个"，而是"数据允许放在哪"</Text>
+    </Box>
+    <Box style={{ flexDirection: 'column', gap: 16, height: 526 }}>
+        <Table
+            style={{ width: 1152, height: 400 }}
+            defaultTextStyle={{ fontSize: 15, textAlign: 'left', color: '#0F1E19' }}
+            defaultCellStyle={{
+                border: {
+                    left: { width: 0, color: '#FFFFFF' },
+                    right: { width: 0, color: '#FFFFFF' },
+                    top: { width: 0, color: '#FFFFFF' },
+                    bottom: { width: 1, color: 'rgba(15,30,25,0.10)' },
+                },
+            }}
+            cells={[
+                [
+                    { text: '维度', textStyle: { bold: true, color: '#FFFFFF', fontSize: 15 }, cellStyle: { background: { color: '#0F1E19' } } },
+                    { text: '微软 Copilot（M365）', textStyle: { bold: true, color: '#FFFFFF', fontSize: 15 }, cellStyle: { background: { color: '#0F1E19' } } },
+                    { text: 'Azure 自建', textStyle: { bold: true, color: '#FFFFFF', fontSize: 15 }, cellStyle: { background: { color: '#0F1E19' } } },
+                    { text: '完全离线自建', textStyle: { bold: true, color: '#FFFFFF', fontSize: 15 }, cellStyle: { background: { color: '#167762' } } },
+                ],
+                ['数据在哪', '你的 M365 租户（微软云）', '你的 Azure 订阅', { text: '你自己的机房', textStyle: { bold: true, color: '#167762' } }],
+                ['权限从哪来', '复用 SharePoint / Entra 权限', '要自己实现', { text: '要自己实现', textStyle: { bold: true, color: '#167762' } }],
+                ['上线速度', '快：许可到位即可', '中：要先搭环境', '慢：要硬件、镜像、模型'],
+                ['成本形态', '按用户按月', '云资源 + 人力', '硬件 + 人力'],
+                [
+                    { text: '能否不出内网', textStyle: { bold: true } },
+                    { text: '不能：数据出到微软云', textStyle: { bold: true, color: '#C2410C' } },
+                    { text: '不能：数据出到 Azure', textStyle: { bold: true, color: '#C2410C' } },
+                    { text: '能：全程内网', textStyle: { bold: true, color: '#167762' } },
+                ],
+                ['适合谁', '已经在用 M365、能接受云', '要定制、能上云', '数据绝对不允许出网'],
+            ]}
+        />
+        <Box style={{ flexDirection: 'row', gap: 16, alignItems: 'center', padding: '14px 20px', background: 'rgba(194,65,12,0.08)', borderRadius: 6 }}>
+            <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#C2410C' }}>结论</Text>
+            <Text style={{ fontSize: 16, color: '#0F1E19', lineHeight: 1.55 }}>"不出内网"和"用云端 Copilot"是互斥的两个选择。这一条先拍板，否则后面的架构、预算、时间表全要重做。</Text>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · 安全开发环境方案</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>07 / 15</Text>
+    </Box>
+</Slide>

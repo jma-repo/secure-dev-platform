@@ -1,0 +1,40 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
+    <Box style={{ flexDirection: 'row', gap: 56, height: 600 }}>
+        <Box style={{ width: 292, flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
+            <Text style={{ fontSize: 44, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.2 }}>目录</Text>
+            <Box style={{ width: 56, height: 3, background: '#167762' }} />
+            <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.6 }}>15 页 · 3 章</Text>
+            <Text style={{ fontSize: 16, color: '#C2410C', lineHeight: 1.6 }}>只有第三章需要你做决定，前面都是把话对齐</Text>
+        </Box>
+        <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', gap: 26 }}>
+            <Box style={{ flexDirection: 'row', gap: 24, paddingBottom: 20, borderBottom: '1px solid rgba(15,30,25,0.12)' }}>
+                <Text style={{ width: 52, fontSize: 26, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas' }}>01</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 6 }}>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0F1E19' }}>需求对齐</Text>
+                    <Text style={{ fontSize: 17, color: '#44534C', lineHeight: 1.6 }}>RAG 不是训练；权限不是"略微不同"；环境要分开</Text>
+                </Box>
+                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>P03–P05</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 24, paddingBottom: 20, borderBottom: '1px solid rgba(15,30,25,0.12)' }}>
+                <Text style={{ width: 52, fontSize: 26, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas' }}>02</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 6 }}>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0F1E19' }}>方案与安全设计</Text>
+                    <Text style={{ fontSize: 17, color: '#44534C', lineHeight: 1.6 }}>三条路线取舍、离线架构、五道关卡、权限化检索、容灾</Text>
+                </Box>
+                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>P06–P11</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 24 }}>
+                <Text style={{ width: 52, fontSize: 26, fontWeight: 'bold', color: '#C2410C', fontFamily: 'Consolas' }}>03</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 6 }}>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0F1E19' }}>现状与下一步</Text>
+                    <Text style={{ fontSize: 17, color: '#44534C', lineHeight: 1.6 }}>哪些已经验证、哪些还没有、需要你定哪五件事</Text>
+                </Box>
+                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>P12–P14</Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · 安全开发环境方案</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>02 / 15</Text>
+    </Box>
+</Slide>

@@ -1,0 +1,39 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
+    <Box style={{ flexDirection: 'column', gap: 6, height: 104 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.3 }}>已验证的，和还没验证的</Text>
+        <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.5 }}>右边这一列不是"以后再说"，每一条都写了阻塞原因</Text>
+    </Box>
+    <Box style={{ flexDirection: 'column', gap: 14, height: 526 }}>
+        <Table
+            style={{ width: 1152, height: 424 }}
+            defaultTextStyle={{ fontSize: 15, textAlign: 'left', color: '#0F1E19' }}
+            defaultCellStyle={{
+                border: {
+                    left: { width: 0, color: '#FFFFFF' },
+                    right: { width: 0, color: '#FFFFFF' },
+                    top: { width: 0, color: '#FFFFFF' },
+                    bottom: { width: 1, color: 'rgba(15,30,25,0.10)' },
+                },
+            }}
+            cells={[
+                [
+                    { text: '已经验证 · 本地可复跑', textStyle: { bold: true, color: '#FFFFFF', fontSize: 16 }, cellStyle: { background: { color: '#167762' } } },
+                    { text: '还没验证 · 有明确阻塞', textStyle: { bold: true, color: '#FFFFFF', fontSize: 16 }, cellStyle: { background: { color: '#C2410C' } } },
+                ],
+                ['26 项自动化测试全部通过', 'GitHub Actions 实际运行（需仓库权限）'],
+                ['密钥泄露被拦、修复后放行（真实扫描器）', 'CodeQL 代码扫描（私有仓库需许可）'],
+                ['暂存区绕过被拦：工作区已修复仍拦截', '镜像漏洞扫描（本机环境阻断）'],
+                ['容器非 root / 只读 / 限额，健康检查通过', 'Terraform init / validate（本机环境阻断）'],
+                ['本地 RAG 带引用回答，知识库外会拒答', '分支保护与 CODEOWNERS（模板未应用）'],
+            ]}
+        />
+        <Box style={{ flexDirection: 'row', gap: 16, alignItems: 'center', padding: '14px 20px', background: 'rgba(22,119,98,0.07)', borderRadius: 6 }}>
+            <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#167762' }}>所以</Text>
+            <Text style={{ fontSize: 16, color: '#0F1E19', lineHeight: 1.55 }}>现在能给你的是"本地可复现的证据"，不是"已经全部上线"。右边五项都需要你的仓库权限、许可或一台不受限的机器。</Text>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · 安全开发环境方案</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>13 / 15</Text>
+    </Box>
+</Slide>
