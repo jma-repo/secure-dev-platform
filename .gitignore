@@ -1,0 +1,18 @@
+# Local tooling, generated evidence and editor data
+.tools/
+.rag/
+outputs/
+.workbuddy-ai/
+node_modules/
+coverage/
+reports/
+.playwright-cli/
+.env
+.env.*
+!.env.example
+*.log
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfplan
+.DS_Store

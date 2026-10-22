@@ -1,0 +1,182 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+# 无部署、镜像推送、云凭据或 npm 安装；私有仓库的 Actions 用量仍需核对免费额度。
+# 下载器由主脚本提供并校验 SHA256：gitleaks 8.30.1 / terraform 1.16.6 / trivy 0.76.1。
+# 工具安装或扫描失败均阻断 CI，不设置 continue-on-error，也不忽略未修复漏洞。
+jobs:
+  test:
+    name: Security unit tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 固定 Node 版本
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22.22.2"
+          package-manager-cache: false
+      - name: 安装真实扫描器以执行集成测试
+        run: python3 scripts/bootstrap-tools.py gitleaks
+      - name: 运行安全单元测试
+        run: |
+          mkdir -p reports
+          test "$(node --version)" = "v22.22.2"
+          node --test --test-reporter=tap 2>&1 | tee reports/test.tap
+          # 防止测试文件尚未接入时把零测试误报为通过。
+          grep -Eq '^# tests [1-9][0-9]*$' reports/test.tap
+      - name: 始终保留测试报告
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: unit-test-reports
+          path: reports/test.tap
+          retention-days: 3
+          if-no-files-found: warn
+
+  secrets:
+    name: Secrets full history
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: 检出所有分支和标签的完整历史
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: 安装并校验 Gitleaks
+        run: |
+          mkdir -p reports
+          python3 scripts/bootstrap-tools.py gitleaks 2>&1 | tee reports/gitleaks-bootstrap.log
+      - name: 检查完整 Git 历史并脱敏报告
+        run: .tools/gitleaks git --log-opts="--all" --redact --exit-code=1 --report-format=json --report-path=reports/gitleaks.json .
+      - name: 始终保留脱敏密钥扫描报告
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: secret-scan-reports
+          path: |
+            reports/gitleaks.json
+            reports/gitleaks-bootstrap.log
+          retention-days: 3
+          if-no-files-found: warn
+
+  iac:
+    name: Local contract and config
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      TF_IN_AUTOMATION: "true"
+      TF_INPUT: "false"
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 安装并校验 Terraform 和 Trivy
+        run: |
+          mkdir -p reports
+          python3 scripts/bootstrap-tools.py terraform trivy 2>&1 | tee reports/iac-bootstrap.log
+          printf '%s\n' 'Terraform 仅含本地 terraform_data 开发契约，无云资源。' 'Trivy 若未匹配 terraform_data 规则，零发现不构成云资源 IaC 覆盖。' 'Dockerfile 扫描仅针对根运行镜像文件，不递归扫描需要 root 安装 apt 包的开发容器，不设置规则忽略。' > reports/config-scope.txt
+      - name: 校验 Terraform 格式
+        run: .tools/terraform fmt -check -diff -recursive infra/terraform 2>&1 | tee reports/terraform-fmt.txt
+      - name: 初始化本地契约且不初始化 backend
+        run: .tools/terraform -chdir=infra/terraform init -backend=false -input=false -no-color 2>&1 | tee reports/terraform-init.txt
+      - name: 验证本地契约
+        run: .tools/terraform -chdir=infra/terraform validate -json > reports/terraform-validate.json
+      - name: 扫描 Terraform 配置并注明规则覆盖边界
+        if: ${{ !cancelled() }}
+        run: .tools/trivy config --severity HIGH,CRITICAL --exit-code 1 --format json --output reports/trivy-terraform.json infra/terraform
+      - name: 仅扫描运行镜像 Dockerfile
+        if: ${{ !cancelled() }}
+        run: .tools/trivy config --severity HIGH,CRITICAL --exit-code 1 --format json --output reports/trivy-dockerfile.json Dockerfile
+      - name: 始终保留契约与配置检查报告
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: contract-config-reports
+          path: |
+            reports/iac-bootstrap.log
+            reports/config-scope.txt
+            reports/terraform-*.txt
+            reports/terraform-validate.json
+            reports/trivy-terraform.json
+            reports/trivy-dockerfile.json
+          retention-days: 3
+          if-no-files-found: warn
+
+  deps:
+    name: Dependency vulnerabilities
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 安装并校验 Trivy
+        run: |
+          mkdir -p reports
+          python3 scripts/bootstrap-tools.py trivy 2>&1 | tee reports/deps-bootstrap.log
+      - name: 扫描文件系统中的依赖漏洞
+        # 无第三方 npm 依赖不等于覆盖所有系统库；运行镜像另行扫描。
+        run: .tools/trivy fs --scanners vuln --exit-code 1 --severity HIGH,CRITICAL --format json --output reports/dependencies.json .
+      - name: 始终保留依赖扫描报告
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dependency-scan-reports
+          path: |
+            reports/dependencies.json
+            reports/deps-bootstrap.log
+          retention-days: 3
+          if-no-files-found: warn
+
+  image:
+    name: Container vulnerabilities
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 安装并校验 Trivy
+        run: |
+          mkdir -p reports
+          python3 scripts/bootstrap-tools.py trivy 2>&1 | tee reports/image-bootstrap.log
+      - name: 构建本地运行镜像且不推送
+        run: docker build --tag secure-dev-poc:ci . 2>&1 | tee reports/image-build.log
+      - name: 扫描镜像和系统库的已知漏洞
+        run: .tools/trivy image --exit-code 1 --severity HIGH,CRITICAL --scanners vuln --format json --output reports/image.json secure-dev-poc:ci
+      - name: 始终保留镜像扫描报告
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: image-scan-reports
+          path: |
+            reports/image.json
+            reports/image-build.log
+            reports/image-bootstrap.log
+          retention-days: 3
+          if-no-files-found: warn

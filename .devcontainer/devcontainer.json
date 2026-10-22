@@ -1,0 +1,42 @@
+{
+  "name": "secure-dev-platform-local",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/secure-dev-platform",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/secure-dev-platform,type=bind",
+  "containerUser": "node",
+  "remoteUser": "node",
+  "updateRemoteUserUID": true,
+  "runArgs": [
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges:true"
+  ],
+  "containerEnv": {
+    "HOST": "0.0.0.0",
+    "PORT": "4173"
+  },
+  "postCreateCommand": "python3 scripts/bootstrap-tools.py gitleaks terraform trivy && node scripts/install-hooks.mjs",
+  "waitFor": "postCreateCommand",
+  "forwardPorts": [4173],
+  "portsAttributes": {
+    "4173": {
+      "label": "本机开发服务（禁止公共发布）",
+      "protocol": "http",
+      "onAutoForward": "notify",
+      "requireLocalPort": true
+    }
+  },
+  "otherPortsAttributes": {
+    "onAutoForward": "ignore"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "remote.localPortHost": "localhost",
+        "remote.autoForwardPorts": false
+      }
+    }
+  }
+}

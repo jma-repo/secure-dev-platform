@@ -1,0 +1,43 @@
+name: secure-dev-poc
+
+services:
+  sample-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: secure-dev-poc:local
+    pull_policy: never
+    user: node
+    init: true
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "4173"
+    # 仅本机可访问；不要改为 0.0.0.0，也不配置公共隧道。
+    ports:
+      - "127.0.0.1:4173:4173"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777
+    cpus: 0.50
+    mem_limit: 256m
+    pids_limit: 64
+    restart: "no"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - --input-type=module
+        - -e
+        - "try { const r = await fetch('http://127.0.0.1:' + (process.env.PORT || '4173') + '/healthz', { signal: AbortSignal.timeout(3000) }); process.exit(r.status === 200 ? 0 : 1); } catch { process.exit(1); }"
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+# 不挂载 Docker socket、宿主目录、扫描器或云凭据。
+# 此镜像只运行服务；真实扫描 live demo 仅在完整 devcontainer / 本机可用。

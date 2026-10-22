@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f5f7f6">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>SENTINEL — Secure development workspace</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 7.5 7.5 9.5 4.3-2 7.5-5 7.5-9.5V6L12 3Z"/><path d="m8.5 12 2.3 2.3 4.8-5"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.4"/><rect x="14" y="4" width="6" height="6" rx="1.4"/><rect x="4" y="14" width="6" height="6" rx="1.4"/><rect x="14" y="14" width="6" height="6" rx="1.4"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7V5Z"/><path d="M4 5v14"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 9 5v9l-9 5-9-5V8l9-5ZM3 8l9 5 9-5M12 13v9M7.5 5.5l9 5v4"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.5 7a7.5 7.5 0 0 1 12.4-2L20 8M4 16l2.1 3A7.5 7.5 0 0 0 18.5 17"/></symbol>
+    <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M6 7v10M18 7v3a4 4 0 0 1-4 4h-4a4 4 0 0 0-4 3"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m7 9 3 3-3 3m6 0h4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v.5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a5 5 0 1 1 0-10 6 6 0 0 1 11.4 1A4.5 4.5 0 0 1 18 18H7Z"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m10.3 4-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0ZM12 9v5M12 17v.5"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M11 3.5 12.7 8 17 9.7 12.7 11.4 11 16l-1.7-4.6L5 9.7 9.3 8 11 3.5Z"/><path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8L18 15Z"/></symbol>
+  </svg>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="工作区侧栏">
+      <a class="brand" href="#overview" aria-label="SENTINEL 首页">
+        <span class="brand-mark"><svg class="icon"><use href="#i-shield"/></svg></span>
+        <span><strong>SENTINEL<span class="brand-period">.</span></strong><small>Secure development workspace</small></span>
+      </a>
+      <div class="workspace-switch"><span class="workspace-avatar">S</span><span><strong>Sample service</strong><small>Local proof of concept</small></span><span class="workspace-label">POC</span></div>
+      <div class="nav-caption">WORKSPACE</div>
+      <nav class="main-nav" aria-label="主要导航">
+        <a class="nav-item active" href="#overview" data-nav="overview" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg><span>Overview</span><span class="nav-index">01</span></a>
+        <a class="nav-item" href="#live-demo" data-nav="live-demo"><svg class="icon"><use href="#i-play"/></svg><span>Live demo</span><span class="nav-index">02</span></a>
+        <a class="nav-item" href="#local-ai" data-nav="local-ai"><svg class="icon"><use href="#i-spark"/></svg><span>Local AI</span><span class="nav-index">03</span></a>
+        <a class="nav-item" href="#evidence" data-nav="evidence"><svg class="icon"><use href="#i-file"/></svg><span>Evidence</span><span class="nav-index">04</span></a>
+        <a class="nav-item" href="#handoff" data-nav="handoff"><svg class="icon"><use href="#i-box"/></svg><span>Handoff</span><span class="nav-index">05</span></a>
+      </nav>
+      <div class="sidebar-note"><span class="mini-eyebrow">SMALL SURFACE. REAL SIGNAL.</span><h2>Local by design.</h2><p>让安全检查可执行，<br>让每一个结论有据可查。</p><div class="sidebar-note-line"><svg class="icon"><use href="#i-lock"/></svg><span>无账号 · 无云资源</span></div></div>
+      <div class="sidebar-bottom"><span class="status-dot" data-connection-dot></span><span data-connection-label>Connecting…</span><span class="mono">LOCAL</span></div>
+    </aside>
+    <div class="workspace-main">
+      <header class="topbar"><div class="breadcrumb"><svg class="icon"><use href="#i-grid"/></svg><span>Workspace</span><span class="breadcrumb-slash">/</span><strong id="breadcrumb-current">Overview</strong></div><div class="topbar-right"><span class="topbar-local"><span class="tiny-square"></span> Local environment</span><span class="topbar-divider"></span><span class="avatar" aria-label="本地工作区，无账号登录">S</span></div></header>
+      <main id="main-content" tabindex="-1">
+        <div class="page-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> SECURE DEVELOPMENT / POC</div><h1 id="page-title">Security, made visible.</h1><p id="page-description">从代码到交付，让安全信号清晰可见。不隐藏风险，也不提前宣布成功。</p></div><div class="heading-actions"><button type="button" class="button button-secondary" data-refresh-status><svg class="icon"><use href="#i-refresh"/></svg><span>刷新状态</span></button><a class="button button-primary" id="heading-demo-link" href="#live-demo">Open live demo<svg class="icon"><use href="#i-arrow"/></svg></a></div></div>
+        <div id="connection-notice" class="notice notice-neutral" role="status"><svg class="icon"><use href="#i-info"/></svg><span id="connection-notice-text">正在连接本地服务。工具状态与验证证据尚未确认。</span></div>
+
+        <section id="view-overview" class="page-view" data-view="overview" aria-label="Overview">
+          <div class="metrics-grid">
+            <article class="metric-card"><div class="metric-top"><span>Verified evidence</span><svg class="icon"><use href="#i-file"/></svg></div><div class="metric-value"><span id="verified-count">—</span><span class="metric-unit" id="verified-total">/ —</span></div><div class="metric-bottom"><span class="status-dot" id="evidence-metric-dot"></span><span id="evidence-metric-detail">等待证据加载</span></div></article>
+            <article class="metric-card"><div class="metric-top"><span>Secret scanner</span><svg class="icon"><use href="#i-shield"/></svg></div><div class="metric-value metric-word">Gitleaks<span class="badge badge-neutral" id="gitleaks-badge">Checking</span></div><div class="metric-bottom" id="gitleaks-version">正在确认本地工具可用性</div></article>
+            <article class="metric-card"><div class="metric-top"><span>Last demo verdict</span><svg class="icon"><use href="#i-play"/></svg></div><div class="metric-value metric-word" id="last-verdict">Not run</div><div class="metric-bottom" id="last-verdict-detail">尚未执行本次会话演示</div></article>
+            <article class="metric-card metric-card-tinted"><div class="metric-top"><span>Cloud footprint</span><svg class="icon"><use href="#i-cloud"/></svg></div><div class="metric-value">0<span class="metric-unit">resources</span></div><div class="metric-bottom">本 PoC 无需云资源或云部署</div></article>
+          </div>
+
+          <article class="card topology-card"><div class="card-heading"><div><div class="eyebrow small-eyebrow">THE DEVELOPMENT PATH</div><h2>From commit to confidence.</h2><p>一条可解释的安全路径，而不是一张全绿的完成清单。</p></div><span class="badge badge-outline"><span class="status-dot"></span> Workflow illustration</span></div>
+            <div class="topology" aria-label="流程示意：Repository 到 Dev Container 到 Security gates 到 Delivery；示意不代表阶段已经运行">
+              <div class="topology-node"><div class="node-top"><span class="node-icon node-slate"><svg class="icon"><use href="#i-branch"/></svg></span><span class="node-number">01</span></div><h3>Repository</h3><p>代码与演示输入</p><span class="node-footer"><span class="status-dot"></span> Local source</span></div>
+              <span class="topology-arrow"><svg class="icon"><use href="#i-arrow"/></svg></span>
+              <div class="topology-node"><div class="node-top"><span class="node-icon node-blue"><svg class="icon"><use href="#i-terminal"/></svg></span><span class="node-number">02</span></div><h3>Dev Container</h3><p>可复现的开发环境</p><span class="node-footer"><span class="status-dot dot-green"></span> 容器已实跑</span></div>
+              <span class="topology-arrow"><svg class="icon"><use href="#i-arrow"/></svg></span>
+              <div class="topology-node topology-node-featured"><div class="node-top"><span class="node-icon node-mint"><svg class="icon"><use href="#i-shield"/></svg></span><span class="node-number">03</span></div><h3>Security gates</h3><p>本地真实 Gitleaks 执行</p><span class="node-footer" id="gate-node-state"><span class="status-dot"></span> 等待工具状态</span></div>
+              <span class="topology-arrow"><svg class="icon"><use href="#i-arrow"/></svg></span>
+              <div class="topology-node"><div class="node-top"><span class="node-icon node-sand"><svg class="icon"><use href="#i-box"/></svg></span><span class="node-number">04</span></div><h3>Delivery</h3><p>远端流程与交付保护</p><span class="node-footer"><span class="status-dot dot-amber"></span> 待远端配置</span></div>
+            </div>
+            <div class="topology-note"><svg class="icon"><use href="#i-info"/></svg><span>拓扑为设计路径；工具已安装 ≠ 检查已通过 ≠ 交付已受保护。</span><a href="#evidence">Inspect evidence<svg class="icon"><use href="#i-arrow"/></svg></a></div>
+          </article>
+
+          <div class="overview-bottom-grid"><article class="card evidence-preview"><div class="card-heading compact"><div><h2>Evidence, not assumptions.</h2><p>仅展示 API 返回的检查记录。</p></div><a class="icon-link" href="#evidence" aria-label="查看全部证据"><svg class="icon"><use href="#i-arrow-up"/></svg></a></div><div id="evidence-preview-list" class="preview-list" aria-live="polite"><div class="empty-inline"><span class="loading-ring"></span><span>正在读取验证证据…</span></div></div><div class="card-footer"><span id="preview-updated">尚无证据快照</span><a href="#evidence">View all evidence <span aria-hidden="true">→</span></a></div></article>
+          <article class="card scope-card"><div class="card-heading compact"><div><div class="eyebrow small-eyebrow">HONEST BOUNDARIES</div><h2>Clear by design.</h2></div><span class="scope-symbol"><svg class="icon"><use href="#i-lock"/></svg></span></div><p class="scope-intro">验证本地安全控制的一个切面，<br>不等于生产环境安全认证。</p><ul class="scope-list"><li><span class="scope-list-icon positive"><svg class="icon"><use href="#i-check"/></svg></span><span><strong>Local execution</strong><small>真实引擎、合成输入、可见结果</small></span></li><li><span class="scope-list-icon pending"><svg class="icon"><use href="#i-clock"/></svg></span><span><strong>Remote protection</strong><small>CodeQL / branch protection 待配置</small></span></li><li><span class="scope-list-icon positive"><svg class="icon"><use href="#i-check"/></svg></span><span><strong>Container runtime</strong><small>只读 · 非 root · cap-drop 已实跑</small></span></li></ul><a class="text-link" href="#handoff">Explore the handoff<svg class="icon"><use href="#i-arrow"/></svg></a></article></div>
+          <div class="principles-strip"><span><svg class="icon"><use href="#i-terminal"/></svg> 默认 <code>127.0.0.1:4173</code></span><span><strong>0</strong> 运行时第三方依赖</span><span><svg class="icon"><use href="#i-lock"/></svg> 无账号登录 · 无外部服务</span></div>
+        </section>
+
+        <section id="view-live-demo" class="page-view" data-view="live-demo" aria-label="Live demo" hidden>
+          <div class="demo-layout"><article class="card demo-controls"><div class="card-heading compact"><div><div class="eyebrow small-eyebrow">01 / CHOOSE A SCENARIO</div><h2>Two inputs. A real gate.</h2><p>按钮将请求后端执行扫描，不在浏览器模拟结果。</p></div></div><div class="scenario-block"><div class="scenario-heading"><span class="scenario-icon scenario-amber"><svg class="icon"><use href="#i-alert"/></svg></span><div><h3>Introduce a secret</h3><p>注入合成演示密钥，验证自定义规则能否拦截。</p></div><span class="badge badge-amber">预期 Blocked</span></div><div class="fixture-preview"><span class="code-line-number">01</span><code><span class="code-key">DEMO_SECRET</span> = <span class="code-muted">[合成值已隐藏]</span></code></div><button type="button" class="button button-primary button-full" data-scenario="leak"><svg class="icon"><use href="#i-shield"/></svg><span>演示泄露 → 拦截</span><svg class="icon button-end"><use href="#i-arrow"/></svg></button></div><div class="scenario-block"><div class="scenario-heading"><span class="scenario-icon scenario-mint"><svg class="icon"><use href="#i-code"/></svg></span><div><h3>Remove the secret</h3><p>使用干净输入重新扫描，以真实返回决定是否放行。</p></div><span class="badge badge-neutral">预期 Passed</span></div><div class="fixture-preview"><span class="code-line-number">01</span><code><span class="code-key">DEMO_SECRET</span> = <span class="code-muted">[不包含凭据的输入]</span></code></div><button type="button" class="button button-secondary button-full" data-scenario="clean"><svg class="icon"><use href="#i-check"/></svg><span>演示修复 → 放行</span><svg class="icon button-end"><use href="#i-arrow"/></svg></button></div><div class="demo-safety"><svg class="icon"><use href="#i-info"/></svg><p><strong>合成密钥 · 自定义规则 · 真实 Gitleaks</strong><br>不是、也不需要真实凭据。页面不展示原始密钥或原始匹配内容；一次只提交一个扫描请求。</p></div></article>
+          <article class="card demo-result" id="demo-result" aria-busy="false"><div class="card-heading compact"><div><div class="eyebrow small-eyebrow">02 / OBSERVE THE VERDICT</div><h2>Execution result</h2></div><span class="badge badge-neutral" id="demo-status-badge">Not run</span></div><div class="verdict-panel" id="verdict-panel"><span class="verdict-icon"><svg class="icon" id="verdict-symbol"><use href="#i-terminal"/></svg></span><h3 id="demo-verdict">Ready when you are.</h3><p id="demo-message" role="status" aria-live="polite">选择一个场景开始。尚未扫描，也没有通过结论。</p></div><dl class="execution-facts"><div><dt>Engine</dt><dd id="demo-engine">—</dd></div><div><dt>Duration</dt><dd id="demo-duration">—</dd></div><div><dt>Exit code</dt><dd id="demo-exit-code">—</dd></div><div><dt>Scenario</dt><dd id="demo-scenario">—</dd></div></dl><div class="findings-header"><h3>Findings</h3><span id="findings-count">未运行</span></div><div id="findings-list" class="findings-list"><div class="empty-inline">实际规则与文件定位将在扫描后显示。</div></div><div class="card-footer"><span id="demo-finished-at">No execution yet</span><span class="mono">POST /api/demo/secret</span></div></article></div>
+          <div class="notice notice-neutral demo-boundary"><svg class="icon"><use href="#i-info"/></svg><span>Passed 只说明本次输入通过当前扫描规则；Blocked 表示引擎拦截了本次输入。均不代表 CodeQL、分支保护、Docker 或整体项目安全已验证。</span></div>
+        </section>
+
+        <section id="view-local-ai" class="page-view" data-view="local-ai" aria-label="Local AI" hidden>
+          <div class="rag-layout">
+            <article class="card rag-ask">
+              <div class="card-heading compact"><div><div class="eyebrow small-eyebrow">03 / LOCAL RETRIEVAL</div><h2>Ask your own documents.</h2><p>向量检索与生成都只经过本机回环地址，不访问外部服务。</p></div><span class="badge badge-neutral" id="rag-badge">Checking</span></div>
+              <div class="rag-kb" id="rag-kb"><span class="status-dot"></span><span>正在读取本地知识库状态…</span></div>
+              <div class="rag-suggestions" aria-label="示例问题">
+                <button type="button" class="rag-chip" data-question="提交时发现密钥泄露应该怎么处理？">密钥泄露怎么办</button>
+                <button type="button" class="rag-chip" data-question="Copilot Studio 会训练模型吗？">Copilot 会训练模型吗</button>
+                <button type="button" class="rag-chip" data-question="新同事第一天需要做什么？">新同事第一天</button>
+              </div>
+              <label class="rag-label" for="rag-question">你的问题</label>
+              <textarea id="rag-question" class="rag-input" rows="3" maxlength="400" placeholder="例如：哪些资料不能贴到外部 AI？"></textarea>
+              <div class="rag-actions"><span class="rag-hint" id="rag-hint">最多 400 字 · 只使用本地资料</span><button type="button" class="button button-primary" id="rag-submit"><svg class="icon"><use href="#i-spark"/></svg><span>本地提问</span></button></div>
+            </article>
+            <article class="card rag-answer-card" id="rag-result" aria-busy="false">
+              <div class="card-heading compact"><div><div class="eyebrow small-eyebrow">04 / GROUNDED ANSWER</div><h2>Answer with sources</h2></div><span class="badge badge-neutral" id="rag-answer-badge">Not run</span></div>
+              <div class="rag-answer" id="rag-answer"><p class="rag-placeholder">回答只基于检索到的内部片段。资料没有写的内容，模型应当直接说明，而不是编造。</p></div>
+              <dl class="execution-facts"><div><dt>Model</dt><dd id="rag-model">—</dd></div><div><dt>Retrieval</dt><dd id="rag-retrieval">—</dd></div><div><dt>Duration</dt><dd id="rag-duration">—</dd></div><div><dt>Egress</dt><dd id="rag-egress">—</dd></div></dl>
+              <div class="findings-header"><h3>Sources</h3><span id="rag-source-count">未运行</span></div>
+              <div id="rag-sources" class="rag-sources"><div class="empty-inline">提问后显示命中的文档片段与相似度。</div></div>
+              <div class="card-footer"><span id="rag-finished-at">No question yet</span><span class="mono">POST /api/rag/ask</span></div>
+            </article>
+          </div>
+          <div class="notice notice-neutral demo-boundary"><svg class="icon"><use href="#i-info"/></svg><span>本地模型只做推理，不训练；文档、问题与向量都不离开本机。回答不构成安全结论，仍需人工复核。若把推理地址改到非回环主机，服务会直接拒绝。</span></div>
+        </section>
+
+        <section id="view-evidence" class="page-view" data-view="evidence" aria-label="Evidence" hidden>
+          <div class="evidence-summary"><div><span class="eyebrow small-eyebrow">API-BACKED RECORDS</span><h2><span id="evidence-heading-count">—</span> verified <span class="muted">/ <span id="evidence-heading-total">—</span> checks</span><p id="evidence-summary-detail">正在读取证据，不将未运行视为通过。</p></div><button type="button" class="button button-secondary" id="refresh-evidence"><svg class="icon"><use href="#i-refresh"/></svg><span>刷新证据</span></button></div>
+          <article class="card evidence-table-card"><div class="card-heading compact"><div><h2>Verification ledger</h2><p>来源 <code id="evidence-source">等待 API</code> · <span id="evidence-generated-at">尚无生成时间</span></p></div><span class="badge badge-neutral" id="evidence-snapshot-badge">Loading</span></div><div id="evidence-load-notice" class="table-notice" role="status" hidden></div><div class="table-scroll"><table class="evidence-table"><thead><tr><th scope="col">CHECK / 检查项</th><th scope="col">STATUS / 状态</th><th scope="col">DETAIL / 证据说明</th></tr></thead><tbody id="evidence-table-body"><tr><td colspan="3" class="table-empty">正在加载检查记录…</td></tr></tbody></table></div><div class="card-footer"><span>只统计接口明确返回的 Passed</span><span>未运行与阻断记录保留原状态</span></div></article>
+          <div class="section-heading"><div><h2>Outside this proof.</h2><p>以下边界独立列示，不混入 API 证据数量，也不自动升级为绿色。</p></div><span class="eyebrow small-eyebrow">EXPLICIT LIMITS</span></div><div class="boundary-grid"><article class="card boundary-card"><svg class="icon"><use href="#i-code"/></svg><h3>CI CodeQL</h3><span class="badge badge-amber">待远端配置</span><p>需在远端仓库启用并执行 CI；本地演示不能证明远端检查成功。</p></article><article class="card boundary-card"><svg class="icon"><use href="#i-branch"/></svg><h3>Branch protection</h3><span class="badge badge-amber">待远端配置</span><p>需单独配置分支规则与必需检查；未读取或验证远端保护策略。</p></article><article class="card boundary-card"><svg class="icon"><use href="#i-box"/></svg><h3>Container execution</h3><span class="badge badge-green">已实跑</span><p>只读根文件系统、非 root、cap-drop ALL、资源受限，健康检查通过。镜像漏洞扫描仍受本机工具环境阻断。</p></article></div>
+        </section>
+
+        <section id="view-handoff" class="page-view" data-view="handoff" aria-label="Handoff" hidden>
+          <div class="handoff-layout"><article class="card commands-card"><div class="card-heading compact"><div><div class="eyebrow small-eyebrow">REPRODUCE LOCALLY</div><h2>Your next three commands.</h2><p>在仓库根目录执行。复制不会自动运行命令。</p></div><svg class="icon heading-icon"><use href="#i-terminal"/></svg></div><div class="command-item"><div class="command-title"><span class="step-number">01</span><div><h3>Start the workspace</h3><p>启动本地服务器，默认监听 127.0.0.1:4173。</p></div></div><div class="command-code"><code id="command-server">node apps/sample-service/server.mjs</code><button class="copy-button" type="button" data-copy="command-server" aria-label="复制启动服务命令"><svg class="icon"><use href="#i-copy"/></svg><span>复制</span></button></div></div><div class="command-item"><div class="command-title"><span class="step-number">02</span><div><h3>Run the tests</h3><p>执行 Node.js 测试；以命令实际退出码和输出为准。</p></div></div><div class="command-code"><code id="command-test">node --test</code><button class="copy-button" type="button" data-copy="command-test" aria-label="复制测试命令"><svg class="icon"><use href="#i-copy"/></svg><span>复制</span></button></div></div><div class="command-item"><div class="command-title"><span class="step-number">03</span><div><h3>Prepare security tools</h3><p>通过仓库脚本准备工具；此步骤可能下载外部二进制文件。</p></div></div><div class="command-code"><code id="command-tools">python scripts/bootstrap-tools.py gitleaks terraform trivy</code><button class="copy-button" type="button" data-copy="command-tools" aria-label="复制准备安全工具命令"><svg class="icon"><use href="#i-copy"/></svg><span>复制</span></button></div></div><div class="command-footnote"><svg class="icon"><use href="#i-info"/></svg><span>若 Gitleaks 不可用，先准备工具，再刷新状态并运行演示。</span></div></article>
+          <article class="card runtime-card"><div class="card-heading compact"><div><div class="eyebrow small-eyebrow">CURRENT WORKSPACE</div><h2>Runtime manifest</h2></div><span class="status-dot" data-connection-dot></span></div><dl class="runtime-details"><div><dt>Service</dt><dd id="runtime-name">Loading…</dd></div><div><dt>Version</dt><dd id="runtime-version">—</dd></div><div><dt>Node.js</dt><dd id="runtime-node">—</dd></div><div><dt>Expected Node</dt><dd id="runtime-expected-node">—</dd></div><div><dt>Platform / arch</dt><dd id="runtime-platform">—</dd></div><div><dt>Mode</dt><dd id="runtime-mode">—</dd></div></dl><div class="tools-heading">LOCAL TOOLCHAIN</div><ul class="tools-list" id="tools-list"><li><span>Gitleaks</span><span class="badge badge-neutral">Checking</span></li><li><span>Trivy</span><span class="badge badge-neutral">Checking</span></li><li><span>Terraform</span><span class="badge badge-neutral">Checking</span></li></ul><p class="runtime-footnote">Available 仅表示工具可用，不代表扫描、测试或基础设施检查已通过。</p></article></div>
+          <article class="handoff-contract"><div><span class="eyebrow small-eyebrow">THE DELIVERY CONTRACT</span><h2>Less infrastructure. More clarity.</h2><p>本地客户作品 PoC，只保留可执行、可检查、可复现的最小范围。</p></div><div class="contract-values"><div><strong>0</strong><span>云资源</span></div><div><strong>0</strong><span>运行时第三方依赖</span></div><div><strong>Local</strong><span>默认仅回环地址</span></div></div></article><p class="handoff-disclaimer">运行时第三方依赖为 0 指本地服务与前端的库依赖；Gitleaks、Trivy、Terraform 是独立工具。此界面不提供云部署、账号登录、Kubernetes 或云端 AI；Local AI 页签需要本机 LM Studio 在 1234 端口提供模型。</p>
+        </section>
+        <footer class="page-footer"><span>SENTINEL <span class="footer-dot">/</span> Secure development workspace</span><span>Local proof. Explicit boundaries.</span></footer>
+      </main>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <noscript><div class="noscript-message">此控制台需要 JavaScript 读取真实 API 状态。当前没有任何检查通过结论。</div></noscript>
+</body>
+</html>

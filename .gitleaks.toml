@@ -1,0 +1,10 @@
+title = "Sentinel: default rules plus a synthetic demonstration rule"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "sentinel-demo-token"
+description = "Synthetic Sentinel demo token; never a real credential"
+regex = '''SDEV_DEMO_[A-Za-z0-9]{32}'''
+keywords = ["SDEV_DEMO_"]

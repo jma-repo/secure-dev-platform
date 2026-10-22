@@ -1,0 +1,16 @@
+# 此文件全部为注释示例，目前没有启用任何 CODEOWNER。
+# 必须把 YOUR_ORG/team 替换为真实且对仓库有写权限的团队，再取消对应行的注释。
+# 私有仓库还需确认团队可见性与仓库访问权；不要把占位符当成实际审批人。
+# * @YOUR_ORG/team
+# /.github/ @YOUR_ORG/team
+# /.devcontainer/ @YOUR_ORG/team
+# /infra/terraform/ @YOUR_ORG/team
+# /Dockerfile @YOUR_ORG/team
+# /compose.yaml @YOUR_ORG/team
+# /.dockerignore @YOUR_ORG/team
+# /.pre-commit-config.yaml @YOUR_ORG/team
+#
+# branch-protection.template.json 仅是 GitHub REST 更新分支保护请求 body，不会自动生效。
+# 待真实 CI 检查成功出现、CODEOWNERS 激活且确认账户方案支持后，由管理员手动应用。
+# 其 contexts 与 ci.yml 的五个实际 job name 保持一致；未启用的私有 CodeQL 不设为必需。
+# 本 PoC 不调用 API、不修改远端保护规则、不推送代码。

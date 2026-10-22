@@ -1,0 +1,16 @@
+{
+  "name": "secure-dev-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first secure development environment proof of concept",
+  "type": "module",
+  "engines": { "node": "22.22.2" },
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "start": "node apps/sample-service/server.mjs",
+    "test": "node --test",
+    "hooks:install": "node scripts/install-hooks.mjs",
+    "verify": "node scripts/verify.mjs",
+    "demo:smoke": "node scripts/smoke.mjs"
+  }
+}

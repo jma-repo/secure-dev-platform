@@ -1,0 +1,68 @@
+name: CodeQL
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  analyze:
+    name: CodeQL JavaScript TypeScript
+    # 公共仓库自动执行；私有仓库必须先确认 Code Security / 对应许可并手动设置变量。
+    # ENABLE_PRIVATE_CODEQL 只控制本任务，不会购买许可或自动开启仓库安全产品。
+    if: ${{ github.event.repository.private == false || vars.ENABLE_PRIVATE_CODEQL == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read # 私有仓库分析读取工作流信息需要。
+      security-events: write # 仅上传 CodeQL 结果；不推送源码或修改仓库设置。
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 固定项目 Node 版本
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22.22.2"
+          package-manager-cache: false
+      - name: 初始化报告目录
+        run: |
+          mkdir -p reports/codeql
+          test "$(node --version)" = "v22.22.2"
+      - name: 初始化无构建分析
+        uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          languages: javascript-typescript
+          build-mode: none
+      - name: 分析并上传代码扫描结果
+        uses: github/codeql-action/analyze@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          category: /language:javascript-typescript
+          output: reports/codeql
+          upload: true
+      - name: 始终短期保留 SARIF 报告
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: codeql-sarif-reports
+          path: reports/codeql/*.sarif
+          retention-days: 3
+          if-no-files-found: warn
+
+# 此任务在未授权私有仓库会跳过，故不列入通用分支保护必需检查。
+# 许可和仓库配置确认后，可手动把实际检查名加入分支保护。

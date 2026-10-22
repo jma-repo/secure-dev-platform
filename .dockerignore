@@ -1,0 +1,26 @@
+# 默认拒绝构建上下文中的所有文件，只放行运行镜像的 COPY 来源。
+**
+!apps/
+!apps/**
+!packages/
+!packages/**
+!.gitleaks.toml
+!package.json
+!scripts/
+!scripts/tools.json
+
+# 即使位于放行目录内，依赖、凭据、报告和工具也不进入构建上下文。
+**/node_modules
+**/.git
+**/.tools
+**/.terraform
+**/reports
+**/coverage
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/*.tfstate
+**/*.tfstate.*
