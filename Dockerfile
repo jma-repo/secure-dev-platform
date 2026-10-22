@@ -1,5 +1,19 @@
 FROM node:22.22.2-bookworm-slim
 
+# Pull Debian security updates at build time. The base image tag is a snapshot,
+# so a CVE patched in Debian after that snapshot is still present here. This
+# trades a little build reproducibility for patches the tag has not picked up;
+# the CI image job scans the result, so an unpatched build cannot merge.
+RUN apt-get update \
+ && apt-get upgrade -y \
+ && rm -rf /var/lib/apt/lists/*
+
+# The runtime never installs packages, so the package managers are pure attack
+# surface: each carries its own dependency tree that gets scanned and patched on
+# someone else's schedule. Remove npm, corepack and yarn together.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack /opt/yarn-* \
+ && rm -f /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /usr/local/bin/yarn /usr/local/bin/yarnpkg
+
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=4173
 WORKDIR /app
 
