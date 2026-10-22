@@ -1,24 +1,24 @@
-# 内部 AI 使用边界
+# Internal AI Usage Boundaries
 
-## 可以使用什么
+## What is allowed
 
-团队允许使用部署在内网或本机的模型处理内部资料，前提是数据不离开受控网络。本原型使用 LM Studio 在本机加载 Qwen 模型与本地嵌入模型，推理与向量检索都只经过 `127.0.0.1`，不调用任何云服务。
+The team may use a model deployed on the internal network or on the local machine to work with internal material, provided the data never leaves the controlled network. This prototype loads a Qwen model and a local embedding model through LM Studio on the local machine; both inference and vector search go through `127.0.0.1` only and call no cloud service.
 
-允许的用途包括：查询内部规范、解释扫描结果、辅助撰写提交说明、整理排障记录。
+Permitted uses include looking up internal policy, explaining a scan result, drafting a commit message and tidying up a troubleshooting record.
 
-## 不可以使用什么
+## What is not allowed
 
-- 不得把真实凭据、客户个人数据、未脱敏的生产日志粘贴到任何外部在线 AI 服务。
-- 不得把内部代码提交到公网模型接口，除非已获得书面批准并完成数据分类评估。
-- 不得用 AI 输出替代人工评审、合规判断或安全审批。
-- 不得让模型直接执行命令、修改权限或操作生产环境。
+- Do not paste real credentials, customer personal data or unredacted production logs into any external online AI service.
+- Do not submit internal code to a public model endpoint unless written approval and a data classification review are already in place.
+- Do not let AI output replace human review, a compliance decision or a security approval.
+- Do not let a model run commands, change permissions or operate a production environment directly.
 
-## 关于 Copilot Studio 的说明
+## A note on Copilot Studio
 
-Copilot Studio 不是“从头训练一个模型”。它是低代码平台，把企业内部数据源接入现成模型，通过检索与提示词完成问答和流程自动化，需要相应的微软许可，数据通常位于微软云。
+Copilot Studio is not "training a model from scratch". It is a low-code platform that connects internal data sources to an existing model and answers questions or automates a flow through retrieval and prompts. It needs the corresponding Microsoft licence, and the data usually sits in the Microsoft cloud.
 
-如果客户要求代码与资料完全不出内网，那么云端 Copilot Studio 与这一要求可能冲突，应改为内网自建检索方案：本地文档、本地嵌入模型、本地生成模型，加上身份认证与审计。
+If the customer requires that code and material never leave the internal network, a cloud Copilot Studio deployment may conflict with that requirement. The alternative is an internally hosted retrieval stack: local documents, a local embedding model, a local generation model, plus identity and audit.
 
-## 本地 RAG 的边界
+## Limits of the local RAG
 
-本原型只读取 `docs/knowledge` 与 README 中的示例资料，回答仅基于检索到的片段。资料没有写到的内容，助手应明确说明“现有资料没有写”，不得编造制度、命令或审批流程。模型输出不构成安全结论。
+This prototype reads only the sample material under `docs/knowledge` and in the README, and every answer is grounded in the retrieved passages. Where the material says nothing, the assistant must say "the material does not cover this" rather than inventing a rule, a command or an approval path. Model output is not a security conclusion.

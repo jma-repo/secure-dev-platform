@@ -1,36 +1,36 @@
-# 《伊甸之东》（East of Eden）内容概要
+# East of Eden — Summary
 
-> 说明：本文是用于检索测试的作品概要，包含情节与主题分析，不是小说原文。全书版权归原作者与出版方所有。
+> Note: this is a plot and theme summary written as retrieval test material, not the text of the novel. Copyright in the novel belongs to the author's estate and the publisher.
 
-## 基本信息
+## Basic facts
 
-《伊甸之东》是美国作家约翰·斯坦贝克（John Steinbeck）出版于 1952 年的长篇小说，他自己称其为"big book"，也是他晚年最重要的作品之一。故事主要发生在加利福尼亚州的萨利纳斯谷（Salinas Valley），时间跨度大约从美国内战前后到第一次世界大战结束。小说并行讲述两个家族：虚构的特拉斯克家族（Trask）和以斯坦贝克外祖父为原型的汉密尔顿家族（Hamilton）。
+East of Eden is a novel by the American writer John Steinbeck, published in 1952. He called it "the big book" and it is one of the most important works of his later years. The story is set mainly in the Salinas Valley in California and spans roughly from the years around the American Civil War to the end of the First World War. It follows two families in parallel: the fictional Trask family and the Hamilton family, modelled on Steinbeck's own maternal grandfather.
 
-书名取自《圣经·创世记》该隐被放逐后"住在伊甸东边的挪得之地"，全书结构也对应该隐与亚伯的兄弟相争主题。
+The title comes from Genesis, where Cain is exiled to "the land of Nod, east of Eden", and the structure of the book mirrors the rivalry between Cain and Abel.
 
-## 主要人物
+## Main characters
 
-- **亚当·特拉斯克（Adam Trask）**：康涅狄格农场主的儿子，成年后带着妻子搬到加州萨利纳斯谷开垦土地，性格宽厚但长期逃避真相。
-- **查尔斯·特拉斯克（Charles Trask）**：亚当的弟弟，留在老家经营农场，性格暴烈，对父亲和兄长怀有复杂的嫉妒与依恋。
-- **赛勒斯·特拉斯克（Cyrus Trask）**：两兄弟的父亲，参加过南北战争，偏爱亚当，死后留下争议性的遗产。
-- **卡西·艾姆斯 / 凯特（Cathy Ames / Kate）**：亚当的妻子，全书最阴暗的角色。她早年纵火、利用他人，婚后开枪打伤亚当后离家，最终在萨利纳斯经营妓院，长期操纵身边的人。
-- **卡尔与阿伦（Cal and Aron Trask）**：亚当与卡西的双胞胎儿子。阿伦温和、理想化，卡尔敏感、善妒，一直恐惧自己继承了母亲的"恶"。
-- **李（Lee）**：特拉斯克家的华裔仆人，受过良好教育，是全书最重要的道德声音之一，也是"timshel"讨论的引导者。
-- **塞缪尔·汉密尔顿（Samuel Hamilton）**：爱尔兰移民，铁匠、农民、发明家，健谈而富有智慧，是亚当的朋友与精神支柱。
-- **阿布拉·培根（Abra Bacon）**：阿伦的女友，后来与卡尔建立更深的理解关系。
+- **Adam Trask** — son of a Connecticut farmer, who moves to the Salinas Valley with his wife to work the land. He is generous but spends years avoiding the truth.
+- **Charles Trask** — Adam's brother, who stays behind to run the family farm. Violent in temper, he carries a tangled mix of jealousy and attachment toward his father and his brother.
+- **Cyrus Trask** — father of the two brothers, a Civil War veteran who favours Adam and leaves a disputed inheritance behind.
+- **Cathy Ames / Kate** — Adam's wife and the darkest character in the book. She commits arson and uses people early on, shoots Adam and leaves after the twins are born, and ends up running a brothel in Salinas while manipulating the people around her.
+- **Cal and Aron Trask** — the twin sons of Adam and Cathy. Aron is gentle and idealistic; Cal is sensitive and envious, and lives in fear that he inherited his mother's evil.
+- **Lee** — the Trask family's Chinese-American servant. Well educated, he is one of the book's most important moral voices and the one who guides the discussion of "timshel".
+- **Samuel Hamilton** — an Irish immigrant, blacksmith, farmer and inventor. Talkative and wise, he is Adam's friend and moral support.
+- **Abra Bacon** — Aron's girlfriend, who later comes to a deeper understanding with Cal.
 
-## 情节脉络
+## Plot
 
-小说前半部从赛勒斯一家写起，交代两兄弟的成长与父亲偏爱造成的裂痕。亚当带着卡西西迁，在萨利纳斯谷买下土地，试图建立理想生活；卡西在生下双胞胎后离开，亚当陷入长期麻木。汉密尔顿一家与李帮助他重新站起来。
+The first half begins with Cyrus and his sons and establishes the rift that a father's favouritism leaves behind. Adam moves west with Cathy and buys land in the Salinas Valley, trying to build the life he imagined. Cathy leaves after the twins are born and Adam sinks into a long numbness; the Hamiltons and Lee help him back to his feet.
 
-后半部聚焦双胞胎的成长。卡尔发现母亲并未去世，而是萨利纳斯的妓院老板，这个真相成为兄弟关系的裂缝。阿伦选择逃避与理想化，卡尔则在嫉妒与自责之间挣扎。塞缪尔去世后，汉密尔顿家族逐渐凋零，汤姆与德西的悲剧进一步加深了小说的沉重基调。
+The second half follows the twins as they grow. Cal discovers that his mother is alive and runs a brothel in Salinas, and that truth becomes the crack in the brothers' relationship. Aron retreats into idealism while Cal struggles between jealousy and self-blame. After Samuel dies the Hamilton family fades, and the tragedy of Tom and Dessie deepens the book's weight.
 
-结局中，卡尔带父亲见到卡西，真相击碎了亚当最后的幻想；阿伦参军后死于战争；亚当中风垂危。李劝亚当为卡尔祝福，亚当最终说出"timshel"，把选择的权利留给儿子，随后去世。
+At the end Cal takes his father to see Cathy, and the truth destroys Adam's last illusion. Aron enlists and dies in the war, and Adam lies dying after a stroke. Lee urges Adam to bless Cal, and Adam's last word is "timshel" — the choice is left to his son.
 
-## 核心主题
+## Themes
 
-1. **自由意志与继承的罪**：小说反复讨论人是否注定重复父辈的错误。李研究《圣经》后提出"timshel"（希伯来语，意为"你可以"），强调人拥有选择胜过罪的能力，而不是被命运决定。
-2. **兄弟相争**：特拉斯克两代兄弟关系都对应该隐与亚伯，嫉妒、偏爱与原谅构成主线。
-3. **善与恶的混合**：卡西被视为纯粹的恶，但小说也不断追问善恶是否可以被简单划分，卡尔与阿伦各自代表一种极端。
-4. **土地与身份**：萨利纳斯谷既是谋生之地，也是人物试图重建自我的场所。
-5. **宽恕与父职**：亚当的逃避与最终的祝福，构成小说对父子和解的最后回答。
+1. **Free will against inherited sin** — the novel keeps asking whether a person is condemned to repeat their parents' mistakes. After studying the Bible, Lee offers "timshel" (Hebrew for "thou mayest"), insisting that a person can choose to master sin rather than be decided by fate.
+2. **Brother against brother** — both generations of Trask brothers echo Cain and Abel, and jealousy, favouritism and forgiveness drive the story.
+3. **Good and evil mixed together** — Cathy reads as pure evil, yet the novel keeps asking whether good and evil can be divided so cleanly, with Cal and Aron each representing an extreme.
+4. **Land and identity** — the Salinas Valley is both a place to make a living and the ground on which the characters try to rebuild themselves.
+5. **Forgiveness and fatherhood** — Adam's avoidance and his final blessing are the novel's last answer on reconciliation between father and son.

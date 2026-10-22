@@ -16,10 +16,10 @@ const assets = new Map([
 const defaultEvidence = {
   generatedAt: null,
   checks: [
-    { id: 'local', label: '本地验证', status: 'not_run', detail: 'Run node scripts/verify.mjs to produce real evidence.' },
+    { id: 'local', label: 'Local verification', status: 'not_run', detail: 'Run node scripts/verify.mjs to produce real evidence.' },
     { id: 'ci', label: 'GitHub Actions / CodeQL', status: 'not_run', detail: 'Workflow files provided; not yet executed on GitHub.' },
     { id: 'review', label: 'Branch protection / CODEOWNERS', status: 'not_run', detail: 'A repository administrator must set real owners and enable protection.' },
-    { id: 'container', label: '容器构建与镜像扫描', status: 'not_run', detail: 'Requires a reachable Docker engine.' }
+    { id: 'container', label: 'Container build and image scan', status: 'not_run', detail: 'Requires a reachable Docker engine.' }
   ]
 };
 

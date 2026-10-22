@@ -9,7 +9,7 @@
 1. 双击项目根目录 `start-demo.cmd`，保持窗口开启；访问 **http://127.0.0.1:4173**。
 2. Overview 显示 Connected，Gitleaks 显示 Available。
 3. 不需要云账号或 API key。若端口被占用，先看是否已有演示实例。
-4. 若要演示 Local AI：打开 LM Studio → Developer → Start Server（1234 端口），并加载一个聊天模型和一个 embedding 模型；页面徽标应显示 Ready。
+4. 若要演示 Local AI：打开 LM Studio → Developer → Start Server（1234 端口），加载**一个聊天模型**（优先 `qwen2.5-3b-instruct`，回答约 20–30 秒）**和一个 embedding 模型**（`text-embedding-nomic-embed-text-v1.5`）；页面徽标应显示 Ready。27B 模型也能用，但一问要几分钟，不适合现场演示。
 5. 保留 Evidence 页面中的未验证项；不把它们说成已完成。
 6. **界面是英文的**（客户主要语言是 English）：Overview / Live demo / Security report / Local AI / Evidence / Handoff 六个页签。讲解用中文，屏幕上的字用英文，客户看得懂。
 
@@ -54,15 +54,16 @@
 
 ### 4. Local AI — 数据不出内网（90 秒）
 
-打开 **Local AI** 页签，确认徽标是 **Ready**，显示 7 篇文档、64 个片段、本地嵌入模型。点一个示例问题（例如“密钥泄露怎么办”，或“Canlus 的收费模式是怎样的？”），等 10–25 秒。
+打开 **Local AI** 页签，确认徽标是 **Ready**，显示 7 篇文档、约 69 个片段、本地嵌入模型。点一个示例问题（例如 "What should I do if I find a leaked secret at commit time?"），等 **20–30 秒**。
 
 讲解：
-- 文档切块后用本地 embedding 建向量，问题也本地向量化；同时用关键词打分（BM25）兜底，两路加权后取 Top 4，再交给本地 Qwen 生成。
+- 文档切块后用本地 embedding 建向量，问题也本地向量化；同时用关键词打分（BM25）兜底，两路加权后取 Top 3，再交给本地 Qwen 生成。
 - 全程只经过 `127.0.0.1:1234`；代码里写死了回环地址检查，配成外部地址会直接拒绝。
 - 回答带来源编号，可以点开看命中的文件与章节。
-- 问一个知识库没有的问题（“公司年假多少天”），它会说“现有资料没有写”，而不是编造。
+- 问一个知识库没有的问题（"How many days of annual leave do I get?"），它会说资料没写，而不是编造。
+- **延迟是真的，不要藏**：本机 CPU 上 3B 模型约 20–30 秒一答，27B 模型要几分钟。这正是"数据不出机器"的价格，比云端 Copilot 慢一个数量级。客户如果要快，就得买 GPU 或者接受小模型。
 
-> 这是检索增强生成，不训练、不微调模型。它证明的是“内部资料可以不出内网被问答”，不是 Copilot Studio 的替代品。
+> 这是检索增强生成，不训练、不微调模型。它证明的是"内部资料可以不出内网被问答"，不是 Copilot Studio 的替代品。
 
 ### 5. Evidence — 可重复验证（60 秒）
 

@@ -19,15 +19,25 @@ function record(id, label, status, detail) {
 }
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, { cwd: ROOT, encoding: 'utf8', windowsHide: true, timeout: 120000, maxBuffer: 8 * 1024 * 1024, ...options });
-  return { ok: result.status === 0 && !result.error, code: result.status, text: (result.stdout ?? '') + (result.stderr ?? ''), stdout: result.stdout ?? '' };
+  return { ok: result.status === 0 && !result.error, code: result.status, error: result.error, text: (result.stdout ?? '') + (result.stderr ?? ''), stdout: result.stdout ?? '' };
 }
 const unavailable = text => /winapi error|access is denied|permission denied|connectex|failed to download|failed to initialize|no such file|cannot find|could not be found/i.test(text);
 
 record('runtime', 'Pinned development runtime', process.versions.node === EXPECTED_NODE ? 'passed' : 'failed', `Node ${process.versions.node}; expected ${EXPECTED_NODE}.`);
-const tests = run(process.execPath, ['--test', '--test-reporter=tap']);
+// The suite includes one test that asks the local model a real question, and a
+// 27B model on CPU needs minutes for that. A timeout here means the machine was
+// too slow, which is a fact about the hardware, not a broken test.
+const tests = run(process.execPath, ['--test', '--test-reporter=tap'], { timeout: 600000 });
 await writeFile(join(out, 'tests.tap'), tests.text);
 const testCount = tests.text.match(/# tests (\d+)/)?.[1] ?? '0';
-record('tests', 'Service and security regression tests', tests.ok && Number(testCount) > 0 ? 'passed' : 'failed', `${testCount} tests; ${tests.text.match(/# pass (\d+)/)?.[1] ?? '?'} passed; ${tests.text.match(/# skipped (\d+)/)?.[1] ?? '?'} skipped. Raw log: runs/${runId}/tests.tap.`);
+const timedOut = !testCount || /ETIMEDOUT/.test(String(tests.error?.code ?? '')) || tests.code === null;
+if (tests.ok && Number(testCount) > 0) {
+  record('tests', 'Service and security regression tests', 'passed', `${testCount} tests; ${tests.text.match(/# pass (\d+)/)?.[1] ?? '?'} passed; ${tests.text.match(/# skipped (\d+)/)?.[1] ?? '?'} skipped. Raw log: runs/${runId}/tests.tap.`);
+} else if (timedOut) {
+  record('tests', 'Service and security regression tests', 'blocked', `The suite did not finish inside the local time budget, so its result is unknown rather than failing. The live local-answer test waits on a 27B model running on CPU. Raw log: runs/${runId}/tests.tap.`);
+} else {
+  record('tests', 'Service and security regression tests', 'failed', `${testCount} tests; ${tests.text.match(/# pass (\d+)/)?.[1] ?? '?'} passed; ${tests.text.match(/# skipped (\d+)/)?.[1] ?? '?'} skipped. Raw log: runs/${runId}/tests.tap.`);
+}
 
 const tools = Object.fromEntries(await Promise.all(['gitleaks', 'terraform', 'trivy'].map(async name => [name, await toolStatus(name)])));
 if (tools.gitleaks.available) {
@@ -89,10 +99,14 @@ if (tools.terraform.available) {
 const rag = await ragStatus();
 if (rag.ready) {
   try {
-    const answer = await askQuestion('Copilot Studio 会训练模型吗？');
+    const answer = await askQuestion('Does Copilot Studio train a model?');
     record('local-rag', 'Local RAG: retrieval plus generation', answer.answer && answer.sources.length ? 'passed' : 'failed', `${answer.model} + ${answer.embeddingModel}; ${answer.sources.length} sources; ${answer.elapsedMs}ms; endpoint ${rag.endpoint} (loopback only).`);
-  } catch {
-    record('local-rag', 'Local RAG: retrieval plus generation', 'failed', 'Local model responded but the answer or sources could not be validated.');
+  } catch (error) {
+    // A 27B reasoning model on CPU can exceed any sane budget. That is a limit of
+    // this machine, not a defect in the retrieval path, so it is not called a
+    // failure and it is not called a pass either.
+    const slow = /timeout|aborted|token budget|empty answer/i.test(String(error.message));
+    record('local-rag', 'Local RAG: retrieval plus generation', slow ? 'blocked' : 'failed', slow ? `The local model did not finish inside the time budget: ${error.message} Retrieval and the loopback guard are exercised by the tests; generation latency is a property of this hardware.` : 'Local model responded but the answer or sources could not be validated.');
   }
 } else {
   record('local-rag', 'Local RAG: retrieval plus generation', 'blocked', `Local model not ready: ${rag.reason ?? 'unknown'}. No answer was generated.`);

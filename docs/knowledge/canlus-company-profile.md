@@ -1,116 +1,116 @@
-# Canlus 公司概览（来源：canlus.com）
+# Canlus Company Overview (source: canlus.com)
 
-## 公司与联系方式
+## Company and contact details
 
-Canlus 是一家位于加拿大阿尔伯塔省卡尔加里的网络安全咨询公司，官网 <https://canlus.com/>，页脚业务标签为 "Canlus Cybersecurity · Cloud · AI Transformation"。办公与联络信息：Calgary, Alberta, Canada；服务范围覆盖卡尔加里及周边社区，可上门（on-site），并在全加拿大范围内提供远程交付；联络邮箱 bhe@canlus.com；官网承诺 24 小时内回复；提供免费 30 分钟咨询（free 30-minute consultation）。咨询与工作会议可用英语或中文进行，正式技术报告通常以英文交付，可提供中文复核。官网 sitemap 最近更新日期为 2026-10-19。
+Canlus is a cybersecurity consultancy based in Calgary, Alberta, Canada, with its site at <https://canlus.com/> and the footer tagline "Canlus Cybersecurity · Cloud · AI Transformation". Office and contact information: Calgary, Alberta, Canada; it serves Calgary and the surrounding communities on-site and delivers remotely across Canada; contact address bhe@canlus.com; the site promises a reply within 24 hours; a free 30-minute consultation is offered. Consultations and working sessions can be held in English or Chinese, and formal technical reports are normally delivered in English with a Chinese review available. The site sitemap was last updated on 2026-10-19.
 
-## 品牌定位与主张
+## Positioning and message
 
-主标语 "Move forward, securely."（稳妥前行）。自我描述为：为准备好稳健成长的卡尔加里企业提供务实的托管 IT 安全（managed IT security）、Microsoft 365 安全、vCISO 指导与 AI 咨询。核心差异点是"没有层层转手"（no handoffs）——由同一位资深顾问从第一次对话到交付全程直接负责。目标客户是中小企业（SMB），不是大型企业或产品导向的销售模式。首页四组价值主张：AI that earns its place（少人工、更好的决策）、Fewer security surprises（清晰优先级、可落地的修复）、Cloud that stays manageable（更安全的访问、可靠的运维）、Dedicated consultant（清晰沟通、服务全加拿大客户）。
+The main line is "Move forward, securely." The self-description is practical managed IT security, Microsoft 365 security, vCISO guidance and AI consulting for Calgary businesses that are ready to grow carefully. The stated difference is "no handoffs" — one senior consultant owns the work from the first conversation through delivery. The target customer is the small and mid-sized business, not the large enterprise, and the model is not product-led selling. The home page carries four value statements: AI that earns its place (less manual work, better decisions); fewer security surprises (clear priorities, fixes that can be carried out); cloud that stays manageable (safer access, reliable operations); a dedicated consultant (clear communication, serving clients across Canada).
 
-## 服务清单总览（十项）
+## The ten services at a glance
 
-Canlus 提供十项服务，覆盖安全、云、网络与 AI。01 AI 自动化提效（AI That Saves Time）；02 更安全的云（A Safer, Calmer Cloud）；03 身份与权限（The Right Access for the Right People）；04 终端设备（Devices That Are Ready for Work）；05 数据保护（Keep Sensitive Information in Safe Hands）；06 事件响应就绪（Know What to Do When Something Goes Wrong）；07 渗透测试（Find Weaknesses Before an Attacker Does）；08 网络安全（A Network That Supports Growth）；09 合规就绪（Be Ready for the Next Customer Question）；10 AI 起步规划（Choose the Right AI First Step）。
+Canlus offers ten services covering security, cloud, network and AI. 01 AI That Saves Time; 02 A Safer, Calmer Cloud; 03 The Right Access for the Right People; 04 Devices That Are Ready for Work; 05 Keep Sensitive Information in Safe Hands; 06 Know What to Do When Something Goes Wrong; 07 Find Weaknesses Before an Attacker Does; 08 A Network That Supports Growth; 09 Be Ready for the Next Customer Question; 10 Choose the Right AI First Step.
 
-## 服务 01：AI 自动化提效（AI That Saves Time）
+## Service 01: AI That Saves Time
 
-客户场景：团队每周五都在电子表格、邮件和报表之间来回复制信息。Canlus 的做法是找出这类重复劳动，构建真正节省时间的 AI 工具，并教会团队安全使用。三个交付重点：减少手工工作（Less manual work）、更好的决策（Better decisions）、安全落地（Safe rollout）。行动号召：Discuss an AI opportunity。这是官网十项服务中的第一项，说明 AI 咨询与安全咨询是并列的主营业务，而不是附属品。
+Customer situation: the team spends every Friday copying information between spreadsheets, email and reports. Canlus finds that repeated work, builds an AI tool that actually gives the time back, and teaches the team to use it safely. Three delivery points: less manual work, better decisions, safe rollout. Call to action: discuss an AI opportunity. This is the first of the ten services, which places AI consulting alongside security consulting as a main line of business rather than an add-on.
 
-## 服务 02：更安全、更平静的云（A Safer, Calmer Cloud）
+## Service 02: A Safer, Calmer Cloud
 
-客户场景：员工点开了一封很像真的钓鱼邮件。Canlus 收紧邮件、文件与登录相关配置，让这类邮件更可能被拦截，并让"一次失误"不至于暴露客户数据。三个交付重点：更安全的邮件（Safer email）、更少的盲区（Fewer blind spots）、清晰的责任归属（Clear ownership）。行动号召：Book an M365 health check（Microsoft 365 健康检查）。
+Customer situation: an employee opens a phishing email that looks convincing. Canlus tightens the mail, file and sign-in configuration so that such mail is more likely to be stopped and a single mistake does not expose customer data. Three delivery points: safer email, fewer blind spots, clear ownership. Call to action: book an M365 health check.
 
-## 服务 03：给对的人对的权限（The Right Access for the Right People）
+## Service 03: The Right Access for the Right People
 
-客户场景：离职员工的账号仍能打开公司文件，或一个被盗密码能解锁太多东西。Canlus 清理权限、加入更安全的登录方式，并让每一次入职、角色变更和离职都更容易管控。三个交付重点：正确的最小权限（Right access）、更安全的登录（Safer sign-in）、干净的离职流程（Clean offboarding）。行动号召：Review identity security。
+Customer situation: a former employee's account can still open company files, or one stolen password unlocks far too much. Canlus cleans up permissions, adds stronger sign-in, and makes every join, role change and departure easier to control. Three delivery points: right access, safer sign-in, clean offboarding. Call to action: review identity security.
 
-## 服务 04：随时可用的设备（Devices That Are Ready for Work）
+## Service 04: Devices That Are Ready for Work
 
-客户场景：员工丢失了存有客户文件的笔记本。Canlus 帮助远程锁定设备、保护数据并快速配置替换设备，让业务不中断。三个交付重点：更快的入职配置（Faster onboarding）、受管设备（Managed devices）、远程支持（Remote support）。行动号召：Assess endpoint security。
+Customer situation: an employee loses a laptop holding customer files. Canlus helps lock the device remotely, protect the data and configure a replacement quickly so the business keeps running. Three delivery points: faster onboarding, managed devices, remote support. Call to action: assess endpoint security.
 
-## 服务 05：让敏感信息留在安全的手里（Keep Sensitive Information in Safe Hands）
+## Service 05: Keep Sensitive Information in Safe Hands
 
-客户场景：有人把客户名单附到了错误的邮件上，或把工资表文件夹共享得过宽。Canlus 围绕敏感信息设置简单护栏，让错误能被发现，同时不增加日常工作的负担。三个交付重点：更安全的共享（Safer sharing）、清晰的数据规则（Clear data rules）、隐私合规支持（Privacy support）。行动号召：Plan data protection。
+Customer situation: someone attaches a customer list to the wrong email, or shares a payroll folder far too widely. Canlus puts simple guardrails around sensitive information so that mistakes are caught without adding friction to daily work. Three delivery points: safer sharing, clear data rules, privacy support. Call to action: plan data protection.
 
-## 服务 06：出事时知道该做什么（Know What to Do When Something Goes Wrong）
+## Service 06: Know What to Do When Something Goes Wrong
 
-客户场景：晚上十点收到安全告警，却没人知道该联系保险公司、隔离电脑还是通知客户。Canlus 制定并演练一份简短预案，让"第一个小时"冷静且有序。三个交付重点：冷静响应（Calm response）、明确负责人（Clear owners）、经过演练的预案（Tested plan）。行动号召：Review incident readiness（事件响应就绪度评审）。
+Customer situation: an alert arrives at ten in the evening and nobody knows whether to call the insurer, isolate the machine or notify the customer. Canlus writes and rehearses a short plan so the first hour is calm and orderly. Three delivery points: calm response, clear owners, tested plan. Call to action: review incident readiness.
 
-## 服务 07：在攻击者之前找到弱点（Find Weaknesses Before an Attacker Does）
+## Service 07: Find Weaknesses Before an Attacker Does
 
-客户场景：即将上线客户门户，想知道上线前是否可能被攻破。Canlus 安全地测试贴近真实的攻击路径，用平实语言解释哪些问题真正重要，并对修复项排优先级。三个交付重点：真实场景测试（Real-world testing）、清晰的优先级（Clear priorities）、修复指导（Fix guidance）。行动号召：Scope a penetration test（渗透测试范围界定）。
+Customer situation: a customer portal is about to launch and the team wants to know whether it can be broken into first. Canlus tests realistic attack paths safely, explains in plain language which problems actually matter, and ranks the fixes. Three delivery points: real-world testing, clear priorities, fix guidance. Call to action: scope a penetration test.
 
-## 服务 08：支撑业务增长的网络（A Network That Supports Growth）
+## Service 08: A Network That Supports Growth
 
-客户场景：开了第二个办公室或增加远程员工后，通话开始掉线、访问不稳定，每个修复又制造新的变通做法。Canlus 简化网络架构，让人能稳定连接，并让单点故障被限制在局部。三个交付重点：可靠连接（Reliable connectivity）、安全扩张（Secure growth）、远程办公（Remote work）。行动号召：Review network architecture。
+Customer situation: a second office opens or remote staff are added, calls start dropping, access becomes unreliable, and every fix creates a new workaround. Canlus simplifies the network architecture so people stay connected and a single point of failure stays contained. Three delivery points: reliable connectivity, secure growth, remote work. Call to action: review network architecture.
 
-## 服务 09：随时应对下一个客户提问（Be Ready for the Next Customer Question）
+## Service 09: Be Ready for the Next Customer Question
 
-客户场景：收到客户安全问卷，或保险续保要求下周前提交材料。Canlus 汇总企业已有的证据，指出缺什么，并为差距制定可执行计划。三个交付重点：证据就绪（Evidence-ready）、清晰的路线图（Clear roadmap）、给管理层的简报（Leadership brief）。行动号召：Assess compliance readiness。
+Customer situation: a customer security questionnaire arrives, or the insurance renewal needs documents by next week. Canlus gathers the evidence the business already has, shows what is missing, and builds an actionable plan for the gap. Three delivery points: evidence-ready, clear roadmap, leadership brief. Call to action: assess compliance readiness.
 
-## 服务 10：选对 AI 的第一步（Choose the Right AI First Step）
+## Service 10: Choose the Right AI First Step
 
-客户场景：想让 AI 回答客户问题或准备报价，但不知道哪个想法先见效。Canlus 比较各选项、检查数据是否就绪，并给出安全的分阶段起步计划。三个交付重点：优先用例（Priority use cases）、数据基础（Data foundations）、安全采用（Safe adoption）。行动号召：Start an AI readiness review。
+Customer situation: the business wants AI to answer customer questions or draft quotes but cannot tell which idea pays off first. Canlus compares the options, checks whether the data is ready, and sets out a safe staged start. Three delivery points: priority use cases, data foundations, safe adoption. Call to action: start an AI readiness review.
 
-## 四项核心能力（Company expertise）
+## Four areas of expertise
 
-Canlus 声称团队在网络安全、云、身份、网络、AI 与数据方面具备实操经验，客户直接与做评估、设计和实施的专家合作。四项能力分别为：**Cybersecurity**（安全架构、渗透测试、漏洞管理、事件响应就绪度，把发现转化为可执行的修复）；**Cloud & Identity**（Microsoft 365 安全、现代身份、特权访问与零信任控制，按组织规模裁剪）；**Network Security**（防火墙、安全网络设计、SD-WAN、Azure 混合连接）；**AI & Data**（面向生产的 LLM 与 RAG 方案、自动化、可靠的数据管道，目标是"从有希望的雏形走到可用的生产系统"）。
+Canlus states that its team has hands-on experience across cybersecurity, cloud, identity, network, AI and data, and that clients work directly with the people who assess, design and implement. The four areas are: **Cybersecurity** (security architecture, penetration testing, vulnerability management, incident readiness, turning findings into fixes that can be carried out); **Cloud & Identity** (Microsoft 365 security, modern identity, privileged access and zero-trust controls, sized to the organisation); **Network Security** (firewalls, secure network design, SD-WAN, Azure hybrid connectivity); **AI & Data** (production-oriented LLM and RAG work, automation, reliable data pipelines, with the goal of moving from a promising prototype to a usable production system).
 
-## 客户选择 Canlus 的五个理由（Why Canlus）
+## Five reasons clients choose Canlus
 
-1. **基于卡尔加里**：Calgary 及周边可上门，全加拿大可远程。
-2. **用听得懂的语言沟通**：业务优先级与技术决策都讲清楚，不使用不必要的行话。
-3. **加拿大商业语境**：面向隐私、客户与保险方的实际要求，包括 PIPEDA 就绪度。
-4. **资深专家直接参与**：给建议的人始终贴近具体工作，决策不会在转手中丢失。
-5. **单一责任人**：一位专属顾问从第一次对话到交付全程负责，把风险翻译成决策。
+1. **Based in Calgary** — on-site in Calgary and the surrounding area, remote across Canada.
+2. **Plain language** — business priorities and technical decisions are both explained clearly, without unnecessary jargon.
+3. **Canadian business context** — oriented to what privacy regulators, customers and insurers actually ask for, including PIPEDA readiness.
+4. **Senior experts stay involved** — the people giving the advice stay close to the work, so decisions are not lost in handoffs.
+5. **A single owner** — one dedicated consultant is responsible from the first conversation through delivery, translating risk into decisions.
 
-## 合作流程（四步）
+## How an engagement runs (four steps)
 
-1. **01 / FREE CONSULTATION — Define the need**：免费、无义务地厘清优先级、现有环境和期望结果。
-2. **02 / ASSESS & AGREE — Assess, quote and confirm**：评审相关环境，出具书面范围与估算，签约后开始。
-3. **03 / DELIVER & REPORT — Deliver with visibility**：完成工作，同步进展，交付清晰的发现、建议与文档。
-4. **04 / FOLLOW-UP SUPPORT — Support what comes next**：协助修复、交接与后续支持，让改进在交付后延续。官网强调每个阶段客户都知道工作处在哪一步。
+1. **01 / FREE CONSULTATION — Define the need** — clarify priorities, the current environment and the desired outcome, free and without obligation.
+2. **02 / ASSESS & AGREE — Assess, quote and confirm** — review the relevant environment, issue a written scope and estimate, and start once it is signed.
+3. **03 / DELIVER & REPORT — Deliver with visibility** — do the work, report progress, and hand over clear findings, recommendations and documentation.
+4. **04 / FOLLOW-UP SUPPORT — Support what comes next** — help with remediation, handover and follow-up so the improvement outlasts the engagement. The site stresses that the client always knows which stage the work is at.
 
-## 收费模式
+## Pricing model
 
-官网不公布统一价格，理由是合适的范围取决于客户环境。持续性的 vCISO 与安全维护以**固定月费**（fixed monthly fee）为首选模式；一次性项目与软件许可单独报价。固定月费的理由是：即使某个月风平浪静费用也可预测，从而使服务方的动机与客户一致——预防问题、维护基础项、减少意外，而不是等出故障再从修复中获利。任何工作开始前，客户先收到书面范围（含成果、活动、交付物、时间线、责任分工与假设），并批准书面费用。
+No standard price is published, on the grounds that the right scope depends on the client's environment. Ongoing vCISO and security maintenance work is priced as a **fixed monthly fee** as the preferred model; one-off projects and software licences are quoted separately. The reasoning behind the fixed fee is that the cost stays predictable even in a quiet month, which aligns the provider's incentive with the client's: prevent problems, maintain the basics and reduce surprises rather than profit from repair after a failure. Before any work starts the client receives a written scope covering outcomes, activities, deliverables, timeline, responsibilities and assumptions, and approves a written fee.
 
-## 行业方案：医疗诊所（Healthcare clinics）
+## Industry focus: healthcare clinics
 
-面向牙科、家庭医生与小规模专科诊所。目标是在不拖慢临床工作的前提下保护患者信息：评审 Microsoft 365、终端设备、供应商访问、备份与事件响应就绪度，再把务实的安全控制映射到 PIPEDA 及适用的省级隐私义务，其中包括针对安大略省业务的 PHIPA 考量。三项具体交付：患者数据访问与共享评审；设备、邮件与备份的防护；符合隐私要求的泄露与事件流程。
+Aimed at dental, family practice and small specialty clinics. The goal is to protect patient information without slowing down clinical work: review Microsoft 365, endpoints, vendor access, backups and incident readiness, then map practical controls to PIPEDA and the applicable provincial privacy duties, including PHIPA considerations for Ontario practices. Three concrete deliverables: a review of patient data access and sharing; protection for devices, email and backups; and a privacy-aligned breach and incident process.
 
-## 行业方案：专业服务机构（Professional services）
+## Industry focus: professional services
 
-面向律师事务所与会计师事务所。核心论点是客户机密不只依赖杀毒软件。Canlus 强化邮件认证、身份、文档共享、管理员权限、留存与恢复，使敏感案件/客户资料在员工、外包人员与客户之间流转时始终受控。三项具体交付：邮件安全与防冒充；案件与客户文件的权限评审；安全的外部共享与离职处理。
+Aimed at law firms and accounting firms. The core argument is that client confidentiality does not rest on antivirus alone. Canlus hardens mail authentication, identity, document sharing, administrator rights, retention and recovery so that sensitive case and client material stays controlled as it moves between staff, contractors and clients. Three concrete deliverables: email security and anti-impersonation; a permissions review for case and client files; and secure external sharing plus offboarding.
 
-## 免费 30 分钟安全评估包含什么
+## What the free 30-minute security review contains
 
-官网提供一个"Complimentary 30-minute security review"，主题是"找出三个最紧急的安全风险"（Find your three most urgent security risks）。包含五项检查：Microsoft 365 配置快照；外部攻击面检查；备份状态与恢复就绪度；账号与管理员权限评审；按优先级排列的前三大风险清单。客户会收到一份简明的书面报告，无义务、无强推销售。
+The site offers a complimentary 30-minute security review under the heading "find your three most urgent security risks". It covers five checks: a Microsoft 365 configuration snapshot; an external attack surface check; backup status and recovery readiness; an account and administrator permission review; and a ranked list of the top three risks. The client receives a short written report, with no obligation and no hard sell.
 
-## 案例展示方式（说明）
+## How case studies are presented
 
-官网的案例区块自我标注为"案例框架"（Case study framework），明确声明"以下框架用于说明我们如何沟通一次合作，不构成客户主张；真实案例将在细节匿名化并经客户批准后才发布"。框架内容为：某成长中的专业服务机构存在 MFA 不一致、文件权限过宽、无经过测试的恢复流程；做法是评审身份、共享、管理员角色与备份，验证最高风险缺口，并按业务节奏排序修复；预期结果是清晰的责任归属、更强的登录控制、减少的多余权限、经过测试的恢复证据，以及一份务实的 90 天改进计划。客户评价区同样标注"首批真实评价将在获批后发布"，目前尚未发布任何评价。
+The case study block on the site labels itself a "case study framework" and states plainly that the framework illustrates how an engagement would be communicated, that it is not a client claim, and that real cases will be published only after the details are anonymised and the client approves. The framework describes a growing professional services firm with inconsistent MFA, over-wide file permissions and no tested recovery process; the approach is to review identity, sharing, administrator roles and backups, confirm the highest-risk gaps and sequence the fixes to the business rhythm; the expected outcome is clear ownership, stronger sign-in controls, fewer excess permissions, tested recovery evidence and a practical 90-day improvement plan. The testimonial area is labelled the same way — the first real testimonials will be published once approved — and no testimonials have been published yet.
 
-## 常见问题：咨询与交付
+## FAQ: consulting and delivery
 
-**免费 30 分钟咨询能得到什么？** 一次平实语言的对话，谈问题、可能的成因和最合理的下一步；如果 Canlus 不合适，会直接说明。**典型合作包含什么？** 开始前收到书面范围，列明成果、活动、交付物、时间线、责任与假设；交付物视项目可能是发现、优先级计划、实施、文档与复盘会议。**流程是什么样的？** 免费咨询 → 只评估相关部分 → 确认范围与费用 → 执行并定期同步 → 一起复盘结果与后续动作。**多快能开始、要多久？** 取决于紧迫性、访问权限与范围；聚焦的评审可能只需几个工作日，实施可能数周；提案中会给出务实的启动窗口与里程碑。
+**What do I get from the free 30-minute consultation?** A plain-language conversation about the problem, the likely causes and the most sensible next step; if Canlus is not the right fit, it says so. **What does a typical engagement include?** A written scope before work starts, listing outcomes, activities, deliverables, timeline, responsibilities and assumptions; deliverables may be findings, a prioritised plan, implementation, documentation and a review session depending on the project. **What does the process look like?** Free consultation, then assessment of only the relevant parts, then confirmation of scope and fee, then delivery with regular updates, then a joint review of results and next actions. **How soon can work start and how long does it take?** It depends on urgency, access and scope; a focused review may take a few working days and implementation may take weeks, and the proposal gives a realistic start window and milestones.
 
-## 常见问题：费用、合同与信息安全
+## FAQ: cost, contracts and information security
 
-**费用如何构成？** 持续性 vCISO 与安全维护以可预测的固定月费为首选；一次性项目与软件许可单独报价；不公布统一价格，需通过免费咨询获得定制报价，工作开始前须批准书面费用。**不出事为什么还要付月费？** 因为预防本身就是服务，固定月费让双方动机一致。**如何保护客户信息？** 可在分享敏感信息前签署 NDA；合作协议中界定访问、保密与数据处理预期；只申请工作所需的访问权限。
+**How is the cost made up?** Ongoing vCISO and security maintenance work is preferably a predictable fixed monthly fee; one-off projects and software licences are quoted separately; no standard price is published, a tailored quote comes from the free consultation, and a written fee is approved before work starts. **Why pay monthly when nothing has gone wrong?** Because prevention is the service, and a fixed monthly fee aligns both sides. **How is client information protected?** An NDA can be signed before sensitive information is shared; the agreement sets out access, confidentiality and data handling expectations; and only the access needed for the work is requested.
 
-## 常见问题：语言、地域与适配度
+## FAQ: language, geography and fit
 
-**是否支持上门、远程与中文？** 是。公司位于卡尔加里，在本地提供上门支持，并在全加拿大远程工作；咨询与工作会议可用英语或中文，正式技术报告通常为英文并可选中文复核。**如何判断 Canlus 是否合适？** 官网给出的适配画像是：想要资深、务实、有清晰业务成果的帮助，而不是一个大团队或产品优先的推销；建议从免费咨询开始，由 Canlus 推荐聚焦项目、月度支持或另一条路径。
+**Is on-site, remote and Chinese support available?** Yes. The company is in Calgary, supports clients on-site locally and works remotely across Canada; consultations and working sessions can be in English or Chinese, and formal technical reports are normally in English with an optional Chinese review. **How do I know whether Canlus is the right fit?** The stated profile is a business that wants senior, practical help with clear business outcomes rather than a large team or a product-first pitch; starting with the free consultation is recommended, and Canlus will suggest a focused project, monthly support or another route.
 
-## 洞察文章（Insights）目录
+## Insights index
 
-官网 Insights 栏目（<https://canlus.com/?page=insights>）以安全事件解读与实务指南为主，2026 年文章包括：10-20《Your Backup App Was the Attacker's Key: What the ConnectWise Breach Means for Your Microsoft 365》；10-19《One Hacker, $50 in AI Tokens, 23 Hours: Your Website Is the Target Now》；10-18《82% of Companies Have AI Agents They Don't Know About》；10-17《173 Microsoft 365 Tenants Breached Through One Stolen Vendor Credential》；10-16《Attacking a Small Business Now Costs $25》；10-15《1,258 Fake AI Campaigns》；10-12《The Patch Is 15 Months Old》；10-11《Your VPN May Be Letting Attackers In》；10-10《Patch AnyDesk on Linux Now》；10-04《Five cybersecurity blind spots in Calgary SMBs》。
+The Insights section (<https://canlus.com/?page=insights>) focuses on security incident commentary and practical guidance. Articles from 2026 include: 10-20 "Your Backup App Was the Attacker's Key: What the ConnectWise Breach Means for Your Microsoft 365"; 10-19 "One Hacker, $50 in AI Tokens, 23 Hours: Your Website Is the Target Now"; 10-18 "82% of Companies Have AI Agents They Don't Know About"; 10-17 "173 Microsoft 365 Tenants Breached Through One Stolen Vendor Credential"; 10-16 "Attacking a Small Business Now Costs $25"; 10-15 "1,258 Fake AI Campaigns"; 10-12 "The Patch Is 15 Months Old"; 10-11 "Your VPN May Be Letting Attackers In"; 10-10 "Patch AnyDesk on Linux Now"; 10-04 "Five cybersecurity blind spots in Calgary SMBs".
 
-## 洞察文章（Insights）常青指南
+## Insights evergreen guides
 
-面向企业主的常青内容：09-15《Microsoft 365 defaults are not a security strategy: an owner's checklist》；08-25《Penetration testing vs. vulnerability scanning: which does your business need?》；08-04《What is a vCISO—and when does a small business need one?》；07-14《A ransomware response handbook for small businesses》；06-23《A practical PIPEDA introduction for Canadian small businesses》。这些文章构成 Canlus 的内容营销主线：把合规与安全决策翻译成企业主能直接使用的清单与判断标准。
+Evergreen material aimed at business owners: 09-15 "Microsoft 365 defaults are not a security strategy: an owner's checklist"; 08-25 "Penetration testing vs. vulnerability scanning: which does your business need?"; 08-04 "What is a vCISO — and when does a small business need one?"; 07-14 "A ransomware response handbook for small businesses"; 06-23 "A practical PIPEDA introduction for Canadian small businesses". Together these form the content marketing line: translating compliance and security decisions into checklists and judgement criteria an owner can use directly.
 
-## 使用本文件的注意事项
+## Cautions when using this document
 
-本文件内容全部来自 Canlus 官网公开页面（2026-10-21 抓取），属于**官网自我表述**，未经第三方核实：服务能力、团队资历、"资深专家"等描述均为其自身宣称。官网目前没有已发布的客户评价或真实案例，案例区块是框架说明。价格、折扣、SLA、具体交付周期均未公开，任何对外引用都应以书面提案为准。若客户询问"Canlus 是否做过某类项目"，本文件无法回答，应说明知识库中没有该信息。
+Everything here comes from public pages on the Canlus site, captured on 2026-10-21, and is the company's own account, not independently verified: the service capability, the team's credentials and descriptions such as "senior expert" are its own claims. The site currently has no published testimonials or real case studies; the case study block is a framework. Prices, discounts, SLAs and specific delivery timelines are not published, so any external reference should rest on a written proposal. If a customer asks whether Canlus has delivered a particular kind of project, this document cannot answer and the assistant should say the knowledge base does not contain that information.

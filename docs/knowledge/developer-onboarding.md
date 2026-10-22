@@ -1,28 +1,28 @@
-# 新开发者入职指南
+# New Developer Onboarding
 
-## 第一天要做什么
+## Your first day
 
-1. 安装 Docker Desktop 与 VS Code，并安装 Dev Containers 扩展。
-2. 克隆统一的 monorepo，不要在本地另建项目目录。
-3. 在 VS Code 中选择 Reopen in Container，进入统一开发环境。
-4. 等待初始化完成，它会安装 Gitleaks、Trivy、Terraform 并接入提交前检查。
-5. 运行 `node --test` 确认环境正常，再运行 `node apps/sample-service/server.mjs` 打开本地演示。
+1. Install Docker Desktop and VS Code, then add the Dev Containers extension.
+2. Clone the shared monorepo. Do not create a separate project directory locally.
+3. In VS Code choose "Reopen in Container" to enter the shared environment.
+4. Wait for the initialisation to finish. It installs Gitleaks, Trivy and Terraform and wires up the pre-commit check.
+5. Run `node --test` to confirm the environment is healthy, then `node apps/sample-service/server.mjs` to open the local demo.
 
-## 统一环境包含什么
+## What the shared environment contains
 
-Node.js 固定为 22.22.2，运行时只用标准库，没有 npm 第三方运行依赖。开发容器使用非 root 的 `node` 用户，移除全部 Linux capabilities，禁止提权，不挂载 Docker socket，只把 4173 端口转发到本机。
+Node.js is pinned to 22.22.2 and the runtime uses the standard library only, with no third-party npm runtime dependencies. The development container runs as the non-root `node` user, drops every Linux capability, forbids privilege escalation, does not mount the Docker socket, and forwards only port 4173 to the host.
 
-镜像 tag 与系统包仓库不是不可变的。生产化时应固定镜像 digest、建立补丁节奏，并使用受控的软件源。
+Image tags and system package repositories are not immutable. Before production, pin the image digest, set a patching cadence and use a controlled package source.
 
-## 代码归属与协作
+## Code ownership and collaboration
 
-`CODEOWNERS` 用来声明谁负责哪些目录，但它本身不会阻止合并。仓库管理员还需要配置分支保护或 ruleset：要求 Pull Request、至少一名评审、Code Owner 批准、必需状态检查通过，并禁止强制推送和删除分支。
+`CODEOWNERS` declares who owns which directories, but on its own it does not block a merge. A repository administrator still has to configure branch protection or a ruleset: require a pull request, at least one review, approval from the code owner, the required status checks passing, and no force push and no branch deletion.
 
-提交信息应说明改动目的。涉及安全规则、CI 流水线、开发容器和基础设施目录的改动，必须由对应负责人评审。
+A commit message should state why the change exists. Anything touching security rules, the CI pipeline, the development container or the infrastructure directory needs review from the owner of that area.
 
-## 本地常用命令
+## Common local commands
 
-- `node --test`：运行测试
-- `node scripts/verify.mjs`：生成本地验证证据
-- `python scripts/bootstrap-tools.py gitleaks terraform trivy`：准备固定版本工具
-- `docker compose up --build`：以受限方式运行示例服务
+- `node --test` — run the tests
+- `node scripts/verify.mjs` — produce the local verification evidence
+- `python scripts/bootstrap-tools.py gitleaks terraform trivy` — fetch the pinned tools
+- `docker compose up --build` — run the sample service under its restrictions

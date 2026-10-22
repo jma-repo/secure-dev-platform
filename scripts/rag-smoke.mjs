@@ -22,7 +22,7 @@ console.log('2. Asking an answerable question ...');
 const first = await json('/api/rag/ask', {
   method: 'POST',
   headers: { 'content-type': 'application/json' },
-  body: JSON.stringify({ question: '提交时发现密钥泄露应该怎么处理？' })
+  body: JSON.stringify({ question: 'What should I do if I find a leaked secret at commit time?' })
 });
 assert.ok(first.answer.length > 20, 'Answer is unexpectedly short');
 assert.ok(first.sources.length > 0, 'Answer has no sources');
@@ -35,10 +35,10 @@ console.log('3. Asking something the knowledge base does not cover ...');
 const second = await json('/api/rag/ask', {
   method: 'POST',
   headers: { 'content-type': 'application/json' },
-  body: JSON.stringify({ question: '公司年假有多少天？' })
+  body: JSON.stringify({ question: 'How many days of annual leave do I get?' })
 });
 console.log(`   answer: ${second.answer.replace(/\s+/g, ' ').slice(0, 160)}`);
-if (!/没有写|没有提供|未提及|没有相关/.test(second.answer)) {
+if (!/does not cover|not covered|no information|not in the material|does not mention|not specified/i.test(second.answer)) {
   console.log('   WARNING: the model did not explicitly say the documents lack this information. Review the answer manually.');
 }
 

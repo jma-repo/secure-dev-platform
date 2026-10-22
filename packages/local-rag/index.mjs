@@ -43,16 +43,26 @@ export async function listModels() {
   return (data.data ?? []).map(item => item.id).filter(id => typeof id === 'string');
 }
 
+// Interactive use needs an answer in seconds, not minutes. A 27B model on CPU
+// runs at about 4 tokens per second, which is unusable in front of a customer,
+// so the small model is preferred and the large one stays loaded for quality
+// comparison. Override with LOCAL_CHAT_MODEL=<model id> when quality matters
+// more than latency.
+const CHAT_PREFERENCE = ['qwen2.5-3b-instruct', 'qwen/qwen3.8-27b'];
+
 export function pickModels(ids) {
   const embed = ids.find(id => /embed/i.test(id));
-  const chat = ids.find(id => !/embed/i.test(id));
+  const override = process.env.LOCAL_CHAT_MODEL;
+  const chat = (override && ids.includes(override) ? override : null)
+    ?? CHAT_PREFERENCE.find(preferred => ids.includes(preferred))
+    ?? ids.find(id => !/embed/i.test(id));
   return { chat: chat ?? null, embed: embed ?? null };
 }
 
 export function chunkMarkdown(text, source) {
   const lines = text.split(/\r?\n/);
   const chunks = [];
-  let heading = '文档开头';
+  let heading = 'Document start';
   let buffer = [];
   const flush = () => {
     const body = buffer.join('\n').trim();
@@ -232,19 +242,38 @@ export async function askQuestion(question) {
       return { chunk, semantic, lexical, score: 0.55 * semantic + 0.45 * lexical };
     })
     .sort((a, b) => b.score - a.score)
-    .slice(0, 4);
-  const context = ranked.map((item, position) => `[${position + 1}] 来源：${item.chunk.source} · ${item.chunk.heading}\n${item.chunk.text}`).join('\n\n');
-  const completion = await call('/chat/completions', {
+    .slice(0, 3);
+  const context = ranked.map((item, position) => `[${position + 1}] Source: ${item.chunk.source} · ${item.chunk.heading}\n${item.chunk.text}`).join('\n\n');
+  // This model reasons before it answers, and the server ignores both
+  // chat_template_kwargs.enable_thinking and the /no_think soft switch. The
+  // chat endpoint keeps the reasoning in a separate field, so the budget has to
+  // cover reasoning plus the answer. The raw completion endpoint has no such
+  // separation and leaks the reasoning into the visible text, which is why it is
+  // not used here.
+  //
+  // On CPU this model produces roughly 4 tokens per second, so a question costs
+  // about a minute. That latency is the real price of keeping the data on the
+  // machine, and it is measured and reported rather than hidden.
+  const request = {
     model: models.chat,
     temperature: 0.2,
     max_tokens: 700,
     messages: [
-      { role: 'system', content: '你是 SENTINEL 的内部知识助手，只依据提供的【资料】用简体中文回答。要求：1) 只使用资料中的信息，不得补充资料之外的规定、命令或数字；2) 资料不足时直接说“现有资料没有写”，并说明缺什么；3) 关键结论后用 [编号] 标注来源；4) 回答控制在 4 句话以内，不要复述问题。' },
-      { role: 'user', content: `【资料】\n${context}\n\n【问题】\n${text}` }
+      { role: 'system', content: 'You are the SENTINEL internal knowledge assistant. Answer in English, using only the supplied material. Never add rules, commands or numbers that are not in the material. If the material does not answer the question, say "The material does not cover this" and name what is missing. Mark each key claim with its source number, for example [1]. Stay within four sentences and do not restate the question.' },
+      { role: 'user', content: `[Material]\n${context}\n\n[Question]\n${text}` }
     ]
-  }, 120000);
-  const answer = completion.choices?.[0]?.message?.content?.trim();
-  if (!answer) throw Object.assign(new Error('Local model returned an empty answer'), { statusCode: 502 });
+  };
+  let completion;
+  try {
+    completion = await call('/chat/completions', { ...request, chat_template_kwargs: { enable_thinking: false } }, 240000);
+  } catch (error) {
+    if (!/HTTP 4\d\d/.test(String(error.message))) throw error;
+    completion = await call('/chat/completions', request, 240000);
+  }
+  const answer = (completion.choices?.[0]?.message?.content ?? '').replace(/<\/?think>/gi, '').trim();
+  if (!answer) {
+    throw Object.assign(new Error('The local model spent its whole token budget on reasoning and returned no answer. Raise max_tokens, or load a smaller model for interactive use.'), { statusCode: 502 });
+  }
   return {
     answer,
     sources: ranked.map(item => ({

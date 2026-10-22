@@ -1,23 +1,23 @@
-# 密钥与凭据管理规范
+# Secrets and Credential Management Policy
 
-## 基本原则
+## Ground rules
 
-任何真实凭据都不得进入 Git 仓库，包括密码、API Key、访问令牌、私钥、数据库连接串和云厂商 Access Key。凭据统一通过运行时的环境变量或密钥管理服务注入，仓库内只允许出现占位符，例如 `API_TOKEN=${INJECT_AT_RUNTIME}`。
+No real credential may enter the Git repository. That covers passwords, API keys, access tokens, private keys, database connection strings and cloud provider access keys. Credentials are injected at runtime through environment variables or a secrets manager. The repository may only contain placeholders such as `API_TOKEN=${INJECT_AT_RUNTIME}`.
 
-## 提交前检查
+## Checks before a commit
 
-仓库使用 Gitleaks 8.30.1 在提交前扫描暂存区内容。检查对象是 `git index` 中准备提交的版本，不是编辑器里当前保存的版本，因此“在工作区删掉密钥但忘记重新 add”仍然会被拦截。扫描器缺失或执行失败时，提交默认被阻断，不会静默放行。
+The repository scans the staged content with Gitleaks 8.30.1 before every commit. The scan reads the version in the `git index`, not the version currently saved in the editor. Deleting a secret in the working tree without staging that deletion is therefore still blocked. If the scanner is missing or fails to run, the commit is blocked by default; it is never let through silently.
 
-本地 hook 可以被开发者绕过，所以远端流水线会再次扫描完整 Git 历史。真正的强制门禁来自服务端必需检查与分支保护，而不是本地脚本。
+A local hook can be bypassed by the developer, so the remote pipeline scans the full Git history again. The enforcement that actually binds comes from required server-side checks and branch protection, not from the local script.
 
-## 发现泄露后的处理
+## What to do after a leak
 
-1. 立即在对应平台轮换或吊销该凭据，不要先忙着删代码。
-2. 保留现场，通知安全负责人，记录发现时间、影响范围与使用情况。
-3. 使用 `gitleaks git` 扫描完整历史，确认泄露进入过哪些提交。
-4. 清理历史需要重写提交并协调所有协作者，不能只提交一个“删除密钥”的新 commit。
-5. 复盘并补充规则或流程，避免同类问题再次发生。
+1. Rotate or revoke the credential on the platform that issued it first. Do not start by deleting code.
+2. Preserve the evidence, notify the security owner, and record when the leak was found, what it exposed and where it was used.
+3. Run `gitleaks git` over the full history to establish which commits the secret entered.
+4. Cleaning history means rewriting commits and coordinating every collaborator. Adding a new commit that deletes the secret is not enough.
+5. Review the incident, then add the rule or process that stops the same class of mistake.
 
-## 例外流程
+## Exceptions
 
-确需提交测试用假凭据时，必须使用明显的合成前缀（例如 `SDEV_DEMO_`），并在 `.gitleaks.toml` 中新增精确规则或受限 allowlist。禁止使用宽泛路径或整文件忽略，禁止把真实凭据改个名字后当作测试数据。
+A synthetic test credential may only be committed with an obvious synthetic prefix such as `SDEV_DEMO_`, plus a precise rule or a narrowly scoped allowlist entry in `.gitleaks.toml`. Broad path exclusions and whole-file ignores are not allowed, and renaming a real credential does not turn it into test data.
