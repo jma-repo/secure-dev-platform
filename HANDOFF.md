@@ -75,8 +75,13 @@
 ```
 
 需要两个模型：
-- 聊天：`qwen/qwen3.8-27b`
+- 聊天：**`qwen2.5-3b-instruct`**（约 1.93GB，演示用，一问 8–30 秒）
+- 聊天（备选）：`qwen/qwen3.8-27b`（17.7GB，质量更好但 CPU 上约 4 token/秒，一问要几分钟，不适合现场）
 - 嵌入：`text-embedding-nomic-embed-text-v1.5`
+
+代码默认优先选 3B 模型；要用 27B 就设环境变量 `LOCAL_CHAT_MODEL=qwen/qwen3.8-27b`。
+
+> 27B 是推理模型，LM Studio 会忽略 `chat_template_kwargs.enable_thinking` 和 `/no_think`，推理 token 会吃掉 `max_tokens`。所以代码走 `/chat/completions`（推理在独立字段），预算按"推理 + 答案"一起算。改 `max_tokens` 前先读 `packages/local-rag/index.mjs` 那段注释。
 
 确认接口：
 
@@ -180,6 +185,7 @@ curl -X POST http://127.0.0.1:4173/api/rag/reindex
 | `terraform init` / `trivy` 报同样错误 | 同上 | 在普通终端或 Dev Container 里补跑；证据标 blocked，不伪报 |
 | reindex 后数量没变 | 旧版本缓存 bug | 已修复（`buildIndex` 同步更新 `cached`），并有回归测试 |
 | Local AI 徽标不是 Ready | LM Studio server 没开 / 没加载 embedding 模型 | 启动 server，确认两个模型都在 |
+| Local AI 一问要几分钟或超时 | 加载的是 27B 模型 | 改加载 `qwen2.5-3b-instruct`；或设 `LOCAL_CHAT_MODEL` 明确指定 |
 | 回答很慢（10–25 秒） | 27B 模型本机推理 | 演示前先问一次预热；或换更小模型 |
 | 容器里 Local AI 不可用 | 容器内 127.0.0.1 是自己 | 预期隔离，不是 bug |
 | PowerShell 传中文 JSON 变问号 | Windows PowerShell 默认编码 | 用 Node 或 `-ContentType "application/json; charset=utf-8"` |
