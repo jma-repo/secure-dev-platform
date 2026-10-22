@@ -11,6 +11,7 @@
     "test": "node --test",
     "hooks:install": "node scripts/install-hooks.mjs",
     "verify": "node scripts/verify.mjs",
-    "demo:smoke": "node scripts/smoke.mjs"
+    "demo:smoke": "node scripts/smoke.mjs",
+    "rag:smoke": "node scripts/rag-smoke.mjs"
   }
 }

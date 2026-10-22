@@ -107,6 +107,15 @@ node scripts/install-hooks.mjs
 export LM_STUDIO_BASE=http://127.0.0.1:1234/v1
 ```
 
+**怎么验证：**
+
+```sh
+node apps/sample-service/server.mjs     # 终端 1
+node scripts/rag-smoke.mjs              # 终端 2
+```
+
+脚本会依次检查模型就绪、问一个可回答问题（必须带来源）、问一个知识库没有的问题（应明确说没有），并确认非回环地址会被拒绝。也可以直接打开 http://127.0.0.1:4173/#local-ai，点示例问题，看 `Egress: Loopback only` 和来源列表。
+
 **强制约束，不是口头承诺：**
 
 - `assertLoopback()` 拒绝任何非 `127.0.0.1` / `localhost` / `::1` 的推理地址，配错就直接报错，不会把资料发出去。
