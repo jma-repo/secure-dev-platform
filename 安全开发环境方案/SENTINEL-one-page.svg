@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="1600" height="1000" fill="#FFFFFF"/>
+
+  <!-- ============ header ============ -->
+  <text x="60" y="64" font-size="38" font-weight="700" fill="#111827" letter-spacing="-0.5">SENTINEL</text>
+  <text x="60" y="92" font-size="17" fill="#6B7280">Secure development environment — one page</text>
+  <text x="1540" y="92" font-size="14" fill="#6B7280" text-anchor="end">Local proof · stated boundaries · 2026</text>
+  <line x1="60" y1="112" x2="1540" y2="112" stroke="#111827" stroke-width="1.5"/>
+
+  <!-- ============ section 1 ============ -->
+  <text x="60" y="146" font-size="13" font-weight="700" fill="#6B7280" letter-spacing="1.7">EVERY CHANGE PASSES THREE CHECKPOINTS</text>
+
+  <!-- gate 1 -->
+  <rect x="60" y="162" width="470" height="210" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+  <rect x="60" y="162" width="470" height="4" rx="2" fill="#167762"/>
+  <text x="84" y="200" font-size="15" font-weight="700" fill="#111827">01 · BEFORE THE COMMIT</text>
+  <text x="84" y="226" font-size="14" fill="#4B5563">The staged Git index, not the editor</text>
+  <text x="84" y="258" font-size="11" font-weight="700" fill="#9CA3AF" letter-spacing="1.2">BLOCKS</text>
+  <text x="84" y="279" font-size="13.5" fill="#111827">Any secret finding</text>
+  <rect x="84" y="296" width="132" height="26" rx="13" fill="#F0FDF4" stroke="#BBF7D0"/>
+  <text x="150" y="313" font-size="11.5" fill="#166534" text-anchor="middle">Gitleaks 8.30.1</text>
+  <text x="84" y="346" font-size="12.5" fill="#6B7280">Deleting a secret in the working tree</text>
+  <text x="84" y="364" font-size="12.5" fill="#6B7280">without staging it is still blocked.</text>
+
+  <path d="M542,257 L554,269 L542,281" stroke="#9CA3AF" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- gate 2 -->
+  <rect x="565" y="162" width="470" height="210" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+  <rect x="565" y="162" width="470" height="4" rx="2" fill="#167762"/>
+  <text x="589" y="200" font-size="15" font-weight="700" fill="#111827">02 · BEFORE THE MERGE</text>
+  <text x="589" y="226" font-size="14" fill="#4B5563">Five CI jobs on every push</text>
+  <text x="589" y="258" font-size="11" font-weight="700" fill="#9CA3AF" letter-spacing="1.2">BLOCKS</text>
+  <text x="589" y="279" font-size="13.5" fill="#111827">Tests · secrets in full history · config HIGH+</text>
+  <text x="589" y="297" font-size="13.5" fill="#111827">· fixable CRITICAL CVEs</text>
+  <rect x="589" y="312" width="126" height="26" rx="13" fill="#F0FDF4" stroke="#BBF7D0"/>
+  <text x="652" y="329" font-size="11.5" fill="#166534" text-anchor="middle">GitHub Actions</text>
+  <text x="589" y="350" font-size="12.5" fill="#6B7280">Threshold set by who owns the finding,</text>
+  <text x="589" y="368" font-size="12.5" fill="#6B7280">not by the raw count.</text>
+
+  <path d="M1047,257 L1059,269 L1047,281" stroke="#9CA3AF" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- gate 3 -->
+  <rect x="1070" y="162" width="470" height="210" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+  <rect x="1070" y="162" width="470" height="4" rx="2" fill="#167762"/>
+  <text x="1094" y="200" font-size="15" font-weight="700" fill="#111827">03 · BEFORE THE RUN</text>
+  <text x="1094" y="226" font-size="14" fill="#4B5563">Hardened container, loopback only</text>
+  <text x="1094" y="258" font-size="11" font-weight="700" fill="#9CA3AF" letter-spacing="1.2">BLOCKS</text>
+  <text x="1094" y="279" font-size="13.5" fill="#111827">Root user · writable filesystem · capabilities</text>
+  <rect x="1094" y="296" width="86" height="26" rx="13" fill="#F0FDF4" stroke="#BBF7D0"/>
+  <text x="1137" y="313" font-size="11.5" fill="#166534" text-anchor="middle">Docker</text>
+  <text x="1094" y="346" font-size="12.5" fill="#6B7280">A control that is only written down</text>
+  <text x="1094" y="364" font-size="12.5" fill="#6B7280">has never stopped anyone.</text>
+
+  <!-- ============ section 2 ============ -->
+  <text x="60" y="412" font-size="13" font-weight="700" fill="#6B7280" letter-spacing="1.7">AND EVERY CHECKPOINT LEAVES A RECEIPT YOU CAN RE-RUN</text>
+
+  <!-- verified panel -->
+  <rect x="60" y="428" width="725" height="260" rx="10" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1.5"/>
+  <text x="84" y="460" font-size="13" font-weight="700" fill="#166534" letter-spacing="1.1">VERIFIED ON THIS MACHINE</text>
+  <text x="761" y="460" font-size="13" font-weight="700" fill="#166534" text-anchor="end">10 of 14 checks</text>
+
+  <circle cx="88" cy="488" r="3.5" fill="#16A34A"/>
+  <text x="102" y="492" font-size="13.5" fill="#111827">26 automated tests passing, 0 skipped</text>
+  <circle cx="88" cy="516" r="3.5" fill="#16A34A"/>
+  <text x="102" y="520" font-size="13.5" fill="#111827">Synthetic secret blocked, repaired input allowed</text>
+  <circle cx="88" cy="544" r="3.5" fill="#16A34A"/>
+  <text x="102" y="548" font-size="13.5" fill="#111827">Staged-index bypass blocked, no commit created</text>
+  <circle cx="88" cy="572" r="3.5" fill="#16A34A"/>
+  <text x="102" y="576" font-size="13.5" fill="#111827">Container built, running hardened, health check green</text>
+  <circle cx="88" cy="600" r="3.5" fill="#16A34A"/>
+  <text x="102" y="604" font-size="13.5" fill="#111827">Local retrieval answers with cited sources, loopback only</text>
+  <circle cx="88" cy="628" r="3.5" fill="#16A34A"/>
+  <text x="102" y="632" font-size="13.5" fill="#111827">CI pipeline 5 of 5 jobs green, read back from GitHub</text>
+  <text x="84" y="666" font-size="12.5" fill="#166534">Every row above maps to a command that actually ran.</text>
+
+  <!-- not verified panel -->
+  <rect x="815" y="428" width="725" height="260" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+  <text x="839" y="460" font-size="13" font-weight="700" fill="#92400E" letter-spacing="1.1">NOT VERIFIED — REPORTED, NOT COUNTED</text>
+  <text x="1516" y="460" font-size="13" font-weight="700" fill="#92400E" text-anchor="end">4 of 14 checks</text>
+
+  <circle cx="843" cy="488" r="3.5" fill="#D97706"/>
+  <text x="857" y="492" font-size="13.5" fill="#111827">Terraform init / validate — sandbox cannot read the directory</text>
+  <circle cx="843" cy="516" r="3.5" fill="#D97706"/>
+  <text x="857" y="520" font-size="13.5" fill="#111827">Trivy configuration scan — same sandbox limit</text>
+  <circle cx="843" cy="544" r="3.5" fill="#D97706"/>
+  <text x="857" y="548" font-size="13.5" fill="#111827">Trivy image scan — same sandbox limit</text>
+  <circle cx="843" cy="572" r="3.5" fill="#D97706"/>
+  <text x="857" y="576" font-size="13.5" fill="#111827">Branch protection — a repository administrator action</text>
+  <text x="839" y="608" font-size="12.5" fill="#92400E">These four are the honest gap. They are not counted as passing anywhere on this page.</text>
+  <text x="839" y="632" font-size="12.5" fill="#92400E">CodeQL is skipped on a private repository without a Code Security licence — a licensing</text>
+  <text x="839" y="650" font-size="12.5" fill="#92400E">decision, and it is not counted as a pass either.</text>
+  <text x="839" y="674" font-size="12.5" fill="#92400E">A tool that installed is not a check that passed.</text>
+
+  <!-- ============ section 3 ============ -->
+  <text x="60" y="720" font-size="13" font-weight="700" fill="#6B7280" letter-spacing="1.7">THE AI PART NEVER LEAVES THE MACHINE</text>
+
+  <rect x="60" y="734" width="1480" height="170" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="85" y="750" width="1430" height="78" rx="8" fill="none" stroke="#B45309" stroke-width="1.5" stroke-dasharray="6 5"/>
+
+  <!-- steps -->
+  <rect x="101" y="762" width="200" height="54" rx="7" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="201" y="786" font-size="13.5" font-weight="700" fill="#111827" text-anchor="middle">7 documents</text>
+  <text x="201" y="804" font-size="11.5" fill="#64748B" text-anchor="middle">internal policy, English</text>
+
+  <path d="M307,783 L319,789 L307,795" stroke="#94A3B8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="331" y="762" width="200" height="54" rx="7" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="431" y="786" font-size="13.5" font-weight="700" fill="#111827" text-anchor="middle">69 chunks</text>
+  <text x="431" y="804" font-size="11.5" fill="#64748B" text-anchor="middle">heading-aware split</text>
+
+  <path d="M537,783 L549,789 L537,795" stroke="#94A3B8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="561" y="762" width="200" height="54" rx="7" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="661" y="786" font-size="13.5" font-weight="700" fill="#111827" text-anchor="middle">768-d vectors</text>
+  <text x="661" y="804" font-size="11.5" fill="#64748B" text-anchor="middle">local embedding model</text>
+
+  <path d="M767,783 L779,789 L767,795" stroke="#94A3B8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="791" y="762" width="200" height="54" rx="7" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="891" y="786" font-size="13.5" font-weight="700" fill="#111827" text-anchor="middle">hybrid retrieval</text>
+  <text x="891" y="804" font-size="11.5" fill="#64748B" text-anchor="middle">BM25 + cosine, top 3</text>
+
+  <path d="M997,783 L1009,789 L997,795" stroke="#94A3B8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="1021" y="762" width="200" height="54" rx="7" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="1121" y="786" font-size="13.5" font-weight="700" fill="#111827" text-anchor="middle">local model</text>
+  <text x="1121" y="804" font-size="11.5" fill="#64748B" text-anchor="middle">runs on this machine</text>
+
+  <path d="M1227,783 L1239,789 L1227,795" stroke="#94A3B8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="1251" y="762" width="200" height="54" rx="7" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="1351" y="786" font-size="13.5" font-weight="700" fill="#111827" text-anchor="middle">cited answer</text>
+  <text x="1351" y="804" font-size="11.5" fill="#64748B" text-anchor="middle">or refuses to guess</text>
+
+  <text x="85" y="854" font-size="12.5" font-weight="700" fill="#B45309">127.0.0.1 only — any non-loopback inference host is refused before a request is sent.</text>
+  <text x="85" y="878" font-size="12.5" fill="#4B5563">Answers take 6–30 seconds on a CPU. That latency is the real price of keeping the data on the machine, and it is reported, not hidden.</text>
+
+  <!-- ============ footer ============ -->
+  <text x="60" y="948" font-size="12.5" fill="#4B5563">Every number on this page comes from a command that actually ran.</text>
+  <text x="1540" y="948" font-size="12.5" fill="#9CA3AF" text-anchor="end">github.com/jma-repo/secure-dev-platform</text>
+</svg>
