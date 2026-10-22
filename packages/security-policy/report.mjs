@@ -41,6 +41,13 @@ export const GATE_POLICY = [
     why: 'An unfixed CVE cannot be acted on locally. Blocking on it only teaches the team to ignore red builds; it is still reported.'
   },
   {
+    id: 'local-ai',
+    rule: 'Local retrieval stays on the machine',
+    threshold: 'Must answer with cited sources',
+    blocking: true,
+    why: 'A retrieval prototype that silently falls back to a hosted model would break the entire premise.'
+  },
+  {
     id: 'remote',
     rule: 'Remote enforcement (CI, branch protection)',
     threshold: 'Must be enabled by a repository admin',
@@ -55,14 +62,14 @@ const SCANS = [
     name: 'Secrets in the repository',
     tool: 'Gitleaks',
     policy: 'Any finding blocks',
-    checks: ['repo-secrets', 'staged-hook']
+    checks: ['repo-secrets', 'staged-hook', 'live-gate']
   },
   {
     id: 'tests',
-    name: 'Security regression tests',
+    name: 'Pinned runtime and tests',
     tool: 'node --test',
     policy: 'All must pass',
-    checks: ['tests']
+    checks: ['runtime', 'tests']
   },
   {
     id: 'config',
@@ -84,6 +91,13 @@ const SCANS = [
     tool: 'Trivy image',
     policy: 'Fixable CRITICAL blocks',
     checks: ['trivy-image']
+  },
+  {
+    id: 'local-ai',
+    name: 'Local retrieval',
+    tool: 'LM Studio, nomic embeddings',
+    policy: 'Loopback only, cited answers',
+    checks: ['local-rag']
   },
   {
     id: 'remote',
