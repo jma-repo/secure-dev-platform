@@ -179,6 +179,7 @@ docs/knowledge/            本地 RAG 知识库示例
 scripts/                   安装、hook、验证、浏览器 QA、打包
 outputs/                   本地证据与交付包（不入 Git）
 README.md                  架构、安全边界与复现
+HANDOFF.md                 交接：客户诉求对照、下次运行步骤、已知坑
 DEMO_GUIDE.md               五分钟客户演示脚本
 ```
 
