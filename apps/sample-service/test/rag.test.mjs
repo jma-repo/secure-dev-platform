@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
-import { assertLoopback, chunkMarkdown, cosine, pickModels, ragStatus, loadIndex, buildIndex } from '../../../packages/local-rag/index.mjs';
+import { assertLoopback, bm25Rank, chunkMarkdown, cosine, pickModels, ragStatus, loadIndex, buildIndex, tokenize } from '../../../packages/local-rag/index.mjs';
 import { createApp } from '../server.mjs';
 
 async function withApp(fn) {
@@ -34,6 +34,29 @@ test('cosine similarity prefers aligned vectors', () => {
   assert.equal(cosine([1, 0], [1, 0]), 1);
   assert.equal(cosine([1, 0], [0, 1]), 0);
   assert.ok(cosine([1, 0], [1, 0]) > cosine([1, 0], [0.7, 0.7]));
+});
+
+test('tokenizer keeps latin words and CJK bigrams', () => {
+  const tokens = tokenize('Canlus 收费模式 vCISO');
+  assert.ok(tokens.includes('canlus'));
+  assert.ok(tokens.includes('收费'));
+  assert.ok(tokens.includes('模式'));
+  assert.ok(tokens.includes('vciso'));
+});
+
+test('keyword scoring discounts a brand word that appears in every chunk', () => {
+  const docs = [
+    { text: 'Canlus 联系方式 Canlus 地址 Canlus 邮箱 Canlus 电话 Canlus' },
+    { text: 'Canlus 收费模式：固定月费，一次性项目与软件许可单独报价' },
+    { text: 'Canlus 服务列表 Canlus 能力 Canlus 团队' }
+  ];
+  const scores = bm25Rank('Canlus 的收费模式是怎样的？', docs);
+  assert.equal(scores.indexOf(Math.max(...scores)), 1, `expected the pricing chunk to win, got ${scores.map(score => score.toFixed(2))}`);
+});
+
+test('keyword scoring never returns negative or NaN values', () => {
+  const scores = bm25Rank('完全无关的查询', [{ text: 'Canlus 收费模式' }, { text: '' }]);
+  assert.ok(scores.every(score => Number.isFinite(score) && score >= 0));
 });
 
 test('chat and embedding models are selected separately', () => {

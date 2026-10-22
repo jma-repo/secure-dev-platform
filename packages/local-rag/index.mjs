@@ -175,6 +175,44 @@ export function cosine(a, b) {
   return sum;
 }
 
+// The bundled embedding model is English-first, so a Chinese question that also
+// names the brand ("Canlus 怎么收费") drifts toward whichever chunk repeats the
+// brand. Keyword scoring with IDF fixes that without a second model.
+export function tokenize(text) {
+  const value = String(text ?? '').toLowerCase();
+  const tokens = value.match(/[a-z0-9][a-z0-9._+-]*/g) ?? [];
+  for (const run of value.match(/[\u3400-\u9fff]+/g) ?? []) {
+    for (let index = 0; index < run.length; index += 1) {
+      tokens.push(run[index]);
+      if (index + 1 < run.length) tokens.push(run.slice(index, index + 2));
+    }
+  }
+  return tokens;
+}
+
+export function bm25Rank(query, documents, { k1 = 1.2, b = 0.75 } = {}) {
+  const queryTokens = [...new Set(tokenize(query))];
+  const tokenized = documents.map(document => tokenize(document.text));
+  const averageLength = tokenized.reduce((sum, tokens) => sum + tokens.length, 0) / (tokenized.length || 1);
+  const documentFrequency = new Map();
+  for (const tokens of tokenized) {
+    for (const token of new Set(tokens)) documentFrequency.set(token, (documentFrequency.get(token) ?? 0) + 1);
+  }
+  const total = tokenized.length || 1;
+  return tokenized.map(tokens => {
+    const frequency = new Map();
+    for (const token of tokens) frequency.set(token, (frequency.get(token) ?? 0) + 1);
+    let score = 0;
+    for (const token of queryTokens) {
+      const count = frequency.get(token) ?? 0;
+      if (!count) continue;
+      const idf = Math.log(1 + (total - documentFrequency.get(token) + 0.5) / (documentFrequency.get(token) + 0.5));
+      score += idf * (count * (k1 + 1)) / (count + k1 * (1 - b + (b * tokens.length) / (averageLength || 1)));
+    }
+    return score;
+  });
+}
+
 export async function askQuestion(question) {
   const started = performance.now();
   const text = String(question ?? '').trim();
@@ -185,8 +223,14 @@ export async function askQuestion(question) {
   const models = pickModels(ids);
   if (!models.chat || !models.embed) throw Object.assign(new Error('Local chat or embedding model is not loaded'), { statusCode: 503 });
   const [queryVector] = await embedTexts(['search_query: ' + text], models.embed);
+  const keyword = bm25Rank(text, index.chunks.map(chunk => ({ text: chunk.heading + '\n' + chunk.text })));
+  const keywordCeiling = Math.max(...keyword, 0);
   const ranked = index.chunks
-    .map(chunk => ({ chunk, score: cosine(queryVector, chunk.vector) }))
+    .map((chunk, position) => {
+      const semantic = cosine(queryVector, chunk.vector);
+      const lexical = keywordCeiling > 0 ? keyword[position] / keywordCeiling : 0;
+      return { chunk, semantic, lexical, score: 0.55 * semantic + 0.45 * lexical };
+    })
     .sort((a, b) => b.score - a.score)
     .slice(0, 4);
   const context = ranked.map((item, position) => `[${position + 1}] 来源：${item.chunk.source} · ${item.chunk.heading}\n${item.chunk.text}`).join('\n\n');
@@ -203,10 +247,16 @@ export async function askQuestion(question) {
   if (!answer) throw Object.assign(new Error('Local model returned an empty answer'), { statusCode: 502 });
   return {
     answer,
-    sources: ranked.map(item => ({ file: item.chunk.source, heading: item.chunk.heading, score: Number(item.score.toFixed(3)) })),
+    sources: ranked.map(item => ({
+      file: item.chunk.source,
+      heading: item.chunk.heading,
+      score: Number(item.score.toFixed(3)),
+      semantic: Number(item.semantic.toFixed(3)),
+      lexical: Number(item.lexical.toFixed(3))
+    })),
     model: models.chat,
     embeddingModel: models.embed,
-    retrieval: 'semantic',
+    retrieval: 'hybrid',
     localOnly: true,
     elapsedMs: Math.round(performance.now() - started)
   };
