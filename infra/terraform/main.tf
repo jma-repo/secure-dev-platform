@@ -2,10 +2,10 @@ terraform {
   required_version = "=1.16.6"
 }
 
-# 仅使用 Terraform 内置 terraform_data：无外部 provider、无 backend 块、无云资源。
-# 未声明 backend 时 Terraform 默认使用本地状态；本 PoC 不执行 plan/apply。
-# 这里是可校验的开发契约示例，不会生成或自动同步 Docker / Compose 配置。
-# Trivy 若没有匹配 terraform_data 的规则，零发现不代表云资源 IaC 已被覆盖。
+# Uses only Terraform's built-in terraform_data: no external provider, no backend block, and no cloud resources.
+# Without a backend block, Terraform uses local state by default. This PoC does not run plan or apply.
+# This is a verifiable development contract example. It does not generate or automatically sync Docker / Compose configuration.
+# If no Trivy rule matches terraform_data, zero findings do not mean cloud resource IaC is covered.
 locals {
   development_contract = {
     node_version    = var.node_version

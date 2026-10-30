@@ -1,148 +1,148 @@
-# SENTINEL 客户演示脚本
+# SENTINEL Client Demo Script
 
-## 开场定位（30 秒）
+## Opening Positioning (30 seconds)
 
-> 我针对“统一、安全、可复现的开发环境”做了一个本地可运行的 PoC。先不绑定 Azure/AWS 或许可证，重点验证同一仓库、固定开发环境和真正可执行的安全门禁。下面的安全结果是实际扫描出来的，不是 UI 模拟。它是我的作品验证，不是声称已经在客户生产环境交付过。
+> I built a locally runnable PoC for a "unified, secure, reproducible development environment." It is not tied to Azure, AWS, or any license. It focuses on verifying one repository, a pinned development environment, and security gates that actually run. The security results below come from real scans, not UI simulation. This is my own validation work; it is not a claim that it has already been delivered in a client's production environment.
 
-## 先给客户看哪一张图
+## Which Image to Show the Client First
 
-**只给一张：`安全开发环境方案/SENTINEL-one-page.svg`（同名 `.png` / `.pdf`）。**
+**Only one: `secure-dev-environment-plan/SENTINEL-one-page.svg` (same name, `.png` / `.pdf`).**
 
-15 页的 `安全开发环境方案.pptx` 不是开场材料，是客户问了"具体怎么做"之后的展开；一上来就放 15 页，客户记不住任何一页。
+The 15-slide deck, `secure-dev-environment-plan/secure-dev-environment-plan.pptx`, is not opening material. It is for after the client asks "how exactly would you do it?" If you show all 15 slides at the start, the client will not remember any of them.
 
-这张一页图只讲三件事，从上到下就是讲解顺序：
+This one-page diagram covers only three things. Explain them in this order, top to bottom:
 
-1. **每一次改动都要过三个检查点**（提交前 / 合并前 / 运行前）——横着三张卡片。
-2. **每个检查点都留一张可以重跑的回执**——左边绿色"已验证 10 / 14"，右边琥珀色"未验证 4 / 14"。
-3. **AI 那部分数据不出机器**——底部那条虚线框，从 7 篇文档到带引用的回答，全在 `127.0.0.1` 里面。
+1. **Every change goes through three checkpoints** (before commit / before merge / before run), shown as three cards side by side.
+2. **Every checkpoint leaves a receipt you can re-run.** The green panel on the left shows "verified 10 / 14"; the amber panel on the right shows "not verified 4 / 14."
+3. **The AI part never leaves the machine.** The dashed box at the bottom runs from 7 documents to a cited answer, all inside `127.0.0.1`.
 
-### 60 秒讲法（照着说）
+### 60-Second Script (read it as written)
 
-> 这张图是我做的东西的全貌，只有三句话。
+> This diagram is the full picture of what I built, in three points.
 >
-> **第一，每一次改动都要过三个检查点。** 提交前扫暂存区，合并前跑五个 CI 检查，运行前把容器收紧到非 root、只读文件系统。三个点分别拦不同的东西，不是同一个检查画三遍。
+> **First, every change goes through three checkpoints.** Before the commit, I scan the staging area. Before the merge, I run five CI checks. Before the run, I harden the container to non-root with a read-only filesystem. Each checkpoint blocks something different. It is not the same check drawn three times.
 >
-> **第二，每个检查点都留回执。** 左边绿色是这台机器上真跑通的，10 项；右边琥珀色是没跑通的，4 项，我把它们照样列出来，不并进绿色里。**一个工具装上了不等于检查通过了**——这一栏就是我不含糊的地方。
+> **Second, every checkpoint leaves a receipt.** The green side on the left is what actually passed on this machine: 10 items. The amber side on the right is what did not pass: 4 items. I list them anyway and do not mix them into the green. **Installing a tool does not mean the check passed.** This panel is where I do not hedge.
 >
-> **第三，AI 那部分数据不出机器。** 文档在这台机器上切块、向量化、检索、生成，全程 `127.0.0.1`。代码里写死了检查：只要配成外部地址，请求根本发不出去。代价是慢——CPU 上一问 6 到 30 秒，这个慢我不藏。
+> **Third, the AI part never leaves the machine.** Documents are chunked, embedded, retrieved, and answered entirely on this machine, all on `127.0.0.1`. The code has a hard check: if an external address is configured, the request cannot be sent at all. The cost is speed. On a CPU, one question takes 6 to 30 seconds. I do not hide that.
 
-然后停在这里，等客户问。**不要主动翻到 PPT**。客户问"怎么落地""成本多少""能不能按人控权"，再翻到对应那几页。
+Then stop and wait for questions. **Do not jump to the deck on your own.** When the client asks "how would this roll out?", "what does it cost?", or "can you control access per person?", turn to the matching slides.
 
-### 客户最可能问的三个问题
+### The Three Questions the Client Is Most Likely to Ask
 
-| 客户问 | 你怎么答 |
+| Client asks | How to answer |
 | --- | --- |
-| "这些绿色是真跑出来的？" | 打开 Security report 页签，每行都有 `x of y checks verified`；再点 Evidence，每一条都写着跑了什么命令。 |
-| "为什么还有没验证的？" | 三个是这台机器的沙箱限制（Go 工具读不了项目目录），一个是私有仓库要 Code Security 许可。换到客户环境或 Dev Container 就能补上，我不在这里假装已经通过。 |
-| "能不能按人控权？" | 现在没有。这是下一阶段要加的文档级 ACL + 身份体系，我会先把权限模型画出来再动手。**不要说"可以"，现在真的没有。** |
+| "Are these green results really from actual runs?" | Open the Security report tab. Every row shows `x of y checks verified`. Then open Evidence; every entry states the command that ran. |
+| "Why are some items not verified?" | Three are sandbox limits on this machine (Go tools cannot read the project directory). One requires a Code Security license for a private repository. These can be completed in the client's environment or in the Dev Container. I am not pretending they passed here. |
+| "Can you control access per person?" | Not yet. Document-level ACLs and an identity system are the next phase. I would draw out the permission model first, then build it. **Do not say "yes." It really does not exist yet.** |
 
-## 演示前准备
+## Before the Demo
 
-1. 双击项目根目录 `start-demo.cmd`，保持窗口开启；访问 **http://127.0.0.1:4173**。
-2. Overview 显示 Connected，Gitleaks 显示 Available。
-3. 不需要云账号或 API key。若端口被占用，先看是否已有演示实例。
-4. 若要演示 Local AI：打开 LM Studio → Developer → Start Server（1234 端口），加载**一个聊天模型**（优先 `qwen2.5-3b-instruct`，回答约 20–30 秒）**和一个 embedding 模型**（`text-embedding-nomic-embed-text-v1.5`）；页面徽标应显示 Ready。27B 模型也能用，但一问要几分钟，不适合现场演示。
-5. 保留 Evidence 页面中的未验证项；不把它们说成已完成。
-6. **界面是英文的**（客户主要语言是 English）：Overview / Live demo / Security report / Local AI / Evidence / Handoff 六个页签。讲解用中文，屏幕上的字用英文，客户看得懂。
+1. Double-click `start-demo.cmd` in the project root. Keep the window open, and go to **http://127.0.0.1:4173**.
+2. The Overview should show Connected, and Gitleaks should show Available.
+3. No cloud account or API key is needed. If the port is in use, first check whether a demo instance is already running.
+4. For the Local AI demo: open LM Studio → Developer → Start Server (port 1234), then load **one chat model** (`qwen2.5-3b-instruct` preferred; answers take about 20–30 seconds) **and one embedding model** (`text-embedding-nomic-embed-text-v1.5`). The badge on the page should show Ready. The 27B model also works, but a single question takes several minutes, so it is not suitable for a live demo.
+5. Keep the unverified items visible on the Evidence page. Do not describe them as complete.
+6. **The UI is in English** (the client's working language is English): six tabs — Overview / Live demo / Security report / Local AI / Evidence / Handoff. Narrate in English too, so the client can follow the on-screen text.
 
-## 八分钟演示路径
+## Eight-Minute Demo Path
 
-### 1. Overview — 为什么统一（45 秒）
+### 1. Overview — Why Unify (45 seconds)
 
-指出 Repository → Dev Container → Security gates → Delivery。
+Point to Repository → Dev Container → Security gates → Delivery.
 
-> 代码、示例服务、共享安全模块、开发环境定义、安全规则和自动化检查放在一个 monorepo。团队可以复现同一版本的运行时。架构图表示设计路径，真正通过哪些检查要看证据，不是四个框都画绿。
+> Code, the sample service, the shared security module, the development environment definition, the security rules, and the automated checks all live in one monorepo. A team can reproduce the same runtime version. The architecture diagram shows the design path. Which checks actually pass is shown in the evidence, not by coloring all four boxes green.
 
-### 2. Live demo — 真实拦截（90 秒）
+### 2. Live Demo — Real Blocking (90 seconds)
 
-点击 **Demo leak → blocked**，等待 **Secret blocked**。
+Click **Demo leak → blocked**, and wait for **Secret blocked**.
 
-讲解：
-- 内存里生成不可用于登录任何系统的合成凭据。
-- 真实 Gitleaks 通过自定义规则命中；同时保留默认规则。
-- 返回扫描器版本、耗时、规则和退出码 42，不返回原始凭据。
-- 退出码 42 专用于发现，工具崩溃/超时不会被误认为安全拦截成功。
+Talking points:
+- The tool generates, in memory, a synthetic credential that cannot be used to log in to any system.
+- Real Gitleaks matches it through a custom rule, and the default rules stay enabled.
+- It returns the scanner version, the duration, the rule, and exit code 42. It does not return the raw credential.
+- Exit code 42 is reserved for findings. A tool crash or timeout is never mistaken for a successful block.
 
-再点击 **Demo repair → passed**，等待 **Input cleared / Passed / exit 0**。
+Then click **Demo repair → passed**, and wait for **Input cleared / Passed / exit 0**.
 
-> 修复后重新执行同一个扫描器，而不是前端把颜色切成绿色。此结果只证明这份输入通过当前规则，不代表代码永远没有安全问题。
+> After the fix, the same scanner runs again. The frontend does not just switch the color to green. This result only proves that this input passes the current rules; it does not mean the code will never have a security problem.
 
-### 3. Security report — 一张 Snyk 式的账（60 秒）
+### 3. Security Report — A Snyk-Style Ledger (60 seconds)
 
-这是新增的一页，对应客户熟悉的 Snyk / SonarQube 那种界面。
+This is a newly added page. It matches the Snyk / SonarQube style that clients are familiar with.
 
-顶部是 **quality gate**：现在显示 `Incomplete` + `Not provable yet`，下面一行 `6 of 11 checks verified`。四个数字是 26 个测试、78 个文件扫过、2 项 blocked、1 项 not run。
+At the top is the **quality gate**. It currently shows `Incomplete` and `Not provable yet`, with a line below reading `6 of 11 checks verified`. The four numbers are 26 tests, 78 files scanned, 2 blocked items, and 1 item not run.
 
-下面两张表：
+Two tables below:
 
-- **Scans**：每个扫描器一行，写着工具、阈值、状态。绿色 = 真跑过并通过，黄色 Blocked = 这台机器上跑不了，灰色 Not run = 从没执行。
-- **What blocks a merge**：每条规则的阈值，以及为什么定在那里。
+- **Scans**: one row per scanner, showing the tool, the threshold, and the status. Green = actually ran and passed. Yellow Blocked = cannot run on this machine. Grey Not run = never executed.
+- **What blocks a merge**: the threshold for each rule, and why it is set there.
 
-讲解重点（这段最值钱）：
+Key talking point (this is the most valuable part):
 
-> 这张表的作用不是“全是绿的”，而是让客户看见**哪一条在什么条件下会挡住合并**。比如密钥是“任何命中都挡”，因为我们没法替你判断这个密钥是不是已经泄露了；镜像里的第三方 CVE 只在“有补丁的 CRITICAL”时挡，因为没补丁的漏洞你本地什么都做不了，一直红只会让团队学会忽略红灯。
+> The point of this table is not "everything is green." It is to show the client **which rule blocks a merge, and under what conditions**. For example, secrets are "blocked on any match," because we cannot tell from here whether a key has already leaked. Third-party CVEs in the image only block at "CRITICAL with a patch available," because a vulnerability with no patch leaves you nothing to do locally, and a permanent red would only teach the team to ignore red.
 
-如果客户问“为什么不是全绿”：那 2 项 blocked 是本机环境限制（Docker 引擎没开、Trivy 数据库连不上），不是代码问题；CI 上会真跑。这句话要说清楚，别含糊。
+If the client asks why it is not all green: the 2 blocked items are limits of this machine (the Docker engine is not running, and the Trivy database cannot be reached). They are not code problems, and they run for real in CI. Say this clearly. Do not be vague.
 
-### 4. Local AI — 数据不出内网（90 秒）
+### 4. Local AI — Data Stays Inside the Network (90 seconds)
 
-打开 **Local AI** 页签，确认徽标是 **Ready**，显示 7 篇文档、约 69 个片段、本地嵌入模型。点一个示例问题（例如 "What should I do if I find a leaked secret at commit time?"），等 **20–30 秒**。
+Open the **Local AI** tab. Confirm the badge says **Ready**, and that it shows 7 documents, about 69 chunks, and the local embedding model. Click an example question (for example, "What should I do if I find a leaked secret at commit time?"), and wait **20–30 seconds**.
 
-讲解：
-- 文档切块后用本地 embedding 建向量，问题也本地向量化；同时用关键词打分（BM25）兜底，两路加权后取 Top 3，再交给本地 Qwen 生成。
-- 全程只经过 `127.0.0.1:1234`；代码里写死了回环地址检查，配成外部地址会直接拒绝。
-- 回答带来源编号，可以点开看命中的文件与章节。
-- 问一个知识库没有的问题（"How many days of annual leave do I get?"），它会说资料没写，而不是编造。
-- **延迟是真的，不要藏**：本机 CPU 上 3B 模型约 20–30 秒一答，27B 模型要几分钟。这正是"数据不出机器"的价格，比云端 Copilot 慢一个数量级。客户如果要快，就得买 GPU 或者接受小模型。
+Talking points:
+- Documents are chunked and embedded locally, and the question is embedded locally too. Keyword scoring (BM25) runs alongside as a fallback. The two scores are weighted together, the Top 3 are taken, and they go to the local Qwen model for generation.
+- Everything goes only through `127.0.0.1:1234`. The code has a hard loopback check, and an external address is refused outright.
+- Answers carry source numbers. You can open them to see the matched file and section.
+- Ask a question the knowledge base does not cover ("How many days of annual leave do I get?"). It says the material does not cover it, instead of making something up.
+- **The latency is real. Do not hide it.** On this machine's CPU, the 3B model takes about 20–30 seconds per answer, and the 27B model takes several minutes. That is the price of keeping data on the machine, and it is roughly an order of magnitude slower than cloud Copilot. If the client needs it fast, they will need to buy a GPU or accept a smaller model.
 
-> 这是检索增强生成，不训练、不微调模型。它证明的是"内部资料可以不出内网被问答"，不是 Copilot Studio 的替代品。
+> This is retrieval-augmented generation. It does not train or fine-tune any model. What it proves is that internal material can be answered from without leaving the internal network. It is not a replacement for Copilot Studio.
 
-### 5. Evidence — 可重复验证（60 秒）
+### 5. Evidence — Repeatable Verification (60 seconds)
 
-展示运行时、安全测试、双场景扫描、当前源码扫描、暂存区门禁、Terraform 格式、Compose 配置、容器加固和本地 RAG 记录。
+Show the runtime, the security tests, the two-scenario scan, the current source scan, the staging-area gate, Terraform formatting, the Compose configuration, container hardening, and the local RAG records.
 
-> 我还验证了一个容易被漏掉的点：把密钥暂存后，只在工作区删掉它、不重新暂存，检查仍然会拦截，因为检查的是 Git index。
+> I also verified a point that is easy to miss: if a secret is staged, then removed only from the working tree without re-staging, the check still blocks it, because the check reads the Git index.
 
-明确说明：完整 Terraform 初始化/校验、Trivy 配置与镜像扫描，以及远端 GitHub Actions/CodeQL/分支保护仍待补验或启用。工具安装成功不等于扫描通过。
+State clearly: the full Terraform init/validate, the Trivy configuration and image scans, and the remote GitHub Actions/CodeQL/branch protection still need to be verified or enabled. A tool installing successfully does not mean the scan passed.
 
-### 6. Handoff / 仓库 — 工程能力（60 秒）
+### 6. Handoff / Repository — Engineering Practices (60 seconds)
 
-打开对应文件：
+Open the relevant files:
 
-- `.devcontainer/devcontainer.json`：固定环境、非 root、本机端口。
-- `scripts/pre-commit.mjs`：读暂存内容、缺扫描器即阻断。
-- `.github/workflows/ci.yml`：真实测试与安全门禁，最小权限、固定 Action 引用。
-- `infra/terraform/main.tf`：无云 provider、无 apply 的契约示例。
-- `.github/CODEOWNERS` 和分支保护模板：待客户仓库管理员填写/启用，不能说已强制 review。
+- `.devcontainer/devcontainer.json`: pinned environment, non-root user, local ports.
+- `scripts/pre-commit.mjs`: reads the staged content, and blocks if the scanner is missing.
+- `.github/workflows/ci.yml`: real tests and security gates, minimum permissions, pinned Action references.
+- `infra/terraform/main.tf`: a contract example with no cloud provider and no apply.
+- `.github/CODEOWNERS` and the branch protection template: to be filled in and enabled by the client's repository administrators. Do not say that review is enforced.
 
-> 本地检查帮助开发者尽早发现问题；真正不可随意绕过的流程还要依赖远端 required checks、review 和权限配置。这部分等客户仓库、许可证与内网要求明确后启用。
+> Local checks help developers catch problems early. A process that cannot be casually bypassed also depends on remote required checks, review, and permission settings. These get enabled once the client's repository, licensing, and internal network requirements are clear.
 
-### 7. 收尾：问清部署边界（30 秒）
+### 7. Closing — Clarify the Deployment Boundary (30 seconds)
 
-> 客户开发环境主要是 Azure/AWS、现有机房还是开发者本机？代码和依赖能不能访问外网？目前使用哪种代码平台、SSO 和安全扫描许可？这会决定使用托管工作区还是内网自托管，但不影响我们先把统一环境和安全门禁做实。
+> Does the client's development environment run mainly on Azure/AWS, in existing data centers, or on developers' own machines? Can code and dependencies reach the public internet? Which code platform, SSO, and security scanning licenses are in use today? The answers decide whether to use a managed workspace or a self-hosted setup inside the network, but they do not change the order of work: first make the unified environment and the security gates solid.
 
-## 可以说 / 不要说
+## What to Say / What Not to Say
 
-| 可以说 | 不要说 |
+| You can say | Do not say |
 | --- | --- |
-| 我做了这个可运行 PoC，真实验证了密钥门禁、暂存区行为和本地 RAG | 我给某客户上线过生产平台（除非确有经历） |
-| 容器已用只读、非 root、cap-drop 方式实跑并健康检查通过 | 容器镜像漏洞已经扫描干净（本机工具受限，未完成） |
-| IaC 示例没有创建云资源；格式检查已实际运行 | 已验证完整云权限/资源安全策略 |
-| 已准备 CI + 构建/扫描交付流程，无实际部署 | CI/CD 已远端上线、分支已经强制保护 |
-| 本地展示无云资源账单；模型在本机跑，不调用付费 API | GitHub 私有 CodeQL、所有 Codespaces 用量永久免费 |
+| I built this runnable PoC and verified the secret gate, the staging-area behavior, and local RAG for real | I launched a production platform for a client (unless that is actually true) |
+| The container has actually run read-only, as non-root, with cap-drop, and passed its health check | The container image has been scanned clean for vulnerabilities (local tools are restricted; not finished) |
+| The IaC example creates no cloud resources; the format check has actually run | Full cloud permissions and resource security policies have been verified |
+| The CI and build/scan delivery pipeline is prepared; there is no actual deployment | CI/CD is live remotely, and the branches are already enforced by protection rules |
+| The local demo has no cloud bill; the model runs on this machine and calls no paid API | Private-repo CodeQL on GitHub, or unlimited free Codespaces usage forever |
 
-## 可发给对方的简短介绍
+## Short Introduction You Can Send
 
-> 我先做了一个本地可运行的 secure-dev-platform PoC：monorepo、固定 Node/Dev Container 配置、真实 Gitleaks 提交门禁、GitHub Actions 安全检查和不 apply 的 Terraform 示例。演示页面可以现场展示“合成密钥泄露被拦截 → 修复后重新扫描放行”，容器以只读、非 root 方式实跑，还能用本机模型对内部资料做检索问答，资料不出内网。没有为了 demo 接云或调用付费 AI。远端 CI/CodeQL、镜像漏洞扫描和仓库保护我保留为待验证/配置项，等客户的内外网、代码平台及身份权限要求明确后再补齐。
+> I first built a locally runnable secure-dev-platform PoC: a monorepo, a pinned Node/Dev Container setup, a real Gitleaks pre-commit gate, GitHub Actions security checks, and a Terraform example that does not apply. The demo page can show live that a synthetic leaked secret is blocked, and that a re-scan after the fix passes. The container runs read-only as non-root. A local model can answer questions over internal documents without the material leaving the internal network. I did not connect any cloud or call a paid AI API for the demo. Remote CI/CodeQL, image vulnerability scanning, and repository protection are kept as items to verify or configure. They will be completed once the client's internal and external network, code platform, and identity and permission requirements are clear.
 
-## AI 话题怎么讲
+## How to Talk About AI
 
-如果对方提到“部署 Copilot Studio 然后训练模型”，可温和澄清：
+If the other side mentions "deploy Copilot Studio and then train a model," you can gently clarify:
 
-> 这里更像把企业内部资料接入知识检索和 agent 流程，而不是从头训练基础模型。我们先把代码与数据访问边界、身份权限和审计需求明确，后续再决定是接 Copilot Studio，还是用内网自建检索。
+> This is closer to connecting internal company documents to knowledge retrieval and agent workflows than to training a foundation model from scratch. We first define the code and data access boundaries, identity permissions, and audit requirements. Later, we decide whether to connect Copilot Studio or build internal retrieval on our own network.
 
-然后可以顺势打开 Local AI 页签：
+Then you can naturally open the Local AI tab:
 
-> 我用本机的 Qwen 和本地 embedding 做了一个检索原型：文档、问题、向量都在本机，回答必须带来源，资料里没有的会直接说没有。这条路线适合“资料不能出内网”的场景；Copilot Studio 是云端低代码平台，需要微软许可，两者不是一回事。
+> I built a retrieval prototype with a local Qwen model and local embeddings. The documents, the questions, and the vectors all stay on this machine. Answers must cite sources, and when the material does not contain the answer, it says so. This approach suits scenarios where material cannot leave the internal network. Copilot Studio is a cloud low-code platform that requires a Microsoft license. The two are not the same thing.
 
-不要说“我们训练了一个模型”。本 PoC 只做检索增强生成，不训练、不微调；也没有接客户真实文档、企业身份或审计系统。
+Do not say "we trained a model." This PoC only does retrieval-augmented generation. It does not train or fine-tune anything, and it is not connected to the client's real documents, enterprise identity, or audit systems.

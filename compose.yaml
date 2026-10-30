@@ -13,7 +13,7 @@ services:
       NODE_ENV: production
       HOST: 0.0.0.0
       PORT: "4173"
-    # 仅本机可访问；不要改为 0.0.0.0，也不配置公共隧道。
+    # Reachable from this machine only. Do not change it to 0.0.0.0, and do not configure a public tunnel.
     ports:
       - "127.0.0.1:4173:4173"
     read_only: true
@@ -39,5 +39,5 @@ services:
       start_period: 10s
       retries: 3
 
-# 不挂载 Docker socket、宿主目录、扫描器或云凭据。
-# 此镜像只运行服务；真实扫描 live demo 仅在完整 devcontainer / 本机可用。
+# Does not mount the Docker socket, host directories, scanners, or cloud credentials.
+# This image only runs the service. The real-scan live demo is available only in the full devcontainer or on the local machine.

@@ -2,17 +2,17 @@
     <Box style={{ position: 'absolute', left: 0, top: 0, width: 1280, height: 720, padding: '0 120px', flexDirection: 'column', justifyContent: 'center', gap: 30 }}>
         <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.5)', letterSpacing: 4 }}>SENTINEL</Text>
         <Text style={{ fontSize: 44, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.4 }}>
-            安全不是加了多少扫描器，<br />而是每条必经之路上，<br />都有一个绕不过去的关卡。
+            Security is not how many scanners you add,<br />but a gate on every mandatory path<br />that cannot be bypassed.
         </Text>
         <Box style={{ width: 72, height: 3, background: '#167762' }} />
         <Box style={{ flexDirection: 'row', gap: 56 }}>
             <Box style={{ flexDirection: 'column', gap: 4 }}>
-                <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.45)' }}>下一步</Text>
-                <Text style={{ fontSize: 18, color: '#FFFFFF' }}>30 分钟对齐会，先把 P14 的五个答案定下来</Text>
+                <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.45)' }}>Next step</Text>
+                <Text style={{ fontSize: 18, color: '#FFFFFF' }}>A 30-minute alignment meeting to settle the five answers on P14 first</Text>
             </Box>
             <Box style={{ flexDirection: 'column', gap: 4 }}>
-                <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.45)' }}>可提供的</Text>
-                <Text style={{ fontSize: 18, color: '#FFFFFF' }}>本地演示 · 证据清单 · 可复跑的测试</Text>
+                <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.45)' }}>What we can provide</Text>
+                <Text style={{ fontSize: 18, color: '#FFFFFF' }}>Local demo · evidence checklist · re-runnable tests</Text>
             </Box>
         </Box>
     </Box>

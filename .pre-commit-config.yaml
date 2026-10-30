@@ -2,7 +2,7 @@ repos:
   - repo: local
     hooks:
       - id: security-gate
-        name: 本地安全提交检查
+        name: Local secure commit check
         entry: node scripts/pre-commit.mjs
         language: system
         pass_filenames: false
