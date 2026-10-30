@@ -1,0 +1,52 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
+    <Box style={{ flexDirection: 'column', gap: 6, height: 108 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.3 }}>RAG Is Retrieval, Not Training</Text>
+        <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.5 }}>This one difference determines cost, timeline, and whether access can be controlled per person</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', gap: 40, height: 522 }}>
+        <Box style={{ width: 690, flexDirection: 'column', gap: 14 }}>
+            <Table
+                style={{ width: 690, height: 372 }}
+                defaultTextStyle={{ fontSize: 16, textAlign: 'left', color: '#0F1E19' }}
+                defaultCellStyle={{
+                    border: {
+                        left: { width: 0, color: '#FFFFFF' },
+                        right: { width: 0, color: '#FFFFFF' },
+                        top: { width: 0, color: '#FFFFFF' },
+                        bottom: { width: 1, color: 'rgba(15,30,25,0.10)' },
+                    },
+                }}
+                cells={[
+                    [
+                        { text: 'Dimension', textStyle: { bold: true, color: '#FFFFFF', fontSize: 16 }, cellStyle: { background: { color: '#0F1E19' } } },
+                        { text: 'Train / fine-tune a model', textStyle: { bold: true, color: '#FFFFFF', fontSize: 16 }, cellStyle: { background: { color: '#0F1E19' } } },
+                        { text: 'RAG retrieval', textStyle: { bold: true, color: '#FFFFFF', fontSize: 16 }, cellStyle: { background: { color: '#167762' } } },
+                    ],
+                    ['What changes', 'Model weights change; knowledge baked in', { text: 'Model unchanged; only documents change', textStyle: { bold: true, color: '#167762' } }],
+                    ['Where knowledge lives', 'Inside training data; source unclear later', { text: 'In your own documents; editable anytime', textStyle: { bold: true, color: '#167762' } }],
+                    ['Time to go live', 'Weeks to months, plus compute', { text: 'Days; prove it works, then scale', textStyle: { bold: true, color: '#167762' } }],
+                    ['Per-person access control', { text: 'Not possible: no permissions in the weights', textStyle: { color: '#C2410C', bold: true } }, { text: 'Yes: filter by person before retrieval', textStyle: { bold: true, color: '#167762' } }],
+                ]}
+            />
+            <Text style={{ fontSize: 15, color: '#6B7A72', lineHeight: 1.5 }}>We do the right-hand column. The left column is the misunderstanding that the word "train" in the client's own words tends to cause, and the source of overestimated budgets.</Text>
+        </Box>
+        <Box style={{ flex: 1, flexDirection: 'column', gap: 18 }}>
+            <Text style={{ fontSize: 14, color: '#167762', letterSpacing: 2 }}>What the client said → what we understand</Text>
+            <Box style={{ flexDirection: 'column', gap: 8, paddingLeft: 16, borderLeft: '3px solid #167762' }}>
+                <Text style={{ fontSize: 17, color: '#0F1E19', lineHeight: 1.5 }}>"Not really training; it should be RAG"</Text>
+                <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.6 }}>Right. We do not train or fine-tune the base model; we only do retrieval plus generation. Knowledge is updated by swapping documents, not by retraining.</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 8, paddingLeft: 16, borderLeft: '3px solid #C2410C' }}>
+                <Text style={{ fontSize: 17, color: '#0F1E19', lineHeight: 1.5 }}>"Each person can only see content they are allowed to see"</Text>
+                <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.6 }}>This has to take effect before retrieval. Removing results after retrieval is false security: the answer and the citations have already leaked.</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 6, marginTop: 'auto', padding: 14, background: 'rgba(22,119,98,0.07)', borderRadius: 6 }}>
+                <Text style={{ fontSize: 15, color: '#0F1E19', lineHeight: 1.6 }}>In one line: this is not about buying compute to train a model; it is about managing documents and people well.</Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · Secure Development Environment Plan</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>04 / 15</Text>
+    </Box>
+</Slide>

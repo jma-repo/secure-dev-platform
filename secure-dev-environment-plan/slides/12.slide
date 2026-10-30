@@ -3,10 +3,10 @@
         <Text style={{ fontSize: 220, fontWeight: 'bold', color: 'rgba(255,255,255,0.24)', fontFamily: 'Consolas', lineHeight: 1 }}>03</Text>
     </Box>
     <Box style={{ position: 'absolute', left: 480, top: 0, width: 800, height: 720, padding: '0 88px 0 72px', flexDirection: 'column', justifyContent: 'center', gap: 22 }}>
-        <Text style={{ fontSize: 15, color: '#167762', letterSpacing: 3 }}>第三章</Text>
-        <Text style={{ fontSize: 64, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.15 }}>现状与下一步</Text>
+        <Text style={{ fontSize: 15, color: '#167762', letterSpacing: 3 }}>Chapter 3</Text>
+        <Text style={{ fontSize: 56, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.15 }}>Current State and Next Steps</Text>
         <Box style={{ width: 64, height: 3, background: '#167762' }} />
-        <Text style={{ fontSize: 22, color: '#44534C', lineHeight: 1.65 }}>能验证的已经验证，剩下的需要你拍板。</Text>
-        <Text style={{ fontSize: 16, color: '#6B7A72', lineHeight: 1.6 }}>我把"做完了"和"还没做"分开列，你可以逐条追问。</Text>
+        <Text style={{ fontSize: 22, color: '#44534C', lineHeight: 1.65 }}>What can be verified has been verified; the rest needs your decision.</Text>
+        <Text style={{ fontSize: 16, color: '#6B7A72', lineHeight: 1.6 }}>I list "done" and "not done" separately, so you can question them one by one.</Text>
     </Box>
 </Slide>

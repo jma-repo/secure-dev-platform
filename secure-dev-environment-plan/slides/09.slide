@@ -1,7 +1,7 @@
 <Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
     <Box style={{ flexDirection: 'column', gap: 6, height: 104 }}>
-        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.3 }}>五道关卡，卡在必经之路上</Text>
-        <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.5 }}>安全不是扫描器越多越好，是每一关都绕不过去</Text>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.3 }}>Five Gates, Placed on the Mandatory Path</Text>
+        <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.5 }}>Security is not about having more scanners; every gate has to be impossible to walk around</Text>
     </Box>
     <Box style={{ flexDirection: 'row', gap: 40, height: 526 }}>
         <Box style={{ width: 712, flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -10,64 +10,64 @@
                     <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF', fontFamily: 'Consolas' }}>1</Text>
                 </Box>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
-                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>统一环境</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C' }}>Dev Container + 固定版本，挡住"我这能跑"</Text>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>Unified environment</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C' }}>Dev Container + pinned versions, blocking "it only works on my machine"</Text>
                 </Box>
-                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>写代码时</Text>
+                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>While coding</Text>
             </Box>
             <Box style={{ flexDirection: 'row', gap: 16, alignItems: 'center', paddingBottom: 14, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
                 <Box style={{ width: 40, height: 40, borderRadius: 20, background: '#167762', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF', fontFamily: 'Consolas' }}>2</Text>
                 </Box>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
-                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>提交前扫描</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C' }}>扫 Git 暂存区，挡住"删了密钥但忘了 add"</Text>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>Pre-commit scan</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C' }}>Scans the Git staging area, blocking "deleted the secret but forgot to git add"</Text>
                 </Box>
-                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>commit 时</Text>
+                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>At commit</Text>
             </Box>
             <Box style={{ flexDirection: 'row', gap: 16, alignItems: 'center', paddingBottom: 14, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
                 <Box style={{ width: 40, height: 40, borderRadius: 20, background: '#167762', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF', fontFamily: 'Consolas' }}>3</Text>
                 </Box>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
-                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>CI 五项并行</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C' }}>测试 / 历史密钥 / IaC / 依赖 / 镜像，挡住"本地跳过"</Text>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>Five CI checks in parallel</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C' }}>Tests / secrets / IaC / dependencies / images, blocking "skipped locally"</Text>
                 </Box>
-                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>开 PR 时</Text>
+                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>On PR open</Text>
             </Box>
             <Box style={{ flexDirection: 'row', gap: 16, alignItems: 'center', paddingBottom: 14, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
                 <Box style={{ width: 40, height: 40, borderRadius: 20, background: 'rgba(194,65,12,0.12)', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#C2410C', fontFamily: 'Consolas' }}>4</Text>
                 </Box>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
-                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>评审 + 分支保护</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C' }}>一人评审、禁强推，挡住"直接推 main"（模板未启用）</Text>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>Review + branch protection</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C' }}>One reviewer, no force pushes, blocking "pushed straight to main" (template not yet enabled)</Text>
                 </Box>
-                <Text style={{ fontSize: 14, color: '#C2410C', fontFamily: 'Consolas' }}>待启用</Text>
+                <Text style={{ fontSize: 14, color: '#C2410C', fontFamily: 'Consolas' }}>Pending</Text>
             </Box>
             <Box style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
                 <Box style={{ width: 40, height: 40, borderRadius: 20, background: '#167762', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF', fontFamily: 'Consolas' }}>5</Text>
                 </Box>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
-                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>运行时加固</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C' }}>非 root、只读、无特权、限额，挡住"漏洞变成事故"</Text>
+                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#0F1E19' }}>Runtime hardening</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C' }}>Non-root, read-only, no privileges, resource limits, blocking "a vulnerability turns into an incident"</Text>
                 </Box>
-                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>运行时</Text>
+                <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>At runtime</Text>
             </Box>
         </Box>
         <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', gap: 10 }}>
             <Text style={{ fontSize: 96, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas', lineHeight: 1 }}>26</Text>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>项自动化测试</Text>
-            <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.65 }}>每一道关卡都有对应的实测证据，不是流程图上的一个框。</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>automated tests</Text>
+            <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.65 }}>Each gate has matching measured evidence. It is not just a box on a flow chart.</Text>
             <Box style={{ flexDirection: 'column', gap: 4, marginTop: 14, padding: 12, background: 'rgba(194,65,12,0.08)', borderRadius: 6 }}>
-                <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#C2410C' }}>第 4 道还差一步</Text>
-                <Text style={{ fontSize: 14, color: '#0F1E19', lineHeight: 1.55 }}>模板已写好，需要仓库管理员在 GitHub 上应用后才生效。</Text>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#C2410C' }}>Gate 4 still has one step left</Text>
+                <Text style={{ fontSize: 14, color: '#0F1E19', lineHeight: 1.55 }}>The template is written. It takes effect only after a repository administrator applies it on GitHub.</Text>
             </Box>
         </Box>
     </Box>
     <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · 安全开发环境方案</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · Secure Development Environment Plan</Text>
         <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>09 / 15</Text>
     </Box>
 </Slide>

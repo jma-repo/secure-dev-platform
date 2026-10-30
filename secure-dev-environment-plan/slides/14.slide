@@ -1,51 +1,51 @@
 <Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
     <Box style={{ flexDirection: 'row', gap: 44, height: 620 }}>
         <Box style={{ width: 316, flexDirection: 'column', justifyContent: 'center', gap: 14, paddingRight: 28, borderRight: '1px solid rgba(15,30,25,0.10)' }}>
-            <Text style={{ fontSize: 15, color: '#C2410C', letterSpacing: 3 }}>需要你决定</Text>
-            <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.25 }}>五件事<br />定了才能往下走</Text>
+            <Text style={{ fontSize: 15, color: '#C2410C', letterSpacing: 3 }}>Needs your decision</Text>
+            <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.25 }}>Five decisions<br />before we can move forward</Text>
             <Box style={{ width: 48, height: 3, background: '#C2410C' }} />
-            <Text style={{ fontSize: 15, color: '#6B7A72', lineHeight: 1.65 }}>这五个答案决定路线、预算和时间表。其它细节我们可以在过程里补。</Text>
+            <Text style={{ fontSize: 15, color: '#6B7A72', lineHeight: 1.65 }}>These five answers set the route, the budget, and the timeline. Other details can be filled in along the way.</Text>
         </Box>
         <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
             <Box style={{ flexDirection: 'row', gap: 18, paddingBottom: 14, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
                 <Text style={{ width: 40, fontSize: 22, fontWeight: 'bold', color: '#C2410C', fontFamily: 'Consolas' }}>01</Text>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 3 }}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>代码和资料，能不能出内网</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>这一条直接决定走云端 Copilot、Azure 自建，还是全离线自建（见 P07）。</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>Can code and documents leave the internal network?</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>This one directly decides whether we go with cloud Copilot, self-built on Azure, or fully offline self-built (see P07).</Text>
                 </Box>
             </Box>
             <Box style={{ flexDirection: 'row', gap: 18, paddingBottom: 14, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
                 <Text style={{ width: 40, fontSize: 22, fontWeight: 'bold', color: '#C2410C', fontFamily: 'Consolas' }}>02</Text>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 3 }}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>现在有没有 M365 / E5 许可</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>有许可，Copilot 路线可能几周就见效；没有许可，等于自建，时间与成本完全不同。</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>Do you currently have M365 / E5 licenses?</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>With licenses, the Copilot route could show results within weeks. Without them, it means self-building, and the timeline and cost are completely different.</Text>
                 </Box>
             </Box>
             <Box style={{ flexDirection: 'row', gap: 18, paddingBottom: 14, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
                 <Text style={{ width: 40, fontSize: 22, fontWeight: 'bold', color: '#C2410C', fontFamily: 'Consolas' }}>03</Text>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 3 }}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>身份源用哪一个</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>Entra ID、本地 AD 还是别的人力系统。这决定权限怎么接、离职怎么即时断权。</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>Which identity source should we use?</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>Entra ID, on-premises AD, or another HR system. This decides how permissions connect and how access is cut off immediately when someone leaves.</Text>
                 </Box>
             </Box>
             <Box style={{ flexDirection: 'row', gap: 18, paddingBottom: 14, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
                 <Text style={{ width: 40, fontSize: 22, fontWeight: 'bold', color: '#C2410C', fontFamily: 'Consolas' }}>04</Text>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 3 }}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>环境分几套，谁能碰生产</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>Test / UAT / PROD 要几套、生产权限给谁。环境越多，权限模型和运维成本越高。</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>How many environments, and who can touch production?</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>How many Test / UAT / PROD environments, and who gets production access. The more environments, the higher the permission model and operations cost.</Text>
                 </Box>
             </Box>
             <Box style={{ flexDirection: 'row', gap: 18 }}>
                 <Text style={{ width: 40, fontSize: 22, fontWeight: 'bold', color: '#C2410C', fontFamily: 'Consolas' }}>05</Text>
                 <Box style={{ flex: 1, flexDirection: 'column', gap: 3 }}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>RPO / RTO，以及预算形态</Text>
-                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>能丢多少数据、多久要恢复、按年买还是按项目。这三个数决定备份与容灾的投入。</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>RPO / RTO, and budget shape</Text>
+                    <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>How much data can be lost, how quickly service must be restored, and whether it is bought annually or per project. These three answers set the investment in backup and disaster recovery.</Text>
                 </Box>
             </Box>
         </Box>
     </Box>
     <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · 安全开发环境方案</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · Secure Development Environment Plan</Text>
         <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>14 / 15</Text>
     </Box>
 </Slide>

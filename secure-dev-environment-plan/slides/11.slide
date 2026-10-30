@@ -1,0 +1,56 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
+    <Box style={{ flexDirection: 'column', gap: 6, height: 104 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.3 }}>Fully Offline: Achievable, but at What Cost</Text>
+        <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.5 }}>Going offline is not a one-time purchase; it replaces the external dependency with one controlled, narrow channel</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', gap: 40, height: 526 }}>
+        <Box style={{ width: 676, flexDirection: 'column', gap: 14 }}>
+            <Box style={{ flexDirection: 'row', paddingBottom: 8, borderBottom: '2px solid #0F1E19' }}>
+                <Text style={{ flex: 1, fontSize: 15, fontWeight: 'bold', color: '#0F1E19' }}>Capability</Text>
+                <Text style={{ flex: 1.35, fontSize: 15, fontWeight: 'bold', color: '#0F1E19' }}>Cost once offline</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', paddingBottom: 10, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
+                <Text style={{ flex: 1, fontSize: 16, color: '#0F1E19' }}>Code hosting</Text>
+                <Text style={{ flex: 1.35, fontSize: 15, color: '#44534C', lineHeight: 1.5 }}>Self-hosted GitLab / Gitea; someone must maintain it, patch it, and back it up</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', paddingBottom: 10, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
+                <Text style={{ flex: 1, fontSize: 16, color: '#0F1E19' }}>Dependency installs</Text>
+                <Text style={{ flex: 1.35, fontSize: 15, color: '#44534C', lineHeight: 1.5 }}>npm, pip, and images come from internal mirrors; new packages need manual approval before import</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row', paddingBottom: 10, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
+                <Text style={{ flex: 1, fontSize: 16, color: '#0F1E19' }}>Security patches</Text>
+                <Text style={{ flex: 1.35, fontSize: 15, color: '#44534C', lineHeight: 1.5 }}>Imported via transfer media, scanned, then released; usually lags by days to weeks</Text>
+            </Box>
+            <Box style={{ flexDirection: 'row' }}>
+                <Text style={{ flex: 1, fontSize: 16, color: '#0F1E19' }}>Model updates</Text>
+                <Text style={{ flex: 1.35, fontSize: 15, color: '#44534C', lineHeight: 1.5 }}>Weights are downloaded offline, verified, and redistributed; you cannot just click "update"</Text>
+            </Box>
+            <Box style={{ marginTop: 'auto', padding: '12px 16px', background: 'rgba(22,119,98,0.07)', borderRadius: 6 }}>
+                <Text style={{ fontSize: 15, color: '#0F1E19', lineHeight: 1.6 }}>So the real design question is not "can we go offline?" but "once offline, who runs this narrow channel?"</Text>
+            </Box>
+        </Box>
+        <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', gap: 18 }}>
+            <Text style={{ fontSize: 14, color: '#167762', letterSpacing: 2 }}>When something breaks</Text>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#0F1E19' }}>Backup</Text>
+                <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>Repository mirror + document store + keys, encrypted and sent off-site. Keeping one copy in the original data center does not count as a backup.</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#0F1E19' }}>Rebuild</Text>
+                <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>Environments are described as code (IaC + images). When a machine fails, you reinstall rather than rebuild by hand. Recovery time drops from days to hours.</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#0F1E19' }}>Drills</Text>
+                <Text style={{ fontSize: 15, color: '#44534C', lineHeight: 1.6 }}>Do a real restore once a quarter. A backup that has never been drilled is only a hope.</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 4, marginTop: 6, padding: 14, background: 'rgba(194,65,12,0.08)', borderRadius: 6 }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#C2410C' }}>We need two numbers from you</Text>
+                <Text style={{ fontSize: 15, color: '#0F1E19', lineHeight: 1.6 }}>RPO: how much data can be lost at most. RTO: how quickly service must be restored. These two numbers directly set the backup frequency and the investment.</Text>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · Secure Development Environment Plan</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>11 / 15</Text>
+    </Box>
+</Slide>

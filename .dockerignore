@@ -1,4 +1,4 @@
-# 默认拒绝构建上下文中的所有文件，只放行运行镜像的 COPY 来源。
+# Deny all files in the build context by default; only the COPY sources the runtime image needs are allowed.
 **
 !apps/
 !apps/**
@@ -9,7 +9,7 @@
 !scripts/
 !scripts/tools.json
 
-# 即使位于放行目录内，依赖、凭据、报告和工具也不进入构建上下文。
+# Even inside allowed directories, dependencies, credentials, reports, and tools stay out of the build context.
 **/node_modules
 **/.git
 **/.tools

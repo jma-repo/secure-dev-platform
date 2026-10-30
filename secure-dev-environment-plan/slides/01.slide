@@ -1,38 +1,38 @@
 <Slide style={{ width: 1280, height: 720, background: '#FFFFFF', position: 'relative', padding: 0, fontFamily: 'Microsoft YaHei' }}>
     <Box style={{ position: 'absolute', left: 0, top: 0, width: 748, height: 720, background: 'linear-gradient(135deg, #167762 0%, #0F1E19 100%)' }} />
     <Box style={{ position: 'absolute', left: 0, top: 0, width: 748, height: 720, padding: '62px 56px 56px 64px', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.62)', letterSpacing: 3 }}>SENTINEL · 方案沟通</Text>
+        <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.62)', letterSpacing: 3 }}>SENTINEL · Solution Discussion</Text>
         <Box style={{ flexDirection: 'column', gap: 22 }}>
-            <Text style={{ fontSize: 72, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.15, letterSpacing: -0.5 }}>
-                安全的多人在线<br />开发环境
+            <Text style={{ fontSize: 56, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.15, letterSpacing: -0.5 }}>
+                Secure Multi-Person<br />Online Development<br />Environment
             </Text>
             <Box style={{ width: 64, height: 4, background: 'rgba(255,255,255,0.85)' }} />
             <Text style={{ fontSize: 22, color: 'rgba(255,255,255,0.84)', lineHeight: 1.6 }}>
-                统一仓库 · 五道安全关卡 · 权限化内部知识问答
+                Unified repository · Five security gates · Permission-aware internal knowledge answers
             </Text>
         </Box>
         <Box style={{ flexDirection: 'column', gap: 8 }}>
-            <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.7)' }}>2026 年 10 月 · 需求对齐稿</Text>
-            <Text style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>本稿含未验证项，已逐条标注，不做完成度承诺</Text>
+            <Text style={{ fontSize: 15, color: 'rgba(255,255,255,0.7)' }}>October 2026 · Requirements alignment draft</Text>
+            <Text style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>This draft includes unverified items, each labeled; no completion commitment is made</Text>
         </Box>
     </Box>
     <Box style={{ position: 'absolute', left: 812, top: 0, width: 404, height: 720, flexDirection: 'column', justifyContent: 'center', gap: 44 }}>
         <Box style={{ flexDirection: 'column', gap: 6 }}>
             <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas' }}>3</Text>
-            <Text style={{ fontSize: 18, color: '#0F1E19', fontWeight: 'bold' }}>条可选路线</Text>
-            <Text style={{ fontSize: 15, color: '#6B7A72', lineHeight: 1.5 }}>选哪条由数据边界决定</Text>
+            <Text style={{ fontSize: 18, color: '#0F1E19', fontWeight: 'bold' }}>candidate routes</Text>
+            <Text style={{ fontSize: 15, color: '#6B7A72', lineHeight: 1.5 }}>The data boundary decides which one</Text>
         </Box>
         <Box style={{ width: 120, height: 1, background: 'rgba(15,30,25,0.12)' }} />
         <Box style={{ flexDirection: 'column', gap: 6 }}>
             <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas' }}>5</Text>
-            <Text style={{ fontSize: 18, color: '#0F1E19', fontWeight: 'bold' }}>道安全关卡</Text>
-            <Text style={{ fontSize: 15, color: '#6B7A72', lineHeight: 1.5 }}>放在每条必经之路上</Text>
+            <Text style={{ fontSize: 18, color: '#0F1E19', fontWeight: 'bold' }}>security gates</Text>
+            <Text style={{ fontSize: 15, color: '#6B7A72', lineHeight: 1.5 }}>Placed on every mandatory path</Text>
         </Box>
         <Box style={{ width: 120, height: 1, background: 'rgba(15,30,25,0.12)' }} />
         <Box style={{ flexDirection: 'column', gap: 6 }}>
             <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas' }}>26</Text>
-            <Text style={{ fontSize: 18, color: '#0F1E19', fontWeight: 'bold' }}>项自动化测试</Text>
-            <Text style={{ fontSize: 15, color: '#6B7A72', lineHeight: 1.5 }}>本地实测通过，可复跑</Text>
+            <Text style={{ fontSize: 18, color: '#0F1E19', fontWeight: 'bold' }}>automated tests</Text>
+            <Text style={{ fontSize: 15, color: '#6B7A72', lineHeight: 1.5 }}>Passing locally; re-runnable</Text>
         </Box>
     </Box>
 </Slide>

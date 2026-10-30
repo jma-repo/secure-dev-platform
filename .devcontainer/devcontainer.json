@@ -22,7 +22,7 @@
   "forwardPorts": [4173],
   "portsAttributes": {
     "4173": {
-      "label": "本机开发服务（禁止公共发布）",
+      "label": "Local dev service (do not publish publicly)",
       "protocol": "http",
       "onAutoForward": "notify",
       "requireLocalPort": true

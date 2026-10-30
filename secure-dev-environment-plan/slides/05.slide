@@ -1,0 +1,53 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: '26px 64px 18px 64px', position: 'relative', fontFamily: 'Microsoft YaHei' }}>
+    <Box style={{ flexDirection: 'column', gap: 6, height: 108 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.3 }}>Don't Make Permissions "Slightly Different"</Text>
+        <Text style={{ fontSize: 17, color: '#6B7A72', lineHeight: 1.5 }}>Role-based least privilege plus change logging is the approach that passes an audit</Text>
+    </Box>
+    <Box style={{ flexDirection: 'row', gap: 44, height: 522 }}>
+        <Box style={{ width: 300, height: 480, background: '#0F1E19', borderRadius: 10, padding: '36px 28px', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', letterSpacing: 3 }}>Two tracks</Text>
+                <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.3 }}>Permissions</Text>
+                <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.3 }}>Environments</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 10 }}>
+                <Box style={{ width: 40, height: 2, background: '#167762' }} />
+                <Text style={{ fontSize: 16, color: 'rgba(255,255,255,0.72)', lineHeight: 1.65 }}>Both must be settled before writing the first line of code. Retrofitting them later means redoing the data layering.</Text>
+            </Box>
+        </Box>
+        <Box style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Box style={{ flexDirection: 'row', gap: 16, paddingBottom: 18, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
+                <Text style={{ width: 28, fontSize: 17, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas', lineHeight: 1.6 }}>01</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>Identity comes only from the corporate directory</Text>
+                    <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.65 }}>Connect to Entra ID or AD; do not create a separate account system. When an employee leaves, the account is disabled, and access to the knowledge base and the code repositories is removed at the same time, with no need to delete accounts system by system.</Text>
+                </Box>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 16, paddingBottom: 18, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
+                <Text style={{ width: 28, fontSize: 17, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas', lineHeight: 1.6 }}>02</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>Tag documents when they are ingested</Text>
+                    <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.65 }}>Three dimensions: department, project, and classification level. Tags are not categories for people to browse; they are filter conditions at retrieval time. A document without tags is visible to no one by default.</Text>
+                </Box>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 16, paddingBottom: 18, borderBottom: '1px solid rgba(15,30,25,0.10)' }}>
+                <Text style={{ width: 28, fontSize: 17, fontWeight: 'bold', color: '#C2410C', fontFamily: 'Consolas', lineHeight: 1.6 }}>03</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>Filter first, then retrieve</Text>
+                    <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.65 }}>Permissions take effect before similarity is computed. Removing results after retrieval is false security: the answer has already been generated, and the citations have already exposed file names.</Text>
+                </Box>
+            </Box>
+            <Box style={{ flexDirection: 'row', gap: 16 }}>
+                <Text style={{ width: 28, fontSize: 17, fontWeight: 'bold', color: '#167762', fontFamily: 'Consolas', lineHeight: 1.6 }}>04</Text>
+                <Box style={{ flex: 1, flexDirection: 'column', gap: 4 }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#0F1E19' }}>Environments must be separate</Text>
+                    <Text style={{ fontSize: 16, color: '#44534C', lineHeight: 1.65 }}>Test / UAT / PROD each get their own index, credentials, and permissions. Indexes must not be copied across environments, or test data could carry production answers out with it.</Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+    <Box style={{ position: 'absolute', left: 64, right: 64, bottom: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#6B7A72' }}>SENTINEL · Secure Development Environment Plan</Text>
+        <Text style={{ fontSize: 14, color: '#6B7A72', fontFamily: 'Consolas' }}>05 / 15</Text>
+    </Box>
+</Slide>

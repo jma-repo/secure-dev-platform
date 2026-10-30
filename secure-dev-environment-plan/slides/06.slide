@@ -3,10 +3,10 @@
         <Text style={{ fontSize: 220, fontWeight: 'bold', color: 'rgba(255,255,255,0.24)', fontFamily: 'Consolas', lineHeight: 1 }}>02</Text>
     </Box>
     <Box style={{ position: 'absolute', left: 480, top: 0, width: 800, height: 720, padding: '0 88px 0 72px', flexDirection: 'column', justifyContent: 'center', gap: 22 }}>
-        <Text style={{ fontSize: 15, color: '#167762', letterSpacing: 3 }}>第二章</Text>
-        <Text style={{ fontSize: 64, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.15 }}>方案与安全设计</Text>
+        <Text style={{ fontSize: 15, color: '#167762', letterSpacing: 3 }}>Chapter 2</Text>
+        <Text style={{ fontSize: 56, fontWeight: 'bold', color: '#0F1E19', lineHeight: 1.15 }}>Solution and Security Design</Text>
         <Box style={{ width: 64, height: 3, background: '#167762' }} />
-        <Text style={{ fontSize: 22, color: '#44534C', lineHeight: 1.65 }}>先选路线，再谈关卡。</Text>
-        <Text style={{ fontSize: 16, color: '#6B7A72', lineHeight: 1.6 }}>路线决定数据放在哪；关卡决定出了问题会不会变成事故。</Text>
+        <Text style={{ fontSize: 22, color: '#44534C', lineHeight: 1.65 }}>Choose the route first, then talk about the gates.</Text>
+        <Text style={{ fontSize: 16, color: '#6B7A72', lineHeight: 1.6 }}>The route decides where the data lives; the gates decide whether a problem turns into an incident.</Text>
     </Box>
 </Slide>
