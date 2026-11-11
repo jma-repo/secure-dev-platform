@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SENTINEL: three checkpoints, real scans</title>
+<style>
+:root{
+  --bg:#ffffff; --panel:#f6f8fa; --ink:#1f2328; --muted:#59636e; --line:#d1d9e0;
+  --edge:#8b949e; --accent:#0969da; --flow:#0969da;
+  --source:#ddf4ff; --source-b:#54aeff;
+  --process:#ffffff; --process-b:#8c959f;
+  --store:#fff8c5; --store-b:#d4a72c;
+  --output:#dafbe1; --output-b:#2da44e;
+  --gate:#ffebe9; --gate-b:#cf222e;
+  --ai:#fbefff; --ai-b:#a475f9;
+  --group:#8c959f;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#9198a1; --line:#30363d;
+    --edge:#6e7681; --accent:#4493f8; --flow:#58a6ff;
+    --source:#0c2d6b; --source-b:#388bfd;
+    --process:#161b22; --process-b:#6e7681;
+    --store:#3a2d00; --store-b:#bb8009;
+    --output:#0f2d1a; --output-b:#2ea043;
+    --gate:#3d1418; --gate-b:#f85149;
+    --ai:#271a4d; --ai-b:#a371f7;
+    --group:#6e7681;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#9198a1; --line:#30363d;
+  --edge:#6e7681; --accent:#4493f8; --flow:#58a6ff;
+  --source:#0c2d6b; --source-b:#388bfd;
+  --process:#161b22; --process-b:#6e7681;
+  --store:#3a2d00; --store-b:#bb8009;
+  --output:#0f2d1a; --output-b:#2ea043;
+  --gate:#3d1418; --gate-b:#f85149;
+  --ai:#271a4d; --ai-b:#a371f7;
+  --group:#6e7681;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{max-width:1240px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 16px;max-width:75ch}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-top:8px;flex-wrap:wrap}
+.tab{background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);padding:8px 12px;font:inherit;cursor:pointer}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+button.btn{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 12px;font:inherit;cursor:pointer}
+button.btn:hover{border-color:var(--accent)}
+button.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button:focus-visible,.node:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+label.chk{color:var(--muted);display:flex;gap:6px;align-items:center;margin-left:auto;font-size:14px}
+.canvas{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:auto}
+svg{display:block;width:100%;height:auto;min-width:640px}
+.caption{min-height:3.2em;margin:12px 0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--panel);border-radius:0 6px 6px 0}
+.caption b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.detail{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--panel);min-height:96px}
+.detail h2{margin:0 0 4px;font-size:16px}
+.detail p{margin:4px 0;color:var(--ink)}
+.detail .hint{color:var(--muted)}
+.detail a{color:var(--accent)}
+.detail code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:13px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1.5px solid;margin-right:5px;vertical-align:-1px}
+/* svg */
+.node rect{stroke-width:1.5;rx:8}
+.node{cursor:pointer;transition:opacity .2s}
+.node text{pointer-events:none}
+.node .l{font-size:13.5px;font-weight:600;fill:var(--ink)}
+.node .s{font-size:11.5px;fill:var(--muted)}
+.k-source rect{fill:var(--source);stroke:var(--source-b)}
+.k-process rect{fill:var(--process);stroke:var(--process-b)}
+.k-store rect{fill:var(--store);stroke:var(--store-b)}
+.k-output rect{fill:var(--output);stroke:var(--output-b)}
+.k-gate rect{fill:var(--gate);stroke:var(--gate-b)}
+.k-ai rect{fill:var(--ai);stroke:var(--ai-b)}
+.node.sel rect{stroke-width:3;stroke:var(--accent)}
+.edge{fill:none;stroke:var(--edge);stroke-width:1.6;transition:opacity .2s,stroke .2s}
+.edge.dash{stroke-dasharray:5 4}
+.elabel{font-size:11px;fill:var(--muted);paint-order:stroke;stroke:var(--panel);stroke-width:4px;stroke-linejoin:round;transition:opacity .2s}
+.grp{fill:none;stroke:var(--group);stroke-dasharray:6 5;stroke-width:1.2;rx:12;opacity:.7}
+.glabel{font-size:11px;font-weight:700;letter-spacing:.07em;fill:var(--muted);text-transform:uppercase}
+.dim{opacity:.3}
+.hot .edge,.edge.hot{stroke:var(--flow);stroke-width:2.4}
+.particle{fill:var(--flow)}
+@media (prefers-reduced-motion: reduce){.particle{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="title"></h1>
+  <p class="sub" id="subtitle"></p>
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div class="bar">
+    <button class="btn primary" id="play">▶ Walk through</button>
+    <button class="btn" id="prev" aria-label="Previous step">◀</button>
+    <button class="btn" id="next" aria-label="Next step">▶</button>
+    <button class="btn" id="reset">Reset</button>
+    <label class="chk"><input type="checkbox" id="flow" checked> Animate data flow</label>
+  </div>
+  <div class="canvas"><svg id="svg" role="img"></svg></div>
+  <div class="caption" id="caption"><b>How to use</b>Press “Walk through” to follow one run step by step, or click any box for what it does and where the code lives.</div>
+  <div class="detail" id="detail"><p class="hint">Click a box to see details.</p></div>
+  <div class="legend" id="legend"></div>
+</div>
+<script>
+const SPEC = {"title": "SENTINEL: three checkpoints, real scans", "subtitle": "Every change passes the commit, merge and run checkpoints, and each leaves a receipt you can re-run. Click a box, or walk through a change.", "repoUrl": "https://github.com/jma-repo/secure-dev-platform", "views": [{"label": "Three checkpoints", "cw": 270, "nw": 200, "ch": 110, "nodes": [{"id": "C", "c": 0, "r": 0, "label": "Change", "sub": "git commit", "kind": "source", "desc": "A developer changes code in a Dev Container pinned to Node 22.22.2.", "file": "", "facts": ""}, {"id": "H", "c": 1, "r": 0, "label": "01 Before the commit", "sub": "staged index → Gitleaks", "kind": "gate", "desc": "Scans the **staged Git index**, not the working directory, so a leak is still blocked when the fix exists only in the working tree. Content over 16 MiB is blocked, not skipped. A local hook can be bypassed, so it is not the final boundary.", "file": "scripts/pre-commit.mjs", "facts": ""}, {"id": "CI", "c": 2, "r": 0, "label": "02 Before the merge", "sub": "5 CI jobs on every push", "kind": "gate", "desc": "Tests, Gitleaks over the full history, Trivy config scan (HIGH+), fixable CRITICAL CVEs, Terraform validate (no apply). Builds and scans artifacts, never deploys.", "file": ".github/workflows/ci.yml", "facts": ""}, {"id": "RUN", "c": 3, "r": 0, "label": "03 Before the run", "sub": "hardened container", "kind": "gate", "desc": "Non-root user, read-only root filesystem, `cap-drop ALL`, no privilege escalation, memory and process limits, port 4173 forwarded to localhost only.", "file": "Dockerfile", "facts": ""}, {"id": "V", "c": 2, "r": 1.5, "label": "verify.mjs", "sub": "runs the checks, keeps receipts", "kind": "process", "desc": "Writes `outputs/evidence.json`. Exit code 0 = no failures, 1 = failures, 2 = the environment blocked some checks. `not_run` never counts as passed.", "file": "scripts/verify.mjs", "facts": ""}, {"id": "EV", "c": 2, "r": 2.7, "label": "evidence.json", "sub": "10 of 14 verified, 4 reported", "kind": "store", "desc": "Verified on this machine: tests, synthetic secret blocked, staged-index bypass blocked, hardened container health check, local retrieval with sources, CI 5/5 green. Reported but not counted: Terraform validate, Trivy config and image scans (sandbox limits), branch protection (an administrator action).", "file": "outputs/evidence.json", "facts": ""}, {"id": "UI", "c": 3, "r": 2.7, "label": "Evidence panel", "sub": "refresh on click", "kind": "output", "desc": "The UI reads the real snapshot and does not fabricate CI status.", "file": "", "facts": ""}], "edges": [{"from": "C", "to": "H", "label": ""}, {"from": "H", "to": "CI", "label": "push"}, {"from": "CI", "to": "RUN", "label": "build"}, {"from": "H", "to": "V", "label": "receipt", "sides": "bl", "dash": true}, {"from": "CI", "to": "V", "label": "receipt", "dash": true, "sides": "bt"}, {"from": "RUN", "to": "V", "label": "receipt", "sides": "bl", "dash": true}, {"from": "V", "to": "EV", "label": ""}, {"from": "EV", "to": "UI", "label": ""}], "steps": [{"title": "A change", "text": "Work starts in a Dev Container whose Node version, tools and CI are version-aligned.", "nodes": ["C"], "edges": []}, {"title": "Before the commit", "text": "The pre-commit hook scans what is **staged**. Any secret finding blocks the commit. Deleting a secret in the working tree without staging it is still blocked.", "nodes": ["C", "H"], "edges": ["C>H"]}, {"title": "Before the merge", "text": "Five CI jobs run on every push. A threshold is set by who owns the finding, not by the raw count.", "nodes": ["H", "CI"], "edges": ["H>CI"]}, {"title": "Before the run", "text": "The container runs as a non-root user with a read-only filesystem and no capabilities. A control that is only written down has never stopped anyone.", "nodes": ["CI", "RUN"], "edges": ["CI>RUN"]}, {"title": "Receipts", "text": "Every checkpoint leaves a receipt that `verify.mjs` collects into `evidence.json`. Four checks that could not run here are reported, **not counted as passed**.", "nodes": ["H", "CI", "RUN", "V", "EV", "UI"], "edges": ["H>V", "CI>V", "RUN>V", "V>EV", "EV>UI"]}]}, {"label": "Secret-detection loop", "cw": 260, "nw": 170, "ch": 105, "nodes": [{"id": "UI", "c": 0, "r": 0, "label": "Live demo UI", "sub": "leak / clean buttons", "kind": "source", "desc": "Two buttons: one sends the leak scenario, one sends the repaired input.", "file": "", "facts": ""}, {"id": "API", "c": 1, "r": 0, "label": "Constrained API", "sub": "two scenarios only", "kind": "gate", "desc": "Accepts only `leak` and `clean`. No user commands, file paths or uploads.", "file": "apps/sample-service/server.mjs", "facts": ""}, {"id": "T", "c": 1, "r": 1, "label": "Synthetic token", "sub": "built in memory", "kind": "process", "desc": "Assembled in memory and never stored. No real client keys.", "file": "", "facts": ""}, {"id": "G", "c": 2, "r": 0, "label": "Gitleaks", "sub": "stdin + custom rule", "kind": "gate", "desc": "Real Gitleaks. `.gitleaks.toml` extends the default rules and adds a custom `sentinel-demo-token` rule.", "file": "", "facts": ""}, {"id": "X", "c": 3, "r": 0, "label": "Exit code", "sub": "42 finding · 0 clean", "kind": "gate", "desc": "42 is reserved for findings, so a fatal error is never mistaken for a successful block. The result is checked against both the real scan output and the rule hit.", "file": "", "facts": ""}, {"id": "ERR", "c": 3, "r": 1, "label": "Error / timeout", "sub": "tool missing", "kind": "gate", "desc": "Program errors, timeouts and missing tools never show green.", "file": "", "facts": ""}, {"id": "OUT", "c": 4, "r": 0, "label": "Safe response", "sub": "rule ID, location, status", "kind": "output", "desc": "Returns only rule ID, synthetic location, duration and status. Never the secret, the match or raw logs.", "file": "", "facts": ""}], "edges": [{"from": "UI", "to": "API", "label": "scenario"}, {"from": "API", "to": "T", "label": "assemble"}, {"from": "T", "to": "G", "label": "stdin", "sides": "rb", "off2": -40}, {"from": "G", "to": "X", "label": ""}, {"from": "X", "to": "OUT", "label": "validated"}, {"from": "G", "to": "ERR", "label": "", "sides": "bl", "off": 40, "dash": true}, {"from": "ERR", "to": "OUT", "label": "never green", "sides": "rb", "dash": true}], "steps": [{"title": "Pick a scenario", "text": "The UI sends `leak` or `clean`. Nothing else is accepted.", "nodes": ["UI", "API"], "edges": ["UI>API"]}, {"title": "Build the token", "text": "The synthetic token is assembled in memory.", "nodes": ["API", "T"], "edges": ["API>T"]}, {"title": "Scan", "text": "The token is piped to Gitleaks on stdin.", "nodes": ["T", "G"], "edges": ["T>G"]}, {"title": "Read the exit code", "text": "42 means a finding and 0 means clean. The result must agree with both the scan output and the rule hit.", "nodes": ["G", "X"], "edges": ["G>X"]}, {"title": "Failures never look like success", "text": "Errors, timeouts and missing tools are shown as failures.", "nodes": ["G", "ERR", "OUT"], "edges": ["G>ERR", "ERR>OUT"]}, {"title": "Respond", "text": "Only the rule ID, location, duration and status come back.", "nodes": ["X", "OUT"], "edges": ["X>OUT"]}]}, {"label": "Local RAG", "cw": 250, "nw": 185, "ch": 110, "groups": [{"label": "127.0.0.1 only: a non-loopback inference host is refused before any request is sent", "c1": 0, "r1": 0, "c2": 4, "r2": 1}], "nodes": [{"id": "D", "c": 0, "r": 0, "label": "Policy documents", "sub": "docs/knowledge + README", "kind": "source", "desc": "Sample internal policy: key management, onboarding, AI usage boundaries, platform boundaries.", "file": "docs/knowledge", "facts": ""}, {"id": "CH", "c": 1, "r": 0, "label": "Chunking", "sub": "heading-aware split", "kind": "process", "desc": "Documents are split by heading.", "file": "", "facts": ""}, {"id": "EM", "c": 2, "r": 0, "label": "Local embedding", "sub": "nomic-embed-text, 768-d", "kind": "ai", "desc": "Served by LM Studio on this machine.", "file": "packages/local-rag/index.mjs", "facts": ""}, {"id": "IX", "c": 3, "r": 0, "label": "Local vector index", "sub": "", "kind": "store", "desc": "Held on this machine.", "file": "", "facts": ""}, {"id": "Q", "c": 4, "r": 1, "label": "Question", "sub": "", "kind": "source", "desc": "Typed in the Local AI tab.", "file": "", "facts": ""}, {"id": "RT", "c": 3, "r": 1, "label": "Hybrid retrieval", "sub": "BM25 + cosine", "kind": "process", "desc": "Combines BM25 keyword ranking over heading and text with cosine similarity on the vectors.", "file": "packages/local-rag/index.mjs", "facts": ""}, {"id": "LLM", "c": 2, "r": 1, "label": "Local chat model", "sub": "LM Studio, port 1234", "kind": "ai", "desc": "A local Qwen model. Answers take seconds to minutes depending on hardware. That latency is the price of keeping data on the machine.", "file": "", "facts": ""}, {"id": "AN", "c": 1, "r": 1, "label": "Cited answer", "sub": "[1][2] or “not covered”", "kind": "output", "desc": "Answers with source citations, or says the knowledge base does not cover it.", "file": "", "facts": ""}], "edges": [{"from": "D", "to": "CH", "label": ""}, {"from": "CH", "to": "EM", "label": ""}, {"from": "EM", "to": "IX", "label": ""}, {"from": "IX", "to": "RT", "label": "search"}, {"from": "Q", "to": "RT", "label": ""}, {"from": "RT", "to": "LLM", "label": "top chunks"}, {"from": "LLM", "to": "AN", "label": ""}], "steps": [{"title": "Index", "text": "Documents are chunked by heading and embedded locally.", "nodes": ["D", "CH", "EM", "IX"], "edges": ["D>CH", "CH>EM", "EM>IX"]}, {"title": "Ask", "text": "A question arrives and is matched against the index with BM25 and cosine similarity.", "nodes": ["Q", "IX", "RT"], "edges": ["IX>RT", "Q>RT"]}, {"title": "Generate", "text": "The top chunks go to a local chat model. Non-loopback hosts are refused before a request is sent.", "nodes": ["RT", "LLM"], "edges": ["RT>LLM"]}, {"title": "Cite or refuse", "text": "The answer carries [1][2] source citations, or says plainly that the knowledge base does not cover the question.", "nodes": ["LLM", "AN"], "edges": ["LLM>AN"]}]}]};
+const NS = "http://www.w3.org/2000/svg";
+const $ = id => document.getElementById(id);
+const KINDS = {source:"Input / source", process:"Process", store:"Store", output:"Output", gate:"Gate / control", ai:"AI / model"};
+let view, vi = 0, step = -1, timer = null, selected = null;
+
+function el(name, attrs = {}, parent) {
+  const e = document.createElementNS(NS, name);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+function md(s){return esc(s).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>")}
+
+$("title").textContent = SPEC.title;
+$("subtitle").textContent = SPEC.subtitle;
+const tabs = $("tabs");
+SPEC.views.forEach((v, i) => {
+  const b = document.createElement("button");
+  b.className = "tab"; b.role = "tab"; b.textContent = v.label;
+  b.onclick = () => { stop(); vi = i; render(); };
+  tabs.appendChild(b);
+});
+const used = new Set();
+SPEC.views.forEach(v => v.nodes.forEach(n => used.add(n.kind || "process")));
+$("legend").innerHTML = [...used].map(k => `<span><i style="background:var(--${k});border-color:var(--${k}-b)"></i>${KINDS[k]}</span>`).join("");
+
+function geom(v) {
+  const cw = v.cw || 250, ch = v.ch || 110, nw = v.nw || 188, nh = v.nh || 64, pad = 40, top = v.top ?? 12;
+  const pos = {};
+  v.nodes.forEach(n => {
+    const w = (n.w || 1) * cw - (cw - nw);
+    pos[n.id] = {x: pad + n.c * cw + (cw - nw) / 2, y: pad + top + n.r * ch + (ch - nh) / 2, w, h: nh};
+  });
+  const maxC = Math.max(...v.nodes.map(n => n.c + (n.w || 1)));
+  const maxR = Math.max(...v.nodes.map(n => n.r)) + 1;
+  return {pos, W: pad * 2 + maxC * cw, H: pad * 2 + top + maxR * ch + (v.extraH || 0), cw, ch, pad, top};
+}
+function anchor(p, side, off = 0) {
+  switch (side) {
+    case "r": return [p.x + p.w, p.y + p.h / 2 + off, 1, 0];
+    case "l": return [p.x, p.y + p.h / 2 + off, -1, 0];
+    case "t": return [p.x + p.w / 2 + off, p.y, 0, -1];
+    default:  return [p.x + p.w / 2 + off, p.y + p.h, 0, 1];
+  }
+}
+function defaultSides(a, b) {
+  const dc = b.x - a.x, dr = b.y - a.y;
+  if (Math.abs(dc) > 40) return dc > 0 ? ["r", "l"] : ["l", "r"];
+  return dr > 0 ? ["b", "t"] : ["t", "b"];
+}
+function edgePath(e, pos) {
+  const A = pos[e.from], B = pos[e.to];
+  const [s0, s1] = e.sides ? e.sides.split("") : defaultSides(A, B);
+  const a = anchor(A, s0, e.off || 0), b = anchor(B, s1, e.off2 ?? 0);
+  const d = Math.max(36, Math.hypot(a[0] - b[0], a[1] - b[1]) / 2.4) + (e.bend || 0);
+  const c1 = [a[0] + a[2] * d, a[1] + a[3] * d], c2 = [b[0] + b[2] * d, b[1] + b[3] * d];
+  const mid = [(a[0] + 3 * c1[0] + 3 * c2[0] + b[0]) / 8, (a[1] + 3 * c1[1] + 3 * c2[1] + b[1]) / 8];
+  return {d: `M${a[0]},${a[1]} C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${b[0]},${b[1]}`, mid};
+}
+
+function render() {
+  view = SPEC.views[vi]; step = -1; selected = null;
+  [...tabs.children].forEach((b, i) => b.setAttribute("aria-selected", i === vi));
+  const g = geom(view), svg = $("svg");
+  svg.innerHTML = ""; svg.setAttribute("viewBox", `0 0 ${g.W} ${g.H}`);
+  svg.setAttribute("aria-label", view.label + " diagram");
+  const defs = el("defs", {}, svg);
+  const mk = el("marker", {id: "ah", viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: "auto-start-reverse"}, defs);
+  el("path", {d: "M0,0 L10,5 L0,10 z", fill: "var(--edge)"}, mk);
+  const mk2 = el("marker", {id: "ahh", viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: "auto-start-reverse"}, defs);
+  el("path", {d: "M0,0 L10,5 L0,10 z", fill: "var(--flow)"}, mk2);
+
+  (view.groups || []).forEach(gr => {
+    const x = g.pad + gr.c1 * g.cw + 6, y = g.pad + g.top + gr.r1 * g.ch + 2;
+    const w = (gr.c2 - gr.c1 + 1) * g.cw - 12, h = (gr.r2 - gr.r1 + 1) * g.ch - 4;
+    el("rect", {class: "grp", x, y, width: w, height: h}, svg);
+    const t = el("text", {class: "glabel", x: x + 12, y: y + 16}, svg); t.textContent = gr.label;
+  });
+
+  const edgeEls = {}, labelEls = {};
+  const eg = el("g", {}, svg), pg = el("g", {}, svg);
+  view.edges.forEach((e, i) => {
+    e.id = e.from + ">" + e.to + (e.key ? ":" + e.key : "");
+    const {d, mid} = edgePath(e, g.pos);
+    const p = el("path", {class: "edge" + (e.dash ? " dash" : ""), d, "marker-end": "url(#ah)", id: "e" + i}, eg);
+    edgeEls[e.id] = p;
+    if (e.label) {
+      const t = el("text", {class: "elabel", x: mid[0], y: mid[1] + 4, "text-anchor": "middle"}, eg);
+      t.textContent = e.label; labelEls[e.id] = t;
+    }
+    e._d = d;
+  });
+  const nodeEls = {};
+  view.nodes.forEach(n => {
+    const p = g.pos[n.id];
+    const grp = el("g", {class: "node k-" + (n.kind || "process"), tabindex: 0, role: "button", "aria-label": n.label + ". " + (n.sub || "")}, svg);
+    el("rect", {x: p.x, y: p.y, width: p.w, height: p.h}, grp);
+    const l = el("text", {class: "l", x: p.x + p.w / 2, y: p.y + (n.sub ? p.h / 2 - 4 : p.h / 2 + 5), "text-anchor": "middle"}, grp);
+    l.textContent = n.label;
+    if (n.sub) { const s = el("text", {class: "s", x: p.x + p.w / 2, y: p.y + p.h / 2 + 14, "text-anchor": "middle"}, grp); s.textContent = n.sub; }
+    grp.onclick = () => select(n.id);
+    grp.onkeydown = ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(n.id); } };
+    grp.onmouseenter = () => { if (step < 0 && !selected) hover(n.id); };
+    grp.onmouseleave = () => { if (step < 0 && !selected) clearHL(); };
+    nodeEls[n.id] = grp;
+  });
+  view._els = {nodeEls, edgeEls, labelEls, pg};
+  buildParticles();
+  clearHL(); showCaption(null);
+  $("detail").innerHTML = `<p class="hint">${view.hint || "Click a box to see details."}</p>`;
+  $("prev").disabled = $("next").disabled = !(view.steps && view.steps.length);
+  $("play").style.display = $("prev").style.display = $("next").style.display = $("reset").style.display = (view.steps && view.steps.length) ? "" : "none";
+}
+
+function buildParticles() {
+  const {pg} = view._els; pg.innerHTML = "";
+  if (!$("flow").checked) return;
+  view.edges.forEach((e, i) => {
+    if (e.noflow) return;
+    const c = el("circle", {r: 3.6, class: "particle", "data-e": e.id}, pg);
+    const am = el("animateMotion", {dur: (2.6 + (i % 4) * .35) + "s", repeatCount: "indefinite", begin: (i * .37 % 2) + "s"}, c);
+    const mp = el("mpath", {}, am); mp.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#e" + i);
+  });
+}
+$("flow").onchange = () => { buildParticles(); applyParticleState(); };
+
+function activeSets() {
+  if (step >= 0) { const s = view.steps[step]; return {n: new Set(s.nodes || []), e: new Set((s.edges || []))}; }
+  if (selected) {
+    const n = new Set([selected]), e = new Set();
+    view.edges.forEach(x => { if (x.from === selected || x.to === selected) { e.add(x.id); n.add(x.from); n.add(x.to); } });
+    return {n, e};
+  }
+  return null;
+}
+function applyHL(set) {
+  const {nodeEls, edgeEls, labelEls} = view._els;
+  for (const id in nodeEls) nodeEls[id].classList.toggle("dim", !!set && !set.n.has(id));
+  for (const id in edgeEls) {
+    const on = !set || set.e.has(id);
+    edgeEls[id].classList.toggle("dim", !on);
+    edgeEls[id].classList.toggle("hot", !!set && on);
+    edgeEls[id].setAttribute("marker-end", set && on ? "url(#ahh)" : "url(#ah)");
+    if (labelEls[id]) labelEls[id].classList.toggle("dim", !on);
+  }
+  applyParticleState(set);
+}
+function applyParticleState(set = activeSets()) {
+  view._els.pg.querySelectorAll("circle").forEach(c => { c.style.opacity = set && !set.e.has(c.dataset.e) ? 0 : 1; });
+}
+function hover(id) {
+  const n = new Set([id]), e = new Set();
+  view.edges.forEach(x => { if (x.from === id || x.to === id) { e.add(x.id); n.add(x.from); n.add(x.to); } });
+  applyHL({n, e});
+}
+function clearHL() { applyHL(activeSets()); }
+
+function select(id) {
+  const n = view.nodes.find(x => x.id === id);
+  selected = selected === id ? null : id;
+  Object.entries(view._els.nodeEls).forEach(([k, g]) => g.classList.toggle("sel", k === selected));
+  if (step >= 0) { stop(true); }
+  clearHL();
+  if (!selected) { $("detail").innerHTML = `<p class="hint">Click a box to see details.</p>`; return; }
+  const ins = view.edges.filter(e => e.to === id).map(e => view.nodes.find(x => x.id === e.from).label);
+  const outs = view.edges.filter(e => e.from === id).map(e => view.nodes.find(x => x.id === e.to).label);
+  let h = `<h2>${esc(n.label)}</h2>`;
+  if (n.desc) h += `<p>${md(n.desc)}</p>`;
+  if (n.facts) h += `<p>${md(n.facts)}</p>`;
+  if (ins.length || outs.length) h += `<p class="hint">${ins.length ? "From: " + esc(ins.join(", ")) : ""}${ins.length && outs.length ? " · " : ""}${outs.length ? "To: " + esc(outs.join(", ")) : ""}</p>`;
+  if (n.file) h += `<p>Code: <a href="${SPEC.repoUrl}/blob/main/${n.file}" target="_blank" rel="noopener"><code>${esc(n.file)}</code></a></p>`;
+  $("detail").innerHTML = h;
+}
+
+function showCaption(i) {
+  const c = $("caption");
+  if (i === null || i < 0) { c.innerHTML = `<b>How to use</b>Press “Walk through” to follow one run step by step, or click any box for what it does and where the code lives.`; return; }
+  const s = view.steps[i];
+  c.innerHTML = `<b>Step ${i + 1} of ${view.steps.length} · ${esc(s.title)}</b>${md(s.text)}`;
+}
+function go(i) {
+  const n = view.steps.length;
+  step = (i + n) % n; selected = null;
+  Object.values(view._els.nodeEls).forEach(g => g.classList.remove("sel"));
+  view.steps[step].edges = (view.steps[step].edges || []);
+  applyHL(activeSets()); showCaption(step);
+}
+function stop(keepHL) {
+  clearInterval(timer); timer = null; $("play").textContent = "▶ Walk through";
+  if (!keepHL) { step = -1; clearHL(); showCaption(null); } else { step = -1; showCaption(null); }
+}
+$("play").onclick = () => {
+  if (timer) { stop(true); return; }
+  $("play").textContent = "⏸ Pause";
+  go(step < 0 ? 0 : step + 1);
+  timer = setInterval(() => go(step + 1), 3800);
+};
+$("next").onclick = () => { clearInterval(timer); timer = null; $("play").textContent = "▶ Walk through"; go(step + 1); };
+$("prev").onclick = () => { clearInterval(timer); timer = null; $("play").textContent = "▶ Walk through"; go(step < 0 ? view.steps.length - 1 : step - 1); };
+$("reset").onclick = () => { stop(); selected = null; Object.values(view._els.nodeEls).forEach(g => g.classList.remove("sel")); clearHL(); $("detail").innerHTML = `<p class="hint">Click a box to see details.</p>`; };
+render();
+</script>
+</body>
+</html>

@@ -70,6 +70,21 @@ flowchart LR
   S --> G
 ```
 
+**[Open the interactive diagram](https://jma-repo.github.io/secure-dev-platform/diagram.html)**: the three checkpoints, the secret-detection loop and the local RAG flow, each with a step-by-step walkthrough.
+
+### Every Change Passes Three Checkpoints
+
+```mermaid
+flowchart LR
+  C["Change"] --> H["01 Before the commit<br/>staged index, Gitleaks"]
+  H --> CI["02 Before the merge<br/>5 CI jobs on every push"]
+  CI --> R["03 Before the run<br/>hardened container, loopback only"]
+  H -.-> V["verify.mjs"]
+  CI -.-> V
+  R -.-> V
+  V --> EV[("outputs/evidence.json<br/>not_run never counts as passed")]
+```
+
 ### The Secret-Detection Loop Is Not an Animation
 
 - The backend accepts only two scenarios, `leak` and `clean`. It does not accept user commands, file paths, or arbitrary uploads.
@@ -95,9 +110,13 @@ A local hook can be bypassed by the user, so it is not the final security bounda
 
 `docs/knowledge/` holds sample internal policy documents (key management, onboarding, AI usage boundaries, platform boundaries), and the README is indexed along with them. The pipeline is:
 
-```text
-Document chunking → local embedding (nomic-embed-text) → local vector index → cosine retrieval, Top 4
-        → local Qwen generation → answer with [1][2] source citations
+```mermaid
+flowchart LR
+  subgraph loop["127.0.0.1 only: non-loopback hosts are refused before a request is sent"]
+    D["Documents"] --> CH["Chunking"] --> EM["Local embedding<br/>nomic-embed-text"] --> IX[("Local vector index")]
+    Q["Question"] --> RT["Hybrid retrieval<br/>BM25 + cosine"]
+    IX --> RT --> LLM["Local Qwen generation"] --> AN["Answer with<br/>[1][2] source citations"]
+  end
 ```
 
 Start LM Studio, open its local server (default port 1234), and load one chat model and one embedding model. Tested on this machine: `qwen/qwen3.8-27b` + `text-embedding-nomic-embed-text-v1.5`, 30 chunks, 768 dimensions, about 10–25 seconds per question.
